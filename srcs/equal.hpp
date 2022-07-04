@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/06/16 14:17:11 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:57:57 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,16 @@
 # define EQUAL_HPP
 
 namespace ft {
+	class equal {
+		public:
+			template <class InputIterator1, class InputIterator2>
+			bool equal (InputIterator1 first1, InputIterator1 last1,
+						InputIterator2 first2);
 
+			template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+			bool equal (InputIterator1 first1, InputIterator1 last1,
+						InputIterator2 first2, BinaryPredicate pred);
+	};
 }
 
 #endif
