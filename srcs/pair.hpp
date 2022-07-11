@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/05 17:04:09 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:41:25 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ namespace ft {
 
 		typedef T1 first_type;
 		typedef T2 second_type;
+		T1 first;
+		T2 second;
 		/* Constructors */
 		pair();
+
 		template<class U, class V> pair (const pair<U,V>& pr);
-		pair (const first_type& a, const second_type& b);
+		// pair (const first_type& a, const second_type& b);
+		pair(const first_type& u, const second_type& v) : first(u), second(v) {};
 		/* operator= */
 		pair& operator= (const pair& pr);
 
