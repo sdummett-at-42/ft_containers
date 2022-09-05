@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/05 17:01:30 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:44:40 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ namespace ft {
 	template < class T, class Alloc = std::allocator<T> >
 	class vector {
 		public:
-
 			/* Typedefs */
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
@@ -33,13 +32,24 @@ namespace ft {
 			typedef typename allocator_type::const_pointer const_pointer;
 
 			/* Constructors */
-			explicit vector (const allocator_type& alloc = allocator_type());
-			explicit vector (size_type n, const value_type& val = value_type(),
-					const allocator_type& alloc = allocator_type());
-			// template <class InputIterator>
-			// // vector (InputIterator first, InputIterator last,
-				// const allocator_type& alloc = allocator_type());
+			explicit vector (const allocator_type& alloc = allocator_type()) : 
+				alloc(alloc),
+	       			n(0) {}
+
+			explicit vector (size_type n, const value_type& val = value_type(), \
+					const allocator_type& alloc = allocator_type()) {
+				this->arr = alloc.allocate(n);
+				for (int i = 0; i < n; ++i) {
+					arr[i] = val[i];
+				}
+			}
+
+			template <class InputIterator>
+			vector (InputIterator first, InputIterator last, \
+				const allocator_type& alloc = allocator_type());
+
 			vector (const vector& x);
+
 
 			/* Destructor */
 			~vector();
@@ -95,6 +105,10 @@ namespace ft {
 
 		
 		private:
+			allocator_type alloc;
+			size_type n;
+			value_type val;
+			T *arr;
 			
 	};
 
