@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/05 11:59:16 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:21:32 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define PAIR_HPP
 
 namespace ft {
-template <class T1, class T2>
+
+	template <class T1, class T2>
 	struct pair {
 		public:
 
@@ -91,6 +92,5 @@ template <class T1, class T2>
 		y.second = tmpSecond;
 	}
 }
-
 
 #endif

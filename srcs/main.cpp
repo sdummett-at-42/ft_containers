@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/11 21:41:54 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:28:09 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@
 using namespace ft;
 
 int main() {
-	std::cout << "Hello world" << std::endl;
-	ft::pair <int,int> object(0, 1);
-	std::cout << object.first << ' ' << object.second << '\n';
+
+	std::pair<int, char> pr = std::make_pair<int, char>(42, 'S');
+	std::cout << "pr " << pr.first << " " << pr.second << "\n";
+
+	ft::pair<int, char> ftpr = ft::make_pair<int, char>(42, 'S');
+	std::cout << "ftpr " << ftpr.first << " " << ftpr.second << "\n";
 	return 0;
 }
