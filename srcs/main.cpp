@@ -25,15 +25,19 @@
 // # include "make_pair.hpp"
 
 #include <vector>
-
+#include <string>
 int main() {
 
 	// int ft = 42;
 	// std::vector<int> vec(42, ft);
 	// int i = 24;
 	// int j = 42;
-	ft::vector<int> vectest(2, 5);
+	ft::vector<std::string> vectest(1, "Je suis groot");
+	ft::vector<std::string>vec2;
+	vec2 = vectest;
+	ft::vector<std::string>vec3(vec2);
 
+	std::cout << vec3[0] << " " << vec3.front() << " " << vec3.back() << "\n";
 	// std::cout << ftvec[0] << ftvec[23] << "\n"; 	
 
 
