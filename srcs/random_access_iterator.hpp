@@ -14,42 +14,43 @@
 # define RANDOM_ACCESS_ITERATOR_HPP
 
 #include <cstddef> // std::ptrdiff_t
-// #include "iterator_tags.hpp"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
 	// -------> https://cplusplus.com/reference/iterator/RandomAccessIterator/
-	template< class Category, class T, 
-	class Distance = std::ptrdiff_t, 
-	class Pointer = T*, class Reference = T& > 
-	struct iterator {
+	template< class Iter > 
+	class random_access_iterator {
 		
 		public:
 
 		/* ------------- Typedefs ------------- */
+		typedef Iter															iterator_type;
+		typedef typename ft::iterator_traits<iterator_type>::iterator_category	iterator_category;
+		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
+		typedef typename ft::iterator_traits<iterator_type>::difference_type	difference_type;
+		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
+		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
+		//
+
 		
-		typedef Category	iterator_category;
-		typedef T			value_type;
-		typedef Distance	difference_type;
-		typedef Pointer		pointer;
-		typedef Reference	reference;
-
 		/* ------------- Constructors ------------- */
-		iterator() :
-			_base(0) {}
-		iterator(const iterator& x) {
-
-
+		random_access_iterator();
+		random_access_iterator(const random_access_iterator& x);
+		
+		
 		/* ------------- operator= ------------- */
-		}
-		iterator& operator=(const iterator& x) {
+		random_access_iterator& operator=(const random_access_iterator& x);
 
-		}
 
 		/* ------------- Destructor ------------- */
-		~iterator() {}
+		virtual ~random_access_iterator() {}
 
 		/* ------------- Operators ------------- */
+		// Notes:
+		//        - to implement
+		//        - operators are missing
+/*
 		bool operator ==(const T &a, const T2 &b);
 		bool operator !=(const T &a, const T2 &b);
 		R& T::operator*();
@@ -68,8 +69,9 @@ namespace ft {
 		T& T::operator +=(const T2& b);
 		T& T::operator -=(const T2& b);
 		R& T::operator[](S b);
-		private:
-			value_type _base;
+*/
+		protected:
+			pointer _p;
 	};
 }
 
