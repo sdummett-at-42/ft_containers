@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/06 17:25:38 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:10:55 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,29 @@
 #include <string>
 int main() {
 
-	// int ft = 42;
-	// std::vector<int> vec(42, ft);
-	// int i = 24;
-	// int j = 42;
-	ft::vector<std::string> vectest(1, "Je suis groot");
-	ft::vector<std::string>vec2;
-	vec2 = vectest;
-	ft::vector<std::string>vec3(vec2);
+	std::vector<int> vec;
+	for (int i = 0; i < 10; i++)
+		vec.push_back(i * 10);
+	for (int i = 0; i < 10; i++) 
+		std::cout << vec[i] << " ";
+	std::cout << "\n";
+	std::cout << "Testing reverse_iterator:\n";
+	std::vector<int>::iterator it = vec.begin();
+	std::cout << it[1];
+	// for (std::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++) {
+	// 	std::cout << *it << " ";
+	// }
+	std::cout << "\n";
 
-	std::cout << vec3[0] << " " << vec3.front() << " " << vec3.back() << "\n";
+
+	// -------------------------------------------------------- //
+	// ft::vector<std::string> vectest(1, "Je suis groot");
+	// ft::vector<std::string>vec2;
+	// vec2 = vectest;
+	// ft::vector<std::string>vec3(vec2);
+
+	// std::cout << vec3[0] << " " << vec3.front() << " " << vec3.back() << "\n";
+	// -------------------------------------------------------- //
 	// std::cout << ftvec[0] << ftvec[23] << "\n"; 	
 
 

@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/06 17:27:41 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:26:32 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ namespace ft {
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			/* Still need to add typedefs from documentations (iterators 
-			   for example) */
+			// typedef ... iterator
+			// typedef ... const_iterator
+			// typedef ft::reverse_iterator<iterator> reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; 
 			
 
 			/* ------------- Constructors ------------- */
@@ -113,7 +115,9 @@ namespace ft {
 				_alloc.deallocate(_p, _capacity);
 			}
 
-			// /* Iterators */
+
+			/* ------------- Iterators ------------- */
+			
 			// iterator begin();
 			// const_iterator begin() const;
 			// iterator end();

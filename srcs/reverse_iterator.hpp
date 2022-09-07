@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/05 16:42:40 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/07 15:23:22 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,32 @@ namespace ft {
 
 		public:
 
+			/* ------------- Typedefs ------------- */
+
 			typedef Iterator iterator_type;
-			// typedef ft::iterator_traits<Iterator>::iterator_category iterator_category;
+			typedef typename ft::iterator_traits<Iterator>::iterator_category iterator_category;
 			typedef typename iterator_traits<Iterator>::value_type value_type;
 			typedef typename iterator_traits<Iterator>::difference_type difference_type;
 			typedef typename iterator_traits<Iterator>::pointer pointer;
 			typedef typename iterator_traits<Iterator>::reference reference;
 
-			reverse_iterator();
+
+			/* ------------- Constructor ------------- */
+
+			reverse_iterator() :
+				current(0) {}
+			
 			explicit reverse_iterator (iterator_type it);
+			
 			template <class Iter>
-				reverse_iterator (const reverse_iterator<Iter>& rev_it);
-			iterator_type base() const;
+			reverse_iterator (const reverse_iterator<Iter>& rev_it) :
+				current(rev_it) {}
+
+			/* ------------- //////\\\\\\ ------------- */
+			iterator_type base() const {
+				return current;
+			}
+
 			reference operator*() const;
 			reverse_iterator operator+ (difference_type n) const;
 			reverse_iterator& operator++();
@@ -46,6 +60,8 @@ namespace ft {
 			pointer operator->() const;
 			reference operator[] (difference_type n) const;
 
+		protected:
+			iterator_type current;
 	};
 
 	template <class Iterator>
