@@ -37,23 +37,34 @@ int main() {
 	ftvec.push_back(30);
 	ftvec.push_back(40);
 	ftvec.push_back(50);
-	// ftvec.pop_back();
-	// ftvec.pop_back();
-	int first = 4;
-	int last = 5;
 
-	it = ftvec.begin();
-	std::cout << "to erase : " << *(it + first) << " -- " << *(it + last) << "\n";
-	it = ftvec.erase(it + first, it + last);
-	 std::cout << "it returned by erase : " << *it << "\n";
-	if (it == ftvec.end())
-		std::cout << "it == ftvec.end()\n";
+	int *p = ftvec.data();
 
-	int i = 0;
-	for (it = ftvec.begin(); it != ftvec.end(); it++ ){
-		std::cout << ftvec.at(i) << "\n";
-		++i;
+	for (size_t i = 0; i < ftvec.size(); i++) {
+		std::cout << "p : " << *(p + i) << "\n";
 	}
+
+
+	// ------------------------------- //
+	// ftvec.pop_back();
+	// ftvec.pop_back();
+	// int first = 4;
+	// int last = 5;
+
+	// it = ftvec.begin();
+	// std::cout << "to erase : " << *(it + first) << " -- " << *(it + last) << "\n";
+	// it = ftvec.erase(it + first, it + last);
+	//  std::cout << "it returned by erase : " << *it << "\n";
+	// if (it == ftvec.end())
+	// 	std::cout << "it == ftvec.end()\n";
+
+	// int i = 0;
+	// for (it = ftvec.begin(); it != ftvec.end(); it++ ){
+	// 	std::cout << ftvec.at(i) << "\n";
+	// 	++i;
+	// }
+
+	// --------------------------------------------------- //
 	// for (it = ftvec.begin(); it != ftvec.end(); it++ ) {
 	// 	std::cout << *it << "\n";
 	// }

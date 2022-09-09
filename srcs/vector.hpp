@@ -259,6 +259,17 @@ namespace ft {
 			const_reference back() const {
 				return *(_p + _size - 1);
 			}
+
+			// Returns pointer to the underlying array serving as element 
+			// storage. The pointer is such that range [data(); data()+size()) 
+			// is always a valid range, even if the container is empty (data() 
+			// is not dereferenceable in that case).
+			T* data() {
+				return _p;
+			}
+			const T* data() const {
+				return _p;
+			}
 			
 
 			/* ------------- Modfiers ------------- */
