@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/09 17:40:41 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/09 20:36:40 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ namespace ft {
 			explicit vector (const allocator_type& alloc = allocator_type()) : 
 				_alloc(alloc),
 				_p(0),
-	       		_size(0),
+				_size(0),
 				_capacity(0) {}
 
 			// Constructs a container with n elements. Each element is a copy 
 			// of val.
 			 explicit vector (const size_type& n, const value_type& val = value_type(), 
-            	const allocator_type& alloc = allocator_type()) :
+				const allocator_type& alloc = allocator_type()) :
 				_alloc(alloc),
 				_p(0),
 				_size(0),
@@ -117,13 +117,21 @@ namespace ft {
 
 
 			/* ------------- Iterators ------------- */
-			
+
+			// Returns an iterator to the first element of the vector.
+			// If the vector is empty, the returned iterator will be equal to 
+			// end(). 
 			iterator begin() {
 				return iterator(_p);
 			}
 			const_iterator begin() const {
 				return iterator(_p);
 			}
+
+			// Returns an iterator to the element following the last element //
+			// of the vector.
+			// This element acts as a placeholder; attempting to access it 
+			// results in undefined behavior. 
 			iterator end() {
 				return iterator(_p + _size);
 			}
@@ -143,17 +151,17 @@ namespace ft {
 			size_type size() const {
 				return _size;
 			}
-			
+
 			// Returns the maximum number of elements the container is able to
 			// hold due to system or library implementation limitations
 			size_type max_size() const {
 				return _alloc.max_size();
 			}
-			
+
 			// Resizes the container to contain count elements. 
 			void resize (size_type n, value_type val = value_type()) {
 				// Notes: check what is the default value
-				// Is the one given at construction
+				// Is it the one given at construction
 				if (n > _capacity)
 					reserve(n);
 				if (n < _size) {
@@ -175,7 +183,7 @@ namespace ft {
 			size_type capacity() const {
 				return _capacity;
 			}
-			
+
 			// Checks if the container has no elements
 			bool empty() const {
 				if (_size == 0)
@@ -221,8 +229,18 @@ namespace ft {
 				return *(_p + n);
 			}
 
-			reference at (size_type n);
-			const_reference at (size_type n) const;
+			// Returns a reference to the element at specified location pos, 
+			// with bounds checking.
+			//If pos is not within the range of the container, an exception of 
+			// type std::out_of_range is thrown. 
+			reference at (size_type n) {
+				// Notes: Implement the throwed exception
+				return *(_p + n);
+			}
+			const_reference at (size_type n) const {
+				// Notes: Implement the throwed exception
+				return *(_p + n);
+			}
 
 			// Returns a reference to the first element in the container.
 			// Calling front on an empty container is undefined. 
@@ -246,16 +264,81 @@ namespace ft {
 			/* ------------- Modfiers ------------- */
 
 			// template <class InputIterator>
-			// // void assign (InputIterator first, InputIterator last);
+			// void assign (InputIterator first, InputIterator last);
 			void assign (size_type n, const value_type& val);
-			void push_back (const value_type& val);
-			void pop_back();
+
+			// Appends the given element value to the end of the container.
+			// 1) The new element is initialized as a copy of value.
+			// 2) value is moved into the new element.
+			// If the new size() is greater than capacity() then all iterators
+			// and references (including the past-the-end iterator) are 
+			// invalidated. Otherwise only the past-the-end iterator is 
+			// invalidated. 
+			void push_back (const value_type& val) {
+				if (_size + 1 == _capacity)
+					reserve(_capacity + 1);
+				_alloc.construct(_p + _size, val);
+				++_size;
+			}
+
+			// Removes the last element of the container.
+			// Calling pop_back on an empty container results in undefined 
+			// behavior.
+			// Iterators and references to the last element, as well as the 
+			// end() iterator, are invalidated. 
+			void pop_back() {
+				_alloc.destroy(_p + _size - 1);
+				--_size;
+			}
+
 			// iterator insert (iterator position, const value_type& val);
 			// void insert (iterator position, size_type n, const value_type& val);
 			// template <class InputIterator>
 			// void insert (iterator position, InputIterator first, InputIterator last);
-			// iterator erase (iterator position);
-			// iterator erase (iterator first, iterator last);
+
+			// Removes the element at pos.
+			iterator erase (iterator position){
+				iterator it;
+				size_type i = 0;
+				for (it = iterator(_p); it != end(); it++) {
+					if (it == position) {
+						_alloc.destroy(_p + i);
+						while (i + 1 != _size) {
+							*(_p + i) = *(_p + i + 1);
+
+							_alloc.destroy(_p + i + 1);
+							++i;
+						}
+						--_size;
+						break ;
+					}
+					++i;
+				}
+				return it;
+			}
+
+			// Removes the elements in the range [first, last).
+			iterator erase (iterator first, iterator last) {
+				if (first == last)
+					return last;
+				difference_type diff = last - first;
+				difference_type pos = 0;
+				for (pos = first - begin(); diff != 0; pos++) {
+					_alloc.destroy(_p + pos);
+					--diff;
+					--_size;
+				}
+				pos = first - begin();
+				diff = last - first;
+				iterator ret = first;
+				while (first != end()) {
+					*(_p + pos) = *(first + diff);
+					++first;
+					++pos;
+				}
+				return ret;
+			}
+
 			void swap (vector& x);
 			
 			// Erases all elements from the container. After this call, size()
