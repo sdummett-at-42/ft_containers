@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/07 15:26:32 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:40:41 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace ft {
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			// typedef ... iterator
-			// typedef ... const_iterator
+			typedef ft::random_access_iterator<value_type> iterator;
+			typedef ft::random_access_iterator<const value_type> const_iterator;
 			// typedef ft::reverse_iterator<iterator> reverse_iterator;
 			// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; 
 			
@@ -118,10 +118,19 @@ namespace ft {
 
 			/* ------------- Iterators ------------- */
 			
-			// iterator begin();
-			// const_iterator begin() const;
-			// iterator end();
-			// const_iterator end() const;
+			iterator begin() {
+				return iterator(_p);
+			}
+			const_iterator begin() const {
+				return iterator(_p);
+			}
+			iterator end() {
+				return iterator(_p + _size);
+			}
+			const_iterator end() const {
+				return iterator(_p + _size);
+			}
+
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
 			// reverse_iterator rend();

@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:44:05 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/07 16:50:27 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:45:25 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,51 +25,124 @@ namespace ft {
 		public:
 
 		/* ------------- Typedefs ------------- */
-		typedef Iter															iterator_type;
-		typedef typename ft::iterator_traits<iterator_type>::iterator_category	iterator_category;
-		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
-		typedef typename ft::iterator_traits<iterator_type>::difference_type	difference_type;
-		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
-		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
-		//
+		typedef Iter iterator_type;
+		typedef typename std::iterator<std::random_access_iterator_tag, Iter>::iterator_category iterator_category;
+		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::value_type value_type;
+		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::difference_type	difference_type;
+		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::pointer pointer;
+		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::reference reference;
 
 		
 		/* ------------- Constructors ------------- */
-		random_access_iterator();
-		random_access_iterator(const random_access_iterator& x);
+		random_access_iterator() :
+			_p(0) {}
+
+		random_access_iterator(const random_access_iterator& x) {
+			*this = x;
+		}
+
+		random_access_iterator(pointer p) :
+			_p(p) {}
 		
 		
 		/* ------------- operator= ------------- */
-		random_access_iterator& operator=(const random_access_iterator& x);
+		random_access_iterator& operator=(const random_access_iterator& x) {
+			_p = x._p;
+			return *this;
+		}
 
 
 		/* ------------- Destructor ------------- */
 		virtual ~random_access_iterator() {}
 
+
 		/* ------------- Operators ------------- */
-		// Notes:
-		//        - to implement
-		//        - operators are missing
-/*
-		bool operator ==(const T &a, const T2 &b);
-		bool operator !=(const T &a, const T2 &b);
-		R& T::operator*();
-		R* T::operator->();
-		// (???) *a = t
-		T& T::operator++();
-		T T::operator++(int);
-		T& T::operator--();
-		T T::operator--(int); 
-		T T::operator+(const T2 &b) const;
-		T T::operator-(const T2 &b) const;
-		bool T::operator <(const T2 &b) const;
-		bool T::operator >(const T2 &b) const;
-		bool T::operator <=(const T2 &b) const;
-		bool T::operator >=(const T2 &b) const;
-		T& T::operator +=(const T2& b);
-		T& T::operator -=(const T2& b);
-		R& T::operator[](S b);
-*/
+		// Notes: - Don't know what the documentation means
+		// by a->m, so operator->() is not implemented yet.
+
+
+		bool operator ==(const random_access_iterator b) {
+			return _p == b._p;
+		}
+
+		bool operator !=(const random_access_iterator b) {
+			return _p != b._p;
+		}
+
+		Iter& operator*(){
+			return *_p;
+		}
+
+		// Notes: What is this damn shit ?
+		// Iter* operator->() {
+		// 	return *_p;
+		// }
+
+		random_access_iterator& operator++() {
+			_p++;
+			return *this;
+		}
+
+		random_access_iterator operator++(int) {
+			random_access_iterator tmp(*this);
+			operator++();
+			return tmp;
+		}
+
+		random_access_iterator& operator--(){
+			_p--;
+			return *this;
+
+		}
+
+		random_access_iterator operator--(int){
+			random_access_iterator tmp(*this);
+			operator--();
+			return tmp;
+		}
+
+		random_access_iterator operator+(const difference_type &n) const {
+			return _p + n;
+		}
+
+		random_access_iterator operator-(const difference_type &n) const {
+			return _p - n;
+		}
+
+		difference_type operator-(const random_access_iterator &b) const {
+			return _p - b._p;
+		}
+
+		bool operator <(const random_access_iterator &b) const {
+			return (_p < b._p);
+		}
+
+		bool operator >(const random_access_iterator &b) const {
+			return (!(_p < b._p));
+		}
+
+		bool operator <=(const random_access_iterator &b) const {
+			return (_p < b._p || _p == b._p);
+		}
+
+		bool operator >=(const random_access_iterator &b) const {
+			return (_p > b._p || _p == b._p);
+		}
+
+		random_access_iterator& operator +=(const difference_type& n) {
+			*this = *this + n;
+			return *this;
+		}
+
+		random_access_iterator& operator -=(const difference_type& n) {
+			*this = *this - n;
+			return *this;
+		}
+
+		value_type& operator[](difference_type n) {
+			return *(_p + n);
+		}
+
 		protected:
 			pointer _p;
 	};

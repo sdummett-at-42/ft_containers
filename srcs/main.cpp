@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/07 16:10:55 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:41:15 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,56 +26,64 @@
 
 #include <vector>
 #include <string>
+
 int main() {
 
-	std::vector<int> vec;
-	for (int i = 0; i < 10; i++)
-		vec.push_back(i * 10);
-	for (int i = 0; i < 10; i++) 
-		std::cout << vec[i] << " ";
-	std::cout << "\n";
-	std::cout << "Testing reverse_iterator:\n";
-	std::vector<int>::iterator it = vec.begin();
-	std::cout << it[1];
-	// for (std::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++) {
-	// 	std::cout << *it << " ";
-	// }
-	std::cout << "\n";
+	ft::vector<int> ftvec(2, 42);
+	ft::vector<int>::iterator it = ftvec.begin();
+	ft::vector<int>::iterator itend = ftvec.end();
+
+	// std::vector<int> ftvec(2, 42);
+	// std::vector<int>::iterator it    = ftvec.begin();
+	// std::vector<int>::iterator itend = ftvec.end();
+	(void)itend;
+	(void)it;
+
+	if (it == itend )
+		std::cout << "it == itend\n";
+	else
+		std::cout << "it != itend\n";
 
 
-	// -------------------------------------------------------- //
-	// ft::vector<std::string> vectest(1, "Je suis groot");
-	// ft::vector<std::string>vec2;
-	// vec2 = vectest;
-	// ft::vector<std::string>vec3(vec2);
+	// std::cout << it[0] << " " << it[1] << " " << it[2] << "\n";
 
-	// std::cout << vec3[0] << " " << vec3.front() << " " << vec3.back() << "\n";
-	// -------------------------------------------------------- //
-	// std::cout << ftvec[0] << ftvec[23] << "\n"; 	
+	// it += 1;
+	// std::cout << *it << "\n";
 
 
-	// std::allocator<int> allo;
-	// std::allocator<int>::pointer p = allo.allocate(5);
-	// for (int i = 0; i < 5; ++i) {
-	// 	allo.construct(p + i, i * 100);
-	// }
-	// for (int i = 0; i < 5; ++i) {
-	// 	std::cout << "arr[" << i << "] : " << *(p + i) << "\n";
-	// }
+	// it = it + 1;
+	// if (it < itend)
+	// 	std::cout << "it < itend\n";
+	// else
+	// 	std::cout << "!(it < itend)\n";
 
-	// std::cout << "Reallocating 5...\n";
-	// std::allocator<int>::pointer p2 = allo.allocate(5);
-	// // std::cout << "p : " << p << " p2 : " << p2 << "\n";
-	// std::cout << "5 allocated\n";
-	// for (int i = 0; i < 5; ++i) {
-	// 	allo.construct(p2 + i, i * 10);
-	// }
-	// for (int i = 0; i < 5; ++i) {
-	// 	std::cout << "arr[" << i << "] : " << *(p + i) << "\n";
-	// }
-	// for (int i = 0; i < 5; ++i) {
-	// 	std::cout << "arr[" << i << "] : " << *(p2 + i) << "\n";
-	// }
+	// if (it == itend)
+	// 	std::cout << "it == itend\n";
+	// else
+	// 	std::cout << "!(it == itend)\n";
+
+
+
+
+
+// --------------------------------------------- //
+
+
+
+	// std::cout << *it << "\n";
+	// it++;
+	// std::cout << *it << "\n";
+	// it++;
+	// std::cout << *it << "\n";
+	// it--;
+	// std::cout << *it << "\n";
+	// --it;
+	// std::cout << *it << "\n";
+	// --it;
+	// std::cout << *it << "\n";
+	// ++it;
+	// std::cout << *it++ << "\n";
+	// std::cout << *it << "\n";
 
 	return 0;
 }
