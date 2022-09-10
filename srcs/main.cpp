@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 16:04:22 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 16:36:15 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // # include "enable_if.hpp"
 // # include "is_integral.hpp"
 // # include "equal.hpp"
-// # include "lexicographical_compare.hpp"
+# include "lexicographical_compare.hpp"
 // # include "pair.hpp"
 // # include "make_pair.hpp"
 
@@ -30,6 +30,25 @@
 #define FT
 
 int main() {
+
+	// initializing char arrays
+    char one[] = "geeksforgeek";
+    char two[] = "geeksforgeeks";
+      
+    // using lexicographical_compare for checking 
+    // is "one" is less than "two"
+    if( ft::lexicographical_compare(one, one+13, two, two+13))
+    {
+        std::cout << "geeksforgeeks is lexicographically less than gfg";
+          
+    }
+    else
+    {
+        std::cout << "geeksforgeeks is not lexicographically less than gfg";
+          
+    }
+
+	return 0;
 	#ifdef FT
 		std::cout << "------ FT DEFINED ------\n";
 		ft::vector<int> ftvec;
