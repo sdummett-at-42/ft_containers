@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 16:36:15 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:29:30 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,72 +30,152 @@
 #define FT
 
 int main() {
+	#ifdef FT
+		ft::vector<int> alice;
+		ft::vector<int> bob;
+		ft::vector<int>::iterator it;
+	#endif
+	#ifdef STL
+		std::vector<int> alice;
+		std::vector<int> bob;
+		std::vector<int>::iterator it;
+	#endif
+	alice.push_back(1);
+	alice.push_back(2);
+	alice.push_back(3);
+	bob.push_back(7);
+	bob.push_back(8);
+	bob.push_back(9);
+	bob.push_back(10);
+ 
+    // Print state before swap
+    std::cout << "alice:";
+    for (it = alice.begin(); it != alice.end(); it++)
+		std::cout << *it << " ";
+    std::cout << "\n" "bob  :";
+    for (it = bob.begin(); it != bob.end(); it++)
+		std::cout << *it << " ";
+    std::cout << '\n';
+ 
+    std::cout << "-- SWAP\n";
+	#ifdef FT
+    	ft::swap(alice, bob);
+	#endif
+	#ifdef STL
+    	std::swap(alice, bob);
+	#endif
+    // Print state after swap
+    std::cout << "alice:";
+    for (it = alice.begin(); it != alice.end(); it++)
+		std::cout << *it << " ";
+    std::cout << "\n" "bob  :";
+    for (it = bob.begin(); it != bob.end(); it++)
+		std::cout << *it << " ";
+    std::cout << '\n';
 
+
+	// -------------------------------------- //
+	// ----> NON MEMBER FUNCTIONS TESTS <---- //
+
+	// #ifdef FT
+	// ft::vector<int> alice;
+	// ft::vector<int> bob;
+	// ft::vector<int> eve;
+	// #endif
+	// #ifdef STL
+	// 	std::vector<int> alice;
+	// 	std::vector<int> bob;
+	// 	std::vector<int> eve;
+	// #endif
+
+	// alice.push_back(2);
+	// alice.push_back(3);
+	// bob.push_back(7);
+	// bob.push_back(8);
+	// bob.push_back(9);
+	// bob.push_back(10);
+	// eve.push_back(1);
+	// eve.push_back(2);
+	// eve.push_back(3);
+	
+
+    // std::cout << std::boolalpha << "\n";
+ 
+    // // Compare non equal containers
+    // std::cout << "alice == bob returns " << (alice == bob) << '\n';
+    // std::cout << "alice != bob returns " << (alice != bob) << '\n';
+    // std::cout << "alice <  bob returns " << (alice < bob) << '\n';
+    // std::cout << "alice <= bob returns " << (alice <= bob) << '\n';
+    // std::cout << "alice >  bob returns " << (alice > bob) << '\n';
+    // std::cout << "alice >= bob returns " << (alice >= bob) << '\n';
+ 
+    // std::cout << '\n';
+ 
+    // // Compare equal containers
+    // std::cout << "alice == eve returns " << (alice == eve) << '\n';
+    // std::cout << "alice != eve returns " << (alice != eve) << '\n';
+    // std::cout << "alice <  eve returns " << (alice < eve) << '\n';
+    // std::cout << "alice <= eve returns " << (alice <= eve) << '\n';
+    // std::cout << "alice >  eve returns " << (alice > eve) << '\n';
+    // std::cout << "alice >= eve returns " << (alice >= eve) << '\n';
+
+	// -------------------------------------------------- //
+	// #ifdef FT
+	// 	std::cout << "------ FT DEFINED ------\n";
+	// 	ft::vector<int> ftvec;
+	// 	ft::define
+	// for (int i = 0; i < 20; i++) {
+	// 	ftvec.push_back((i + 1) * 10);
+	// }
+	// for (int i = 0; i < 20; i++) {
+	// 	std::cout << "vec init : " << ftvec[i] << "\n";
+	// }
+
+	// #ifdef FT
+	// 	ft::vector<int> ftvec2;
+	// #endif
+	// #ifdef STL
+	// 	std::vector<int> ftvec2;
+	// #endif
+
+	// for (int i = 0; i < 5; i++) {
+	// 	ftvec2.push_back((i + 1) * 500);
+	// }
+	// std::cout << "\n";
+	// for (int i = 0; i < 5; i++) {
+	// 	std::cout << "vec2 init : " << ftvec2[i] << "\n";
+	// }
+
+	// ftvec.swap(ftvec2);
+	// std::cout << "After swap.\n";
+	// for (itbegin = ftvec.begin(); itbegin != ftvec.end(); itbegin++) {
+	// 	std::cout << " - vec : " << *itbegin << "\n";
+	// }
+	// std::cout << "\n";
+	// for (itbegin = ftvec2.begin(); itbegin != ftvec2.end(); itbegin++) {
+	// 	std::cout << " - vec2 : " << *itbegin << "\n";
+	// }
+
+	// -------------------------------------------------- //
+	// -------------------------------------------------- //
 	// initializing char arrays
-    char one[] = "geeksforgeek";
-    char two[] = "geeksforgeeks";
+    // char one[] = "geeksforgeek";
+    // char two[] = "geeksforgeeks";
       
-    // using lexicographical_compare for checking 
-    // is "one" is less than "two"
-    if( ft::lexicographical_compare(one, one+13, two, two+13))
-    {
-        std::cout << "geeksforgeeks is lexicographically less than gfg";
+    // // using lexicographical_compare for checking 
+    // // is "one" is less than "two"
+    // if( ft::lexicographical_compare(one, one+13, two, two+13))
+    // {
+    //     std::cout << "geeksforgeeks is lexicographically less than gfg";
           
-    }
-    else
-    {
-        std::cout << "geeksforgeeks is not lexicographically less than gfg";
+    // }
+    // else
+    // {
+    //     std::cout << "geeksforgeeks is not lexicographically less than gfg";
           
-    }
-
-	return 0;
-	#ifdef FT
-		std::cout << "------ FT DEFINED ------\n";
-		ft::vector<int> ftvec;
-		ft::vector<int>::iterator itbegin;
-		ft::vector<int>::iterator itend;
-	#endif
-	#ifdef STL
-		std::cout << "------ STL DEFINED ------\n";
-		std::vector<int> ftvec;
-		std::vector<int>::iterator itbegin;
-		std::vector<int>::iterator itend;
-	#endif
-
-	for (int i = 0; i < 20; i++) {
-		ftvec.push_back((i + 1) * 10);
-	}
-	for (int i = 0; i < 20; i++) {
-		std::cout << "vec init : " << ftvec[i] << "\n";
-	}
-
-	#ifdef FT
-		ft::vector<int> ftvec2;
-	#endif
-	#ifdef STL
-		std::vector<int> ftvec2;
-	#endif
-
-	for (int i = 0; i < 5; i++) {
-		ftvec2.push_back((i + 1) * 500);
-	}
-	std::cout << "\n";
-	for (int i = 0; i < 5; i++) {
-		std::cout << "vec2 init : " << ftvec2[i] << "\n";
-	}
-
-	ftvec.swap(ftvec2);
-	std::cout << "After swap.\n";
-	for (itbegin = ftvec.begin(); itbegin != ftvec.end(); itbegin++) {
-		std::cout << " - vec : " << *itbegin << "\n";
-	}
-	std::cout << "\n";
-	for (itbegin = ftvec2.begin(); itbegin != ftvec2.end(); itbegin++) {
-		std::cout << " - vec2 : " << *itbegin << "\n";
-	}
-
+    // }
 	
-	
+	// -------------------------------------  //
 	// -------------------------------------- //
 	// ftvec.insert(ftvec.begin() + 2, ftvec2.begin(), ftvec2.end());
 	// std::cout << "After insert.\n";
@@ -236,7 +316,7 @@ int main() {
 
 
 
-	// if (it == itend )
+	// if (it ==itend )
 	// 	std::cout << "it == itend\n";
 	// else
 	// 	std::cout << "it != itend\n";
