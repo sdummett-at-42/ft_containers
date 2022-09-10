@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/07 15:23:22 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 12:00:05 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,42 +26,86 @@ namespace ft {
 
 			typedef Iter iterator_type;
 			typedef typename ft::iterator_traits<Iter>::iterator_category iterator_category;
-			typedef typename iterator_traits<Iter>::value_type value_type;
-			typedef typename iterator_traits<Iter>::difference_type difference_type;
-			typedef typename iterator_traits<Iter>::pointer pointer;
-			typedef typename iterator_traits<Iter>::reference reference;
+			typedef typename ft::iterator_traits<Iter>::value_type value_type;
+			typedef typename ft::iterator_traits<Iter>::difference_type difference_type;
+			typedef typename ft::iterator_traits<Iter>::pointer pointer;
+			typedef typename ft::iterator_traits<Iter>::reference reference;
 
 
 			/* ------------- Constructor ------------- */
 
 			reverse_iterator() :
-				current(0) {}
-			
-			explicit reverse_iterator (iterator_type it);
-			
-			template <class Iter>
-			reverse_iterator (const reverse_iterator<Iter>& rev_it) :
-				current(rev_it) {}
+				_current() {}
 
-			/* ------------- //////\\\\\\ ------------- */
+			explicit reverse_iterator (iterator_type it) :
+				_current(it) {}
+
+			// template <class Iter>
+			// reverse_iterator (const reverse_iterator<Iter>& iter) :
+			// 	_current(iter) {}
+
+			template< class U >
+			reverse_iterator& operator=( const reverse_iterator<U>& other );
+
 			iterator_type base() const {
-				return current;
+				return _current;
 			}
 
-			reference operator*() const;
-			reverse_iterator operator+ (difference_type n) const;
-			reverse_iterator& operator++();
-			reverse_iterator  operator++(int);
-			reverse_iterator& operator+= (difference_type n);
-			reverse_iterator operator- (difference_type n) const;
-			reverse_iterator& operator--();
-			reverse_iterator  operator--(int);
-			reverse_iterator& operator-= (difference_type n);
+
+			/* ------------- Operators ------------- */
+
+			reference operator*() const {
+				iterator_type tmp = _current;
+				return *--tmp;
+			}
+
+			reverse_iterator operator+ (difference_type n) const {
+				return reverse_iterator(_current - n);
+			}
+
+			reverse_iterator& operator++() {
+				--_current;
+				return *this;
+			}
+
+			reverse_iterator  operator++(int) {
+				reverse_iterator tmp(*this);
+				operator++();
+				return  tmp;
+			}
+
+			reverse_iterator& operator+= (difference_type n) {
+				*this = *this + n;
+				return *this;
+			}
+
+			reverse_iterator operator- (difference_type n) const {
+				return reverse_iterator(_current + n);
+			}
+
+			reverse_iterator& operator--() {
+				++_current;
+				return *this;
+			}
+
+			reverse_iterator  operator--(int) {
+				reverse_iterator tmp(*this);
+				operator--();
+				return  tmp;
+			}
+
+			reverse_iterator& operator-= (difference_type n) {
+				*this = *this - n;
+				return *this;
+			}
+
 			pointer operator->() const;
-			reference operator[] (difference_type n) const;
+			reference operator[] (difference_type n) const {
+				return *(_current - n - 1);
+			}
 
 		protected:
-			iterator_type current;
+			iterator_type _current;
 	};
 
 	template <class Iter>

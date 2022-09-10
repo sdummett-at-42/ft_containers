@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/09 20:36:40 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 11:55:35 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ namespace ft {
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef ft::random_access_iterator<value_type> iterator;
 			typedef ft::random_access_iterator<const value_type> const_iterator;
-			// typedef ft::reverse_iterator<iterator> reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; 
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; 
 			
 
 			/* ------------- Constructors ------------- */
@@ -139,10 +139,22 @@ namespace ft {
 				return iterator(_p + _size);
 			}
 
-			// reverse_iterator rbegin();
-			// const_reverse_iterator rbegin() const;
-			// reverse_iterator rend();
-			// const_reverse_iterator rend() const;
+			// Returns a reverse iterator to the first element of the reversed
+			// vector. It corresponds to the last element of the non-reversed 
+			// vector. If the vector is empty, the returned iterator is equal 
+			// to rend(). 
+			reverse_iterator rbegin() {
+				return reverse_iterator(end());
+			}
+			const_reverse_iterator rbegin() const {
+				return reverse_iterator(end());
+			}
+			reverse_iterator rend() {
+				return reverse_iterator(begin());
+			}
+			const_reverse_iterator rend() const {
+				return reverse_iterator(begin());
+			}
 
 
 			/* ------------- Capacity ------------- */
@@ -286,7 +298,7 @@ namespace ft {
 			// invalidated. Otherwise only the past-the-end iterator is 
 			// invalidated. 
 			void push_back (const value_type& val) {
-				if (_size + 1 == _capacity)
+				if (_size + 1 >= _capacity)
 					reserve(_capacity + 1);
 				_alloc.construct(_p + _size, val);
 				++_size;
