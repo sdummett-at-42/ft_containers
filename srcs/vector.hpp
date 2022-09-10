@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 14:06:08 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 16:07:27 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,20 @@ namespace ft {
 			// Constructs a container with as many elements as the range [first,
 			// last), with each element constructed from its corresponding 
 			// element in that range, in the same order.
-			// template <class InputIterator>
-			// vector (InputIterator first, InputIterator last, \
-			// 	const allocator_type& alloc = allocator_type());
+			template <class InputIterator>
+			vector (InputIterator first, InputIterator last,
+			const allocator_type& alloc = allocator_type()) :
+				_alloc(alloc),
+				_p(0),
+				_size(0),
+				_capacity(0) {
+				reserve(last - first);
+				_size = static_cast<size_type>(last - first);
+				for (size_type i = 0; i < _size; i++) {
+					_alloc.construct(_p + i, *first);
+					++first;
+				}
+			}
 
 			// Constructs a container with a copy of each of the elements in x, in the same order.
 			vector (const vector& x) :
@@ -286,8 +297,16 @@ namespace ft {
 
 			/* ------------- Modfiers ------------- */
 
-			// template <class InputIterator>
-			// void assign (InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last) {
+				clear();
+				reserve(last - first);
+				_size = static_cast<size_type>(last - first);
+				for (size_type i = 0; i < _size; i++) {
+					_alloc.construct(_p + i, *first);
+					++first;
+				}
+			}
 
 			// Replaces the contents of the container with count copies of 
 			// value value
@@ -325,7 +344,7 @@ namespace ft {
 			}
 
 			// Inserts elements at the specified location in the container
-			// -> inserts value before pos.
+			// Inserts value before pos.
 			iterator insert (iterator position, const value_type& val) {
 				iterator	it;
 				value_type	tmp_val;
@@ -353,7 +372,7 @@ namespace ft {
 			}
 
 			// Inserts elements at the specified location in the container
-			// inserts count copies of the value before pos.
+			// Inserts count copies of the value before pos.
 			void insert (iterator position, size_type n, const value_type& val) {
 				size_type i = 0;
 				for (iterator it = begin(); it != end() && it != position; it++)
@@ -372,8 +391,24 @@ namespace ft {
 				}
 			}
 
-			// template <class InputIterator>
-			// void insert (iterator position, InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last) {
+				size_type n = static_cast<size_type>(last - first);
+				size_type i = static_cast<size_type>(position - begin());
+				if (_size + n > _capacity)
+					reserve(_capacity + n);
+				_size += n;
+				for (size_type j = _size; j - n > i; j--) {
+					_alloc.construct(_p + j - 1, *(_p + j - n - 1));
+					_alloc.destroy(_p + j - n -1);
+				}
+				while (n != 0) {
+					_alloc.construct(_p + i, *first);
+					++first;
+					++i;
+					--n;
+				}
+			}
 
 			// Removes the element at pos.
 			iterator erase (iterator position){
@@ -418,7 +453,27 @@ namespace ft {
 				return ret;
 			}
 
-			void swap (vector& x);
+			// Exchanges the contents of the container with those of other. 
+			// Does not invoke any move, copy, or swap operations on individual 
+			// elements.
+			// All iterators and references remain valid. The past-the-end 
+			// iterator is invalidated. 
+			void swap (vector& x) {
+				allocator_type	tmp_alloc = _alloc;
+				pointer			tmp_p = _p;
+				size_type		tmp_size = _size;
+				size_type		tmp_capacity = _capacity;
+
+				_alloc = x._alloc;
+				_p = x._p;
+				_size = x._size;
+				_capacity = x._capacity;
+
+				x._alloc = tmp_alloc;
+				x._p = tmp_p;
+				x._size = tmp_size;
+				x._capacity = tmp_capacity;
+			}
 			
 			// Erases all elements from the container. After this call, size()
 			// returns zero. 

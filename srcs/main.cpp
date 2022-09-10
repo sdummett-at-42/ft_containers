@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 14:03:43 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 16:04:22 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,90 @@ int main() {
 		std::vector<int>::iterator itend;
 	#endif
 
-
 	for (int i = 0; i < 20; i++) {
 		ftvec.push_back((i + 1) * 10);
 	}
-	int *p = ftvec.data();
-
-	for (size_t i = 0; i < ftvec.size(); i++) {
-		std::cout << "p : " << *(p + i) << "\n";
+	for (int i = 0; i < 20; i++) {
+		std::cout << "vec init : " << ftvec[i] << "\n";
 	}
 
-	ftvec.insert(ftvec.end() - 6, 2, 1337);
-	std::cout << "After insert.\n";
+	#ifdef FT
+		ft::vector<int> ftvec2;
+	#endif
+	#ifdef STL
+		std::vector<int> ftvec2;
+	#endif
 
-	p = ftvec.data();
-	for (size_t i = 0; i < ftvec.size(); i++) {
-		std::cout << "p : " << *(p + i) << "\n";
+	for (int i = 0; i < 5; i++) {
+		ftvec2.push_back((i + 1) * 500);
 	}
+	std::cout << "\n";
+	for (int i = 0; i < 5; i++) {
+		std::cout << "vec2 init : " << ftvec2[i] << "\n";
+	}
+
+	ftvec.swap(ftvec2);
+	std::cout << "After swap.\n";
+	for (itbegin = ftvec.begin(); itbegin != ftvec.end(); itbegin++) {
+		std::cout << " - vec : " << *itbegin << "\n";
+	}
+	std::cout << "\n";
+	for (itbegin = ftvec2.begin(); itbegin != ftvec2.end(); itbegin++) {
+		std::cout << " - vec2 : " << *itbegin << "\n";
+	}
+
+	
+	
+	// -------------------------------------- //
+	// ftvec.insert(ftvec.begin() + 2, ftvec2.begin(), ftvec2.end());
+	// std::cout << "After insert.\n";
+	
+	// for (itbegin = ftvec.begin(); itbegin != ftvec.end(); itbegin++) {
+	// 	std::cout << "- vec : " << *itbegin << "\n";
+	// }
+	// ------------------------------------- //
+
+	// for (int i = 0; i < 20; i++) {
+	// 	ftvec.push_back((i + 1) * 10);
+	// }
+
+	// itbegin = ftvec.begin();
+	// itend = ftvec.end();
+	// int *p = ftvec.data();
+
+	// for (size_t i = 0; i < ftvec.size(); i++) {
+	// 	std::cout << "p : " << *(p + i) << "\n";
+	// }
+
+	// #ifdef FT
+	// 	ft::vector<int> ftvec2(itbegin, itbegin + 1);
+	// #endif
+	// #ifdef STL
+	// 	std::vector<int> ftvec2(itbegin, itbegin + 1);
+	// #endif
+
+	// std::cout << "After calling templated constructor\n";
+	// p = ftvec2.data();
+	// for (size_t i = 0; i < ftvec2.size(); i++) {
+	// 	std::cout << "p vec2 : " << *(p + i) << "\n";
+	// }
+	// std::cout << "size : " << ftvec2.size() << " | capacity : " << ftvec2.capacity() << "\n";
+
+	// ftvec.clear();
+	// for (int i = 0; i < 5; i++) {
+	// 	ftvec.push_back(i * 20);
+	// }
+	// for (int i = 0; i < 5; i++) {
+	// 	std::cout << "vec : " << ftvec[i] << "\n";
+	// }
+
+	// ftvec2.assign(ftvec.begin(), ftvec.end());
+	// std::cout << "after iterator assign\n";
+
+	// for (itbegin = ftvec2.begin(); itbegin < ftvec2.end(); itbegin++) {
+	// 	std::cout << "- vec 2 : " << *itbegin << "\n";
+	// }
+	 
 
 	// ------------------------------------------ //
 
