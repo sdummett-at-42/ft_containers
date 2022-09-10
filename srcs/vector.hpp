@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 11:55:35 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:06:08 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,17 @@ namespace ft {
 
 			// template <class InputIterator>
 			// void assign (InputIterator first, InputIterator last);
-			void assign (size_type n, const value_type& val);
+
+			// Replaces the contents of the container with count copies of 
+			// value value
+			void assign (size_type n, const value_type& val) {
+				reserve(n);
+				for (size_type i = 0; i < n; i++) {
+					_alloc.destroy(_p + i);
+					_alloc.construct(_p + i, val);
+				}
+				_size = n;
+			}
 
 			// Appends the given element value to the end of the container.
 			// 1) The new element is initialized as a copy of value.
@@ -314,8 +324,54 @@ namespace ft {
 				--_size;
 			}
 
-			// iterator insert (iterator position, const value_type& val);
-			// void insert (iterator position, size_type n, const value_type& val);
+			// Inserts elements at the specified location in the container
+			// -> inserts value before pos.
+			iterator insert (iterator position, const value_type& val) {
+				iterator	it;
+				value_type	tmp_val;
+				value_type	to_move;
+				size_type	i = 0;
+
+				for (it = begin(); it != end() && it != position; it++)
+					++i;
+				if (_size + 1 > _capacity)
+					reserve(_capacity + 1);
+				++_size;
+				tmp_val = *(_p + i);
+				_alloc.destroy(_p + i);
+				_alloc.construct(_p + i, val);
+				it = begin() + i;
+				++i;
+				while (i != _size) {
+					to_move = tmp_val;
+					tmp_val = *(_p + i);
+					_alloc.destroy(_p + i);
+					_alloc.construct(_p + i, to_move);
+					++i;
+				}
+				return it;
+			}
+
+			// Inserts elements at the specified location in the container
+			// inserts count copies of the value before pos.
+			void insert (iterator position, size_type n, const value_type& val) {
+				size_type i = 0;
+				for (iterator it = begin(); it != end() && it != position; it++)
+					++i;
+				if (_size + n > _capacity)
+					reserve(_capacity + n);
+				_size += n;
+				for (size_type j = _size; j - n > i; j--) {
+					_alloc.construct(_p + j - 1, *(_p + j - n - 1));
+					_alloc.destroy(_p + j - n -1);
+				}
+				while (n != 0) {
+					_alloc.construct(_p + i, val);
+					++i;
+					--n;
+				}
+			}
+
 			// template <class InputIterator>
 			// void insert (iterator position, InputIterator first, InputIterator last);
 

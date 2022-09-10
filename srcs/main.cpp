@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 11:50:05 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:03:43 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,51 +33,92 @@ int main() {
 	#ifdef FT
 		std::cout << "------ FT DEFINED ------\n";
 		ft::vector<int> ftvec;
-		ft::vector<int>::reverse_iterator itbegin;
-		ft::vector<int>::reverse_iterator itend;
+		ft::vector<int>::iterator itbegin;
+		ft::vector<int>::iterator itend;
 	#endif
 	#ifdef STL
 		std::cout << "------ STL DEFINED ------\n";
 		std::vector<int> ftvec;
-		std::vector<int>::reverse_iterator itbegin;
-		std::vector<int>::reverse_iterator itend;
+		std::vector<int>::iterator itbegin;
+		std::vector<int>::iterator itend;
 	#endif
 
-	ftvec.push_back(10);
-	ftvec.push_back(20);
-	ftvec.push_back(30);
-	ftvec.push_back(40);
-	ftvec.push_back(50);
 
-	itbegin = ftvec.rbegin();
-	itend = ftvec.rend();
-	// Be careful reading itend will cause invalid read
-	std::cout << "itbegin     : " << *itbegin << "\n";// " | itend : " << *itend << "\n" ; 
-
-	std::cout << "itbegin + 1 : " << *(itbegin + 1) << "\n";
-	std::cout << "itend   - 2 : " << *(itend - 2) << "\n";
-	std::cout << "++itbegin   : " << *(++itbegin) << "\n";
-	std::cout << "--itbegin   : " << *(--itbegin) << "\n";
-	std::cout << "itbegin++   : " << *(itbegin++) << "\n";
-	std::cout << "itbegin aft : " << *itbegin << "\n";
-	std::cout << "itbegin--   : " << *(itbegin--) << "\n";
-	std::cout << "itbegin aft : " << *itbegin << "\n";
-	itbegin += 3;
-	std::cout << "itbegin += 3: " << *itbegin << "\n";
-	itbegin -= 1;
-	std::cout << "itbegin -= 1: " << *itbegin << "\n";
-	std::cout << "itbegin[0]  : " << itbegin[0] << "\n";
-	std::cout << "itbegin[1]  : " << itbegin[1] << "\n";
-	std::cout << "itbegin[2]  : " << itbegin[2] << "\n";
+	for (int i = 0; i < 20; i++) {
+		ftvec.push_back((i + 1) * 10);
+	}
 	int *p = ftvec.data();
 
 	for (size_t i = 0; i < ftvec.size(); i++) {
 		std::cout << "p : " << *(p + i) << "\n";
 	}
 
-	ft::vector<int>::iterator it = itbegin.base();
-	std::cout << "base it dereferenced : " << *it << "\n";
+	ftvec.insert(ftvec.end() - 6, 2, 1337);
+	std::cout << "After insert.\n";
 
+	p = ftvec.data();
+	for (size_t i = 0; i < ftvec.size(); i++) {
+		std::cout << "p : " << *(p + i) << "\n";
+	}
+
+	// ------------------------------------------ //
+
+	// for (int i = 0; i < 20; i++) {
+	// 	ftvec.push_back((i + 1) * 10);
+	// }
+	// int *p = ftvec.data();
+
+	// for (size_t i = 0; i < ftvec.size(); i++) {
+	// 	std::cout << "p : " << *(p + i) << "\n";
+	// }
+	// itbegin = ftvec.end();
+	// itend = ftvec.insert(itbegin, 1337);
+	// std::cout << "itend : " << *itend << "\n";
+	// p = ftvec.data();
+	// std::cout << "After insert.\n";
+	// for (size_t i = 0; i < ftvec.size(); i++) {
+	// 	std::cout << "p : " << *(p + i) << "\n";
+	// }
+
+	// ---------------------------------------- //
+
+	// ftvec.assign(10, 1337);
+	// std::cout << "assign done.\n";
+	// p = ftvec.data();
+	// for (size_t i = 0; i < ftvec.size(); i++) {
+	// 	std::cout << "p : " << *(p + i) << "\n";
+	// }
+
+	// --------------------------------------------------------- //
+	// itbegin = ftvec.rbegin();
+	// itend = ftvec.rend();
+	// // Be careful reading itend will cause invalid read
+	// std::cout << "itbegin     : " << *itbegin << "\n";// " | itend : " << *itend << "\n" ; 
+
+	// std::cout << "itbegin + 1 : " << *(itbegin + 1) << "\n";
+	// std::cout << "itend   - 2 : " << *(itend - 2) << "\n";
+	// std::cout << "++itbegin   : " << *(++itbegin) << "\n";
+	// std::cout << "--itbegin   : " << *(--itbegin) << "\n";
+	// std::cout << "itbegin++   : " << *(itbegin++) << "\n";
+	// std::cout << "itbegin aft : " << *itbegin << "\n";
+	// std::cout << "itbegin--   : " << *(itbegin--) << "\n";
+	// std::cout << "itbegin aft : " << *itbegin << "\n";
+	// itbegin += 3;
+	// std::cout << "itbegin += 3: " << *itbegin << "\n";
+	// itbegin -= 1;
+	// std::cout << "itbegin -= 1: " << *itbegin << "\n";
+	// std::cout << "itbegin[0]  : " << itbegin[0] << "\n";
+	// std::cout << "itbegin[1]  : " << itbegin[1] << "\n";
+	// std::cout << "itbegin[2]  : " << itbegin[2] << "\n";
+	// int *p = ftvec.data();
+
+	// for (size_t i = 0; i < ftvec.size(); i++) {
+	// 	std::cout << "p : " << *(p + i) << "\n";
+	// }
+
+	// ft::vector<int>::iterator it = itbegin.base();
+	// std::cout << "base it dereferenced : " << *it << "\n";
+	// -------------------------------------------------- //
 	// ------------------------------- //
 	// ftvec.pop_back();
 	// ftvec.pop_back();
