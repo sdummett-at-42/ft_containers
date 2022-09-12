@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 13:01:15 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:00:40 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -537,10 +537,10 @@ namespace ft {
 			}
 
 		private:
-			/* _alloc : for memory management, by default it is 		
+			/* _alloc    : for memory management, by default it is
 			** std::allocator<T> .
-			** _p : the pointer holding the data
-			** _size : the actual number of elements stored.
+			** _p        : the pointer holding the data
+			** _size     : the actual number of elements stored.
 			** _capacity : the number of elements that can be stored.
 			*/
 			allocator_type	_alloc;
@@ -565,7 +565,7 @@ namespace ft {
 	** element in rhs at the same position.
 	*/
 	template <class T, class Alloc>
-	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		if (lhs.size() != rhs.size())
 			return false;
 		const T* pointer_lhs = lhs.data();
@@ -578,7 +578,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		return !(lhs == rhs);
 	}
 
@@ -587,7 +587,7 @@ namespace ft {
 	** is performed by a function equivalent to std::lexicographical_compare.
 	*/
 	template <class T, class Alloc>
-	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		const T* pointer_lhs_begin = lhs.data();
 		const T* pointer_lhs_end = lhs.data() + lhs.size();
 		const T* pointer_rhs_begin = rhs.data();
@@ -598,17 +598,17 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		return (lhs < rhs || lhs == rhs);
 	}
 
 	template <class T, class Alloc>
-	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
-		return (!(lhs < rhs));
+	bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
+		return !(lhs < rhs);
 	}
 
 	template <class T, class Alloc>
-	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		return (lhs > rhs || lhs == rhs);
 	}
 
@@ -616,7 +616,7 @@ namespace ft {
 	** invoke any move, copy, or swap operations on individual elements. 
 	*/
 	template <class T, class Alloc>
-	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
+	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) {
 		x.swap(y);
 	}
 }

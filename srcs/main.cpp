@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 12:59:58 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 16:36:25 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # include "vector.hpp"
 // # include "map.hpp"
-// # include "stack.hpp"
+# include "stack.hpp"
 // # include "iterator_traits.hpp"
 // # include "reverse_iterator.hpp"
 // # include "enable_if.hpp"
@@ -26,31 +26,86 @@
 
 #include <vector>
 #include <string>
+#include <stack>
 
 #define FT
 
 int main() {
 	#ifdef FT
 		std::cout << "=== FT DEFINED ===\n";
-		ft::vector<int> alice;
-		ft::vector<int> bob;
-		ft::vector<int>::iterator it;
+		ft::stack<int> alice;
+		ft::stack<int> bob;
+		ft::vector<int> stone;
+		ft::vector<int> cha;
+		// ft::stack<int>::iterator it;
 	#endif
 	#ifdef STL
 		std::cout << "=== STL DEFINED ===\n";
-		std::vector<int> alice;
-		std::vector<int> bob;
-		std::vector<int>::iterator it;
+		std::stack<int> alice;
+		std::stack<int> bob;
+		std::vector<int> stone;
+		std::vector<int> cha;
+		// std::stack<int>::iterator it;
 	#endif
 
-	for (int i = 0; i < 127; i++) {
-		alice.push_back(i);
+	alice.top();
+	for (int i = 0; i < 10; i++) {
+		alice.push((i + 1) * 10);
 	}
-	std::cout << "alice size           : " << alice.size() << "\n";
-	std::cout << "1 - alice.capacity() : " << alice.capacity() << "\n";
-	// std::cout << "1 - bob.capacity()   : " << bob.capacity() << "\n";
-	alice.reserve(alice.max_size() + 1);
-	std::cout << "2 - alice.capacity() : " << alice.capacity() << "\n";
+	if (alice.empty())
+		std::cout << "alice is empty\n";
+
+
+	if (alice.empty())
+		std::cout << "alice is empty\n";
+
+	for (int i = 0; i < static_cast<int>(bob.size()); i++) {
+		std::cout << "bob  :" << bob.top() << "\n";
+		// bob.pop();
+	}
+
+	bob = alice;
+
+
+	if (bob == alice)
+		std::cout << "bob is equal to alice\n";
+	if (bob != alice)
+		std::cout << "bob != alice\n";
+	if (bob < alice)
+		std::cout << "bob < alice\n";
+	if (bob > alice)
+		std::cout << "bob > alice\n";
+	if (bob <= alice)
+		std::cout << "bob <= alice\n";
+	if (bob >= alice)
+		std::cout << "bob >= alice\n";
+	
+	for (int i = 0; i < 10; i++) {
+		stone.push_back((i + 1) * 10 );
+	}
+	cha = stone;
+		if (cha == stone)
+		std::cout << "cha is equal to stone\n";
+	if (cha != stone)
+		std::cout << "cha != stone\n";
+	if (cha < stone)
+		std::cout << "cha < stone\n";
+	if (cha > stone)
+		std::cout << "cha > stone\n";
+	if (cha <= stone)
+		std::cout << "cha <= stone\n";
+	if (cha >= stone)
+		std::cout << "cha >= stone\n";
+	// ------------------------------------------- //
+
+	// for (int i = 0; i < 127; i++) {
+	// 	alice.push_back(i);
+	// }
+	// std::cout << "alice size           : " << alice.size() << "\n";
+	// std::cout << "1 - alice.capacity() : " << alice.capacity() << "\n";
+	// // std::cout << "1 - bob.capacity()   : " << bob.capacity() << "\n";
+	// alice.reserve(alice.max_size() + 1);
+	// std::cout << "2 - alice.capacity() : " << alice.capacity() << "\n";
 
 	// std::cout << "\n";
 	// alice = bob;
