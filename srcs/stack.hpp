@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 17:00:02 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:30:11 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft {
 
 	template <class T, class Container>
 	bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return !(lhs._cont < rhs._cont);
+		return lhs._cont > rhs._cont;
 	}
 
 	template <class T, class Container>

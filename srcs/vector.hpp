@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 17:00:40 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:28:03 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -591,7 +591,7 @@ namespace ft {
 		const T* pointer_lhs_begin = lhs.data();
 		const T* pointer_lhs_end = lhs.data() + lhs.size();
 		const T* pointer_rhs_begin = rhs.data();
-		const T* pointer_rhs_end = rhs.data() + lhs.size();
+		const T* pointer_rhs_end = rhs.data() + rhs.size();
 		if (ft::lexicographical_compare(pointer_lhs_begin, pointer_lhs_end, pointer_rhs_begin, pointer_rhs_end))
 			return true;
 		return false;
@@ -604,7 +604,7 @@ namespace ft {
 
 	template <class T, class Alloc>
 	bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
-		return !(lhs < rhs);
+		return !(lhs < rhs) && !(lhs == rhs);
 	}
 
 	template <class T, class Alloc>
