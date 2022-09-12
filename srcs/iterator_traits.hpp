@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/05 15:15:07 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 13:57:31 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 #include <iterator>
 
+/* iterator_traits is the type trait class that provides uniform interface 
+** to the properties of LegacyIterator types. This makes it possible to 
+** implement algorithms only in terms of iterators.
+**
+** The template can be specialized for user-defined iterators so that the 
+** information about the iterator can be retrieved even if the type does not 
+** provide the usual typedefs. 
+*/
 namespace ft {
 
 	template< class Iterator>

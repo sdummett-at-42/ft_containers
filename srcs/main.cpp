@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 12:54:04 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 12:59:58 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int main() {
 	std::cout << "alice size           : " << alice.size() << "\n";
 	std::cout << "1 - alice.capacity() : " << alice.capacity() << "\n";
 	// std::cout << "1 - bob.capacity()   : " << bob.capacity() << "\n";
-	alice.reserve(255);
+	alice.reserve(alice.max_size() + 1);
 	std::cout << "2 - alice.capacity() : " << alice.capacity() << "\n";
 
 	// std::cout << "\n";

@@ -6,17 +6,14 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 12:55:57 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 13:01:15 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <exception>
-#include <stdexcept>
-#include <string>
-#include <sstream>
+#include <sstream>						// Required for std::stringstream
 #include <memory>						// Required for std::allocator<T>
 #include <cstddef>						// Required for std::ptrdiff_t
 #include "random_access_iterator.hpp"	// Required for iterators

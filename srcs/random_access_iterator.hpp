@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:44:05 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/09 17:45:25 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 14:03:24 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 namespace ft {
 
-	// -------> https://cplusplus.com/reference/iterator/RandomAccessIterator/
+	/* https://cplusplus.com/reference/iterator/RandomAccessIterator/
+	*/
 	template< class Iter > 
 	class random_access_iterator {
 		
