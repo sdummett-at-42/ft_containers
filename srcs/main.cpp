@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:08:35 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/10 17:29:30 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/12 12:54:04 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,47 +31,66 @@
 
 int main() {
 	#ifdef FT
+		std::cout << "=== FT DEFINED ===\n";
 		ft::vector<int> alice;
 		ft::vector<int> bob;
 		ft::vector<int>::iterator it;
 	#endif
 	#ifdef STL
+		std::cout << "=== STL DEFINED ===\n";
 		std::vector<int> alice;
 		std::vector<int> bob;
 		std::vector<int>::iterator it;
 	#endif
-	alice.push_back(1);
-	alice.push_back(2);
-	alice.push_back(3);
-	bob.push_back(7);
-	bob.push_back(8);
-	bob.push_back(9);
-	bob.push_back(10);
+
+	for (int i = 0; i < 127; i++) {
+		alice.push_back(i);
+	}
+	std::cout << "alice size           : " << alice.size() << "\n";
+	std::cout << "1 - alice.capacity() : " << alice.capacity() << "\n";
+	// std::cout << "1 - bob.capacity()   : " << bob.capacity() << "\n";
+	alice.reserve(255);
+	std::cout << "2 - alice.capacity() : " << alice.capacity() << "\n";
+
+	// std::cout << "\n";
+	// alice = bob;
+	// std::cout << "--- alice = bob ---\n";
+	// std::cout << "2 - alice.capacity() : " << alice.capacity() << "\n";
+	// std::cout << "3 - bob.capacity()   : " << bob.capacity() << "\n";
+
+	// --------------------------------------- //
+	// alice.push_back(1);
+	// alice.push_back(2);
+	// alice.push_back(3);
+	// bob.push_back(7);
+	// bob.push_back(8);
+	// bob.push_back(9);
+	// bob.push_back(10);
  
-    // Print state before swap
-    std::cout << "alice:";
-    for (it = alice.begin(); it != alice.end(); it++)
-		std::cout << *it << " ";
-    std::cout << "\n" "bob  :";
-    for (it = bob.begin(); it != bob.end(); it++)
-		std::cout << *it << " ";
-    std::cout << '\n';
+    // // Print state before swap
+    // std::cout << "alice:";
+    // for (it = alice.begin(); it != alice.end(); it++)
+	// 	std::cout << *it << " ";
+    // std::cout << "\n" "bob  :";
+    // for (it = bob.begin(); it != bob.end(); it++)
+	// 	std::cout << *it << " ";
+    // std::cout << '\n';
  
-    std::cout << "-- SWAP\n";
-	#ifdef FT
-    	ft::swap(alice, bob);
-	#endif
-	#ifdef STL
-    	std::swap(alice, bob);
-	#endif
-    // Print state after swap
-    std::cout << "alice:";
-    for (it = alice.begin(); it != alice.end(); it++)
-		std::cout << *it << " ";
-    std::cout << "\n" "bob  :";
-    for (it = bob.begin(); it != bob.end(); it++)
-		std::cout << *it << " ";
-    std::cout << '\n';
+    // std::cout << "-- SWAP\n";
+	// #ifdef FT
+    // 	ft::swap(alice, bob);
+	// #endif
+	// #ifdef STL
+    // 	std::swap(alice, bob);
+	// #endif
+    // // Print state after swap
+    // std::cout << "alice:";
+    // for (it = alice.begin(); it != alice.end(); it++)
+	// 	std::cout << *it << " ";
+    // std::cout << "\n" "bob  :";
+    // for (it = bob.begin(); it != bob.end(); it++)
+	// 	std::cout << *it << " ";
+    // std::cout << '\n';
 
 
 	// -------------------------------------- //
