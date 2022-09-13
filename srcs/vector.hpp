@@ -82,8 +82,9 @@ namespace ft {
 				_p(0),
 				_size(0),
 				_capacity(0) {
-				reserve(last - first);
-				_size = static_cast<size_type>(last - first);
+				size_type n = get_iterators_diff(first, last);
+				reserve(n);
+				_size = n;
 				for (size_type i = 0; i < _size; i++) {
 					_alloc.construct(_p + i, *first);
 					++first;
@@ -136,10 +137,10 @@ namespace ft {
 			** end(). 
 			*/
 			iterator begin() {
-				return iterator(_p);
+				return static_cast<iterator>(_p);
 			}
 			const_iterator begin() const {
-				return const_iterator(_p);
+				return static_cast<const_iterator>(_p);
 			}
 
 			/* Returns an iterator to the element following the last element //
@@ -148,10 +149,10 @@ namespace ft {
 			** results in undefined behavior. 
 			*/
 			iterator end() {
-				return iterator(_p + _size);
+				return static_cast<iterator>(_p + _size);
 			}
 			const_iterator end() const {
-				return const_iterator(_p + _size);
+				return static_cast<const_iterator>(_p + _size);
 			}
 
 			/* Returns a reverse iterator to the first element of the reversed
@@ -160,16 +161,16 @@ namespace ft {
 			** to rend(). 
 			*/
 			reverse_iterator rbegin() {
-				return reverse_iterator(end());
+				return static_cast<reverse_iterator>(end());
 			}
 			const_reverse_iterator rbegin() const {
-				return reverse_iterator(end());
+				return static_cast<const_reverse_iterator>(end());
 			}
 			reverse_iterator rend() {
-				return reverse_iterator(begin());
+				return static_cast<reverse_iterator>(begin());
 			}
 			const_reverse_iterator rend() const {
-				return reverse_iterator(begin());
+				return static_cast<const_reverse_iterator>(begin());
 			}
 
 
@@ -335,9 +336,10 @@ namespace ft {
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator >::type* = NULL) {
+				size_type n = get_iterators_diff(first, last);
 				clear();
-				reserve(last - first);
-				_size = static_cast<size_type>(last - first);
+				reserve(n);
+				_size = n;
 				for (size_type i = 0; i < _size; i++) {
 					_alloc.construct(_p + i, *first);
 					++first;
@@ -437,7 +439,7 @@ namespace ft {
 			template <class InputIterator>
 			void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator >::type* = NULL) {
-				size_type n = static_cast<size_type>(last - first);
+				size_type n = get_iterators_diff(first, last);
 				size_type i = static_cast<size_type>(position - begin());
 				if (_size + n > _capacity)
 					reserve(_capacity + n);
@@ -558,6 +560,17 @@ namespace ft {
 				std::stringstream ss;
 				ss << i;
 				return ss.str();
+			}
+			/* Get the difference between two iterators.
+			*/
+			template <class InputIterator>
+			size_type get_iterators_diff(InputIterator first, InputIterator last) {
+				size_type n = 0;
+				while (first != last) {
+					++first;
+					++n;
+				}
+				return n;
 			}
 	};
 

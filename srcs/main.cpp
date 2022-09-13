@@ -32,7 +32,17 @@
 
 int main() {
 
-	std::cout << ft::is_integral< char >::value << "\n";
+	ft::vector<int> vec;
+
+	for (int i = 0; i < 10; i++) {
+		vec.push_back((i + 1) * 10);
+		std::cout << vec[i] << "\n";
+	}
+
+	ft::vector<int>::const_iterator cit = vec.begin();
+	std::cout << "const_iterator : " << *cit << "\n";
+	cit.base();
+	// std::cout << ft::is_integral< char >::value << "\n";
 
 	// #ifdef FT
 	// 	std::cout << "=== FT DEFINED ===\n";

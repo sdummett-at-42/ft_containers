@@ -38,9 +38,9 @@ namespace ft {
 		random_access_iterator() :
 			_p(0) {}
 
-		random_access_iterator(const random_access_iterator& x) {
-			*this = x;
-		}
+		template <typename T>
+		random_access_iterator (const ft::random_access_iterator<T>& it) :
+			_p(it.base()) {}
 
 		random_access_iterator(pointer p) :
 			_p(p) {}
@@ -55,6 +55,13 @@ namespace ft {
 
 		/* ------------- Destructor ------------- */
 		virtual ~random_access_iterator() {}
+
+
+		/* Returns the underlying pointer
+		*/
+		iterator_type* base() const {
+			return _p;
+		}
 
 
 		/* ------------- Operators ------------- */
@@ -145,7 +152,7 @@ namespace ft {
 		}
 
 		protected:
-			pointer _p;
+			iterator_type* _p;
 	};
 }
 

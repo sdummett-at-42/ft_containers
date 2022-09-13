@@ -99,7 +99,9 @@ namespace ft {
 				return *this;
 			}
 
+			// Notes : member function below isn't implemented yet
 			pointer operator->() const;
+
 			reference operator[] (difference_type n) const {
 				return *(_current - n - 1);
 			}
@@ -145,16 +147,15 @@ namespace ft {
 	}
 
 	template <class Iter>
-		reverse_iterator<Iter> operator+ (typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& rev_it) {
-			(void)n;
-			(void)rev_it;
-		}
+	reverse_iterator<Iter> operator+ (typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& rev_it) {
+		(void)n;
+		(void)rev_it;
+	}
 
 	template <class Iter>
-		typename reverse_iterator<Iter>::difference_type operator- (const reverse_iterator<Iter>& lhs, const reverse_iterator<Iter>& rhs) {
-			(void)lhs;
-			(void)rhs;
-		}
+	typename reverse_iterator<Iter>::difference_type operator- (const reverse_iterator<Iter>& lhs, const reverse_iterator<Iter>& rhs) {
+		return rhs._current - lhs._current;
+	}
 }
 
 #endif
