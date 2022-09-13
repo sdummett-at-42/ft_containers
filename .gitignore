@@ -31,3 +31,6 @@
 *.out
 *.app
 ft_containers
+
+# Directories
+containers_test/

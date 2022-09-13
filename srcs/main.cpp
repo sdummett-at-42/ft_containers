@@ -17,8 +17,8 @@
 # include "stack.hpp"
 // # include "iterator_traits.hpp"
 // # include "reverse_iterator.hpp"
-// # include "enable_if.hpp"
-// # include "is_integral.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 // # include "equal.hpp"
 # include "lexicographical_compare.hpp"
 // # include "pair.hpp"
@@ -31,71 +31,74 @@
 #define FT
 
 int main() {
-	#ifdef FT
-		std::cout << "=== FT DEFINED ===\n";
-		ft::stack<int> alice;
-		ft::stack<int> bob;
-		ft::vector<int> stone;
-		ft::vector<int> cha;
-		// ft::stack<int>::iterator it;
-	#endif
-	#ifdef STL
-		std::cout << "=== STL DEFINED ===\n";
-		std::stack<int> alice;
-		std::stack<int> bob;
-		std::vector<int> stone;
-		std::vector<int> cha;
-		// std::stack<int>::iterator it;
-	#endif
 
-	alice.top();
-	for (int i = 0; i < 10; i++) {
-		alice.push((i + 1) * 10);
-	}
-	if (alice.empty())
-		std::cout << "alice is empty\n";
+	std::cout << ft::is_integral< char >::value << "\n";
 
+	// #ifdef FT
+	// 	std::cout << "=== FT DEFINED ===\n";
+	// 	ft::stack<int> alice;
+	// 	ft::stack<int> bob;
+	// 	ft::vector<int> stone;
+	// 	ft::vector<int> cha;
+	// 	// ft::stack<int>::iterator it;
+	// #endif
+	// #ifdef STL
+	// 	std::cout << "=== STL DEFINED ===\n";
+	// 	std::stack<int> alice;
+	// 	std::stack<int> bob;
+	// 	std::vector<int> stone;
+	// 	std::vector<int> cha;
+	// 	// std::stack<int>::iterator it;
+	// #endif
 
-	if (alice.empty())
-		std::cout << "alice is empty\n";
-
-	for (int i = 0; i < static_cast<int>(bob.size()); i++) {
-		std::cout << "bob  :" << bob.top() << "\n";
-		// bob.pop();
-	}
-
-	bob = alice;
+	// alice.top();
+	// for (int i = 0; i < 10; i++) {
+	// 	alice.push((i + 1) * 10);
+	// }
+	// if (alice.empty())
+	// 	std::cout << "alice is empty\n";
 
 
-	if (bob == alice)
-		std::cout << "bob is equal to alice\n";
-	if (bob != alice)
-		std::cout << "bob != alice\n";
-	if (bob < alice)
-		std::cout << "bob < alice\n";
-	if (bob > alice)
-		std::cout << "bob > alice\n";
-	if (bob <= alice)
-		std::cout << "bob <= alice\n";
-	if (bob >= alice)
-		std::cout << "bob >= alice\n";
+	// if (alice.empty())
+	// 	std::cout << "alice is empty\n";
+
+	// for (int i = 0; i < static_cast<int>(bob.size()); i++) {
+	// 	std::cout << "bob  :" << bob.top() << "\n";
+	// 	// bob.pop();
+	// }
+
+	// bob = alice;
+
+
+	// if (bob == alice)
+	// 	std::cout << "bob is equal to alice\n";
+	// if (bob != alice)
+	// 	std::cout << "bob != alice\n";
+	// if (bob < alice)
+	// 	std::cout << "bob < alice\n";
+	// if (bob > alice)
+	// 	std::cout << "bob > alice\n";
+	// if (bob <= alice)
+	// 	std::cout << "bob <= alice\n";
+	// if (bob >= alice)
+	// 	std::cout << "bob >= alice\n";
 	
-	for (int i = 0; i < 10; i++) {
-		stone.push_back((i + 1) * 10 );
-	}
-	cha = stone;
-		if (cha == stone)
-		std::cout << "cha is equal to stone\n";
-	if (cha != stone)
-		std::cout << "cha != stone\n";
-	if (cha < stone)
-		std::cout << "cha < stone\n";
-	if (cha > stone)
-		std::cout << "cha > stone\n";
-	if (cha <= stone)
-		std::cout << "cha <= stone\n";
-	if (cha >= stone)
-		std::cout << "cha >= stone\n";
+	// for (int i = 0; i < 10; i++) {
+	// 	stone.push_back((i + 1) * 10 );
+	// }
+	// cha = stone;
+	// 	if (cha == stone)
+	// 	std::cout << "cha is equal to stone\n";
+	// if (cha != stone)
+	// 	std::cout << "cha != stone\n";
+	// if (cha < stone)
+	// 	std::cout << "cha < stone\n";
+	// if (cha > stone)
+	// 	std::cout << "cha > stone\n";
+	// if (cha <= stone)
+	// 	std::cout << "cha <= stone\n";
+	// if (cha >= stone)
+	// 	std::cout << "cha >= stone\n";
 	// ------------------------------------------- //
 
 	// for (int i = 0; i < 127; i++) {
