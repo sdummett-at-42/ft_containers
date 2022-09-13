@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/07/05 15:17:57 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:42:54 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 
 namespace ft {
 
-	template <bool Cond, class T = void>
-	struct enable_if {
-
+	template<bool B, class T = void>
+	struct enable_if {};
+ 
+	template<class T>
+	struct enable_if<true, T> {
+		typedef T type;
 	};
 }
 
