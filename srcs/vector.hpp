@@ -19,6 +19,8 @@
 #include "random_access_iterator.hpp"	// Required for iterators
 #include "reverse_iterator.hpp"			// Required for iterators
 #include "lexicographical_compare.hpp"	// Required for non-member functions
+#include "enable_if.hpp"				// Required for ft::enable_if
+#include "is_integral.hpp"				// Required for ft::is_integral
 
 namespace ft {
 
@@ -74,7 +76,8 @@ namespace ft {
 			*/
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
-			const allocator_type& alloc = allocator_type()) :
+			const allocator_type& alloc = allocator_type(),
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator >::type* = NULL) :
 				_alloc(alloc),
 				_p(0),
 				_size(0),
@@ -330,7 +333,8 @@ namespace ft {
 			** iterator into *this.
 			*/
 			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last) {
+			void assign (InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator >::type* = NULL) {
 				clear();
 				reserve(last - first);
 				_size = static_cast<size_type>(last - first);
@@ -431,7 +435,8 @@ namespace ft {
 			/* Inserts elements from range [first, last) before pos. 
 			*/
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last) {
+			void insert (iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator >::type* = NULL) {
 				size_type n = static_cast<size_type>(last - first);
 				size_type i = static_cast<size_type>(position - begin());
 				if (_size + n > _capacity)
