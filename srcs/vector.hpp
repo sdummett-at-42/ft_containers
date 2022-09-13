@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 17:28:03 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:12:38 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ namespace ft {
 				return iterator(_p);
 			}
 			const_iterator begin() const {
-				return iterator(_p);
+				return const_iterator(_p);
 			}
 
 			/* Returns an iterator to the element following the last element //
@@ -148,7 +148,7 @@ namespace ft {
 				return iterator(_p + _size);
 			}
 			const_iterator end() const {
-				return iterator(_p + _size);
+				return const_iterator(_p + _size);
 			}
 
 			/* Returns a reverse iterator to the first element of the reversed
@@ -549,7 +549,7 @@ namespace ft {
 			size_type		_capacity;
 			/* Converts a numeric value to std::string.
 			*/
-			std::string	to_string(size_t &i) {
+			std::string	to_string(const size_type &i) const {
 				std::stringstream ss;
 				ss << i;
 				return ss.str();
