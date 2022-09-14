@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:44:05 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 14:03:24 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/14 11:55:23 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,26 +65,14 @@ namespace ft {
 
 
 		/* ------------- Operators ------------- */
-		// Notes: - Don't know what the documentation means
-		// by a->m, so operator->() is not implemented yet.
-
-
-		bool operator ==(const random_access_iterator b) {
-			return _p == b._p;
-		}
-
-		bool operator !=(const random_access_iterator b) {
-			return _p != b._p;
-		}
 
 		Iter& operator*(){
 			return *_p;
 		}
 
-		// Notes: What is this damn shit ?
-		// Iter* operator->() {
-		// 	return *_p;
-		// }
+		Iter* operator->() {
+			return &(*_p);
+		}
 
 		random_access_iterator& operator++() {
 			_p++;
@@ -110,11 +98,11 @@ namespace ft {
 		}
 
 		random_access_iterator operator+(const difference_type &n) const {
-			return _p + n;
+			return random_access_iterator(_p + n);
 		}
 
 		random_access_iterator operator-(const difference_type &n) const {
-			return _p - n;
+			return random_access_iterator(_p - n);
 		}
 
 		difference_type operator-(const random_access_iterator &b) const {
@@ -126,15 +114,15 @@ namespace ft {
 		}
 
 		bool operator >(const random_access_iterator &b) const {
-			return (!(_p < b._p));
+			return !(_p < b._p) && (_p != b._p);
 		}
 
 		bool operator <=(const random_access_iterator &b) const {
-			return (_p < b._p || _p == b._p);
+			return _p < b._p || _p == b._p;
 		}
 
 		bool operator >=(const random_access_iterator &b) const {
-			return (_p > b._p || _p == b._p);
+			return _p > b._p || _p == b._p;
 		}
 
 		random_access_iterator& operator +=(const difference_type& n) {
@@ -154,6 +142,56 @@ namespace ft {
 		protected:
 			iterator_type* _p;
 	};
+
+
+	/* ------------- Non-member function ------------- */
+
+	template <class Iterator1, class Iterator2>
+	bool operator==(const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return lhs.base() == rhs.base();
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator!=(const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return !(lhs.base() == rhs.base());
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator<( const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return lhs.base() < rhs.base();
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator<=(const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return (lhs < rhs) || (lhs == rhs);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator> (const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return !(lhs < rhs) && (lhs != rhs);
+	}
+
+	template <class Iterator1, class Iterator2>
+	bool operator>=(const random_access_iterator<Iterator1>& lhs,
+					const random_access_iterator<Iterator2>& rhs) {
+		return (lhs > rhs) || (lhs == rhs);
+	}
+
+	template <class Iterator1>
+	random_access_iterator<Iterator1> operator+ (typename random_access_iterator<Iterator1>::difference_type n, const random_access_iterator<Iterator1>& it) {
+		return it + n;
+	}
+
+	template <class Iterator1, class Iterator2>
+	typename random_access_iterator<Iterator1>::difference_type operator- (const random_access_iterator<Iterator1>& lhs, const random_access_iterator<Iterator2>& rhs) {
+		return lhs.base() - rhs.base();
+	}
 }
+
 
 #endif
