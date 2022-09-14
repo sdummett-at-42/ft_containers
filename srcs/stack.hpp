@@ -6,7 +6,7 @@
 /*   By: sdummett <sdummett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:12:03 by sdummett          #+#    #+#             */
-/*   Updated: 2022/09/12 17:30:11 by sdummett         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:04:02 by sdummett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,13 @@ namespace ft {
 			/* ------------- Allocator ------------- */
 
 			explicit stack( const container_type& cont = container_type() ) :
-				_cont(cont),
-				_size(0) {}
+				_cont(cont) {}
 
 
 			/* ------------- operator= ------------- */
 
 			stack& operator=( const stack& other ) {
 				_cont = other._cont;
-				_size = other._size;
 				return *this;
 			}
 
@@ -74,14 +72,14 @@ namespace ft {
 			** c.empty(). 
 			*/
 			bool empty() const {
-				return (_size == 0);
+				return (_cont.empty());
 			}
 
 			/* Returns the number of elements in the underlying container, that 
 			** is, c.size(). 
 			*/
 			size_type size() const {
-				return _size;
+				return _cont.size();
 			}
 
 
@@ -92,7 +90,6 @@ namespace ft {
 			*/
 			void push (const value_type& val) {
 				_cont.push_back(val);
-				++_size;
 			}
 
 			/* Removes the top element from the stack. 
@@ -100,16 +97,15 @@ namespace ft {
 			*/
 			void pop() {
 				_cont.pop_back();
-				--_size;
 			}
 
 		protected:
 			/* _cont : the underlying container
-			** _size : the actual number of elements stored.
 			*/
 			container_type	_cont;
-			size_type		_size;
 
+			/* Friends =)
+			*/
 			template <class Type, class Cont>
 			friend bool operator== (const stack<Type,Cont>&, const stack<Type,Cont>&);
 			template <class Type, class Cont>
