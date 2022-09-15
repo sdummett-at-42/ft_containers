@@ -27,11 +27,44 @@
 #include <vector>
 #include <string>
 #include <stack>
+#include "node.hpp"
 
 int main() {
 
+	ft::node<int> *n = new ft::node<int>;
 	
+	n->left = new ft::node<int>;
+	n->right = new ft::node<int>;
+	n->right->left = new ft::node<int>;
+	n->right->right = new ft::node<int>;
 
+	n->content = 1;
+	n->left->content = 0;
+	n->right->content = 42;
+	n->right->left->content = 24;
+	n->right->right->content = 100;
+
+	n->debug();
+	n->left->debug();
+	n->right->debug();
+	n->right->left->debug();
+	n->right->right->debug();
+
+	ft::node<int> *parent = new ft::node<int>;
+	parent->left = n;
+	n->parent = parent;
+
+	std::cout << "parent->left->content : " << parent->left->content << "\n";
+	ft::left_rotation(n);
+	std::cout << "parent->left->content : " << parent->left->content << "\n\n";
+
+	n->debug();
+	n->parent->debug();
+	n->parent->right->debug();
+	n->left->debug();
+	n->right->debug();
+	// n->_right->_left->debug();
+	// n->_right->_right->debug();
 	// std::cout << ft::is_integral< char >::value << "\n";
 
 	// #ifdef FT
