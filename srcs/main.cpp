@@ -33,16 +33,21 @@ int main() {
 
 	ft::rbtree<int> *rbtree = new ft::rbtree<int>;
 
-	rbtree->root = new ft::rbnode<int>(42);
-	rbtree->root->debug();
-
-	recursive_insertion(rbtree->root, new ft::rbnode<int>(0));
+	insert(new ft::rbnode<int>(42), rbtree);
+	insert(new ft::rbnode<int>(0), rbtree);
+	insert(new ft::rbnode<int>(1), rbtree);
+	insert(new ft::rbnode<int>(100), rbtree);
+	insert(new ft::rbnode<int>(30), rbtree);
+	insert(new ft::rbnode<int>(8), rbtree);
+	insert(new ft::rbnode<int>(24), rbtree);
 
 	rbtree->root->debug();
 	rbtree->root->left->debug();
-
-	recursive_insertion(rbtree->root, new ft::rbnode<int>(1337));
 	rbtree->root->right->debug();
+	rbtree->root->right->right->debug();
+	rbtree->root->right->left->debug();
+	rbtree->root->right->left->left->debug();
+	rbtree->root->right->left->right->debug();
 
 	/** Left Rotation **/
 

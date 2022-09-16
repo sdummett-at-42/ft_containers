@@ -8,6 +8,9 @@
 #define RED		1
 #define	LEAF	NULL
 
+template< typename T >
+struct rbtree;
+
 namespace ft {
 
 	template < typename T >
@@ -46,10 +49,10 @@ namespace ft {
 			rbnode*	sibling() const {
 				if (parent == NULL)
 					return NULL;
-				if (*(parent->left) == *this)
-					return *(parent->right);
+				if (parent->left == this)
+					return parent->right;
 				else
-					return *(parent->left);
+					return parent->left;
 			}
 
 			rbnode*	uncle() const {
@@ -63,7 +66,7 @@ namespace ft {
 				std::cout << "parent  : " << parent  << "\n";
 				std::cout << "left    : " << left    << "\n";
 				std::cout << "right   : " << right   << "\n";
-				// std::cout << "color   : " << color   << "\n";
+				std::cout << "color   : " << color   << "\n";
 				std::cout << "key     : " << key << "\n\n";
 			}
 
@@ -77,9 +80,7 @@ namespace ft {
 
 	/* ------------- Node rotation ------------- */
 
-	/* Return true if the rotation has been done
-	** else false.
-	*/
+
 	template< typename T >
 	void	left_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
 		rbnode<T>	*y = x->right;
@@ -104,6 +105,10 @@ namespace ft {
 		rbnode<T>	*y = x->left;
 		x->left = y->right;
 		if (y->right != LEAF)
+			y->right->parent = x;
+
+		y->parent = x->parent;
+		if (x->parent == NULL)
 			rbtree->root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
@@ -115,6 +120,22 @@ namespace ft {
 	}
 
 
+	/* ------------- Node insertion ------------- */
+
+	template < typename T >
+	void	insert(rbnode<T> *new_node, ft::rbtree<T> *rbtree) {
+		if (rbtree->root == NULL) {
+			rbtree->root = new_node;
+			new_node->color = BLACK;
+		}
+		else {
+			recursive_insertion(rbtree->root, new_node);
+			repair_tree(new_node, rbtree);
+		}
+	}
+
+	/* Go deep down to tree until a leaf is found
+	*/
 	template< typename T >
 	void recursive_insertion(rbnode<T> *root, rbnode<T> *new_node) {
 		if (root != NULL && new_node->key < root->key) {
@@ -139,6 +160,38 @@ namespace ft {
 		}
 		new_node->parent = root;
 	}
+
+	template< typename T >
+	void repair_tree(rbnode<T> *new_node, ft::rbtree<T> *rbtree) {
+		if (new_node->parent == NULL)
+			new_node->color = BLACK;
+		else if (new_node->parent->color == BLACK)
+			return ;
+		else if (new_node->uncle() && new_node->uncle()->color == RED) {
+			new_node->parent->color = BLACK;
+			new_node->uncle()->color = BLACK;
+			new_node->grandparent()->color = RED;
+			repair_tree(new_node->grandparent(), rbtree);
+		}
+		else {
+			if (new_node == new_node->grandparent()->left->right) {
+				left_rotation(new_node->parent, rbtree);
+				new_node = new_node->left;
+			}
+			else if (new_node == new_node->grandparent()->right->left) {
+				right_rotation(new_node->parent, rbtree);
+				new_node = new_node->right;
+			}
+			if (new_node == new_node->parent->left)
+				right_rotation(new_node->grandparent(), rbtree);
+			else
+				left_rotation(new_node->grandparent(), rbtree);
+
+			new_node->parent->color = BLACK;
+			new_node->sibling()->color = RED;
+		}
+	}
+
 
 }
 
