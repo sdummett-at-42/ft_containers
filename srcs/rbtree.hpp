@@ -3,7 +3,6 @@
 
 #include "rbnode.hpp"
 
-
 namespace ft {
 
 	template < typename T >

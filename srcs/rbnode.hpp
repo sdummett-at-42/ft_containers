@@ -16,13 +16,18 @@ namespace ft {
 			/* ------------- Typedefs ------------- */
 
 			/* ------------- Constructors ------------- */
-			rbnode() :
-				parent(0),
-				left(0),
-				right(0),
-				color(RED) {}
+			rbnode();
 
 			rbnode(const rbnode& x);
+
+			// Note: maybe to remove later
+			// For implementation purpose
+			rbnode(const T key) :
+			key(key),
+			parent(),
+			left(),
+			right(),
+			color(RED) {}
 
 			/* ------------- operator= ------------- */
 			rbnode& operator= (const rbnode& x);
@@ -59,14 +64,14 @@ namespace ft {
 				std::cout << "left    : " << left    << "\n";
 				std::cout << "right   : " << right   << "\n";
 				// std::cout << "color   : " << color   << "\n";
-				std::cout << "content : " << content << "\n\n";
+				std::cout << "key     : " << key << "\n\n";
 			}
 
+			T		key;
 			rbnode*	parent;
 			rbnode*	left;
 			rbnode*	right;
 			bool	color;
-			T		content;
 		protected:
     };
 
@@ -75,7 +80,7 @@ namespace ft {
 	/* Return true if the rotation has been done
 	** else false.
 	*/
-	template< class T >
+	template< typename T >
 	void	left_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
 		rbnode<T>	*y = x->right;
 		x->right = y->left;
@@ -94,8 +99,8 @@ namespace ft {
 		x->parent = y;
 	}
 
-	template< class T >
-	bool	right_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
+	template< typename T >
+	void	right_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
 		rbnode<T>	*y = x->left;
 		x->left = y->right;
 		if (y->right != LEAF)
@@ -107,6 +112,32 @@ namespace ft {
 
 		y->right = x;
 		x->parent = y;
+	}
+
+
+	template< typename T >
+	void recursive_insertion(rbnode<T> *root, rbnode<T> *new_node) {
+		if (root != NULL && new_node->key < root->key) {
+			if (root->left != LEAF) {
+				recursive_insertion(root->left, new_node);
+				return ;
+			}
+			else {
+				std::cout << "Node inserted to the left.\n";
+				root->left = new_node;
+			}
+		}
+		else if (root != NULL) {
+			if (root->right != LEAF) {
+				recursive_insertion(root->right, new_node);
+				return ;
+			}
+			else {
+				std::cout << "Node inserted to the right.\n";
+				root->right = new_node;
+			}
+		}
+		new_node->parent = root;
 	}
 
 }
