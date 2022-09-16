@@ -2,41 +2,43 @@
 #define NODE_HPP
 
 #include <iostream>
+#include "rbtree.hpp"
 
 #define BLACK	0
 #define RED		1
 #define	LEAF	NULL
+
 namespace ft {
 
-	template < class T >
-	class node {
+	template < typename T >
+	class rbnode {
 		public:
 			/* ------------- Typedefs ------------- */
 
 			/* ------------- Constructors ------------- */
-			node() :
+			rbnode() :
 				parent(0),
 				left(0),
 				right(0),
 				color(RED) {}
 
-			node(const node& x);
+			rbnode(const rbnode& x);
 
 			/* ------------- operator= ------------- */
-			node& operator= (const node& x);
+			rbnode& operator= (const rbnode& x);
 
 			/* ------------- Destructor ------------- */
-			~node();
+			~rbnode();
 
 			/* ------------- Node genealogy ------------- */
 
-			node*	grandparent() const {
+			rbnode*	grandparent() const {
 				if (parent == NULL)
 					return NULL;
 				return parent->parent;
 			}
 
-			node*	sibling() const {
+			rbnode*	sibling() const {
 				if (parent == NULL)
 					return NULL;
 				if (*(parent->left) == *this)
@@ -45,7 +47,7 @@ namespace ft {
 					return *(parent->left);
 			}
 
-			node*	uncle() const {
+			rbnode*	uncle() const {
 				if (grandparent() == NULL)
 					return NULL;
 				return parent->sibling();
@@ -60,9 +62,9 @@ namespace ft {
 				std::cout << "content : " << content << "\n\n";
 			}
 
-			node*	parent;
-			node*	left;
-			node*	right;
+			rbnode*	parent;
+			rbnode*	left;
+			rbnode*	right;
 			bool	color;
 			T		content;
 		protected:
@@ -74,19 +76,15 @@ namespace ft {
 	** else false.
 	*/
 	template< class T >
-	bool	left_rotation(node<T> *x) {
-		node<T>	*y = x->right;
+	void	left_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
+		rbnode<T>	*y = x->right;
 		x->right = y->left;
 		if (y->left != LEAF)
 			y->left->parent = x;
 
 		y->parent = x->parent;
-		if (x->parent == NULL) {
-			// Notes : this is assignment is maybe wrong
-			// -> to test.
-			std::cout << "x->parent == NULL\n";
-			// x = y;
-		}
+		if (x->parent == NULL)
+			rbtree->root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -94,22 +92,14 @@ namespace ft {
 
 		y->left = x;
 		x->parent = y;
-
-		// Notes: return not well implemented
-		// maybe I will not add this
-		return true;
 	}
 
 	template< class T >
-	bool	right_rotation(node<T> *x) {
-		node<T>	& y = x->left;
+	bool	right_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
+		rbnode<T>	*y = x->left;
 		x->left = y->right;
-		if (y->right != LEAF) {
-			// Notes : this is assignment is maybe wrong
-			// -> to test.
-			std::cout << "x->parent == NULL\n";
-			// x = y;
-		}
+		if (y->right != LEAF)
+			rbtree->root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
 		else
@@ -117,8 +107,6 @@ namespace ft {
 
 		y->right = x;
 		x->parent = y;
-
-		return true;
 	}
 
 }
