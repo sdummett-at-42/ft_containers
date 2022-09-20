@@ -35,7 +35,7 @@ namespace ft {
 			rbnode& operator= (const rbnode& x);
 
 			/* ------------- Destructor ------------- */
-			~rbnode();
+			~rbnode() {}
 
 			/* ------------- Node genealogy ------------- */
 

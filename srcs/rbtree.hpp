@@ -13,19 +13,44 @@ namespace ft {
 
 	template< typename T >
 	class rbtree {
-		public:
-			ft::rbnode<T> *root;
-			ft::rbnode<T> *tnull;
 
-		rbtree() {
-			tnull = init_new_node(0);
-			tnull->color = BLACK;
-			tnull->left = NULL;
-			tnull->right = NULL;
-			root = tnull;
-		}
+	public:
 
-/* ------------- Node rotation ------------- */
+	ft::rbnode<T> *root;
+	ft::rbnode<T> *tnull;
+
+	rbtree() {
+		tnull = init_new_node(0);
+		tnull->color = BLACK;
+		tnull->left = NULL;
+		tnull->right = NULL;
+		root = tnull;
+	}
+
+	// Note: implement destuctor to
+	// release the memory (all the
+	// allocated nodes).
+	~rbtree() {
+		delete tnull;
+		// delete tree...
+	}
+
+	/* ------------- Node utils ------------- */
+	void rb_transplant(rbnode<T> *u, rbnode<T> *v) {
+		if (u->parent == tnull)			// u is root
+			root = v;
+		else if (u == u->parent->left)	// u is left child
+			u->parent->left = v;
+		else							// u is right child
+			u->parent->right = v;
+		v->parent = u->parent;
+	}
+
+	rbnode<T> *minimum(rbnode<T> *x) {
+		while (x->left != tnull)
+			x = x->left;
+		return x;
+	}
 	rbnode<T>	*init_new_node(T key) {
 		rbnode<T> *new_node = new rbnode<T>;
 		new_node->key = key;
@@ -36,10 +61,10 @@ namespace ft {
 		return new_node;
 	}
 
+
 /* ------------- Node rotation ------------- */
 
-
-	void	left_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
+	void	left_rotation(rbnode<T> *x) {
 		rbnode<T>	*y = x->right;
 		x->right = y->left;
 		if (y->left != tnull)
@@ -47,7 +72,7 @@ namespace ft {
 
 		y->parent = x->parent;
 		if (x->parent == tnull	)
-			rbtree->root = y;
+			root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -57,7 +82,7 @@ namespace ft {
 		x->parent = y;
 	}
 
-	void	right_rotation(rbnode<T> *x, ft::rbtree<T> *rbtree) {
+	void	right_rotation(rbnode<T> *x) {
 		rbnode<T>	*y = x->left;
 		x->left = y->right;
 		if (y->right != tnull)
@@ -65,7 +90,7 @@ namespace ft {
 
 		y->parent = x->parent;
 		if (x->parent == tnull)
-			rbtree->root = y;
+			root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
 		else
@@ -78,7 +103,6 @@ namespace ft {
 
 	/* ------------- Node insertion ------------- */
 
-	// template < typename T >
 	void	insert(T key, ft::rbtree<T> *rbtree) {
 		rbnode<T> *new_node = init_new_node(key);
 
@@ -88,7 +112,7 @@ namespace ft {
 		}
 		else {
 			recursive_insertion(rbtree->root, new_node);
-			repair_tree(new_node, rbtree);
+			rb_insert_fixup(new_node);
 		}
 	}
 
@@ -100,25 +124,22 @@ namespace ft {
 				recursive_insertion(root->left, new_node);
 				return ;
 			}
-			else {
-				std::cout << "Node inserted to the left.\n";
+			else
 				root->left = new_node;
-			}
 		}
 		else if (root != tnull) {
 			if (root->right != tnull) {
 				recursive_insertion(root->right, new_node);
 				return ;
 			}
-			else {
-				std::cout << "Node inserted to the right.\n";
+			else
 				root->right = new_node;
-			}
-		}
+		}/* ------------- Node rotation ------------- */
+
 		new_node->parent = root;
 	}
 
-	void repair_tree(rbnode<T> *new_node, ft::rbtree<T> *rbtree) {
+	void rb_insert_fixup(rbnode<T> *new_node) {
 		if (new_node->parent == tnull)
 			new_node->color = BLACK;
 		else if (new_node->parent->color == BLACK)
@@ -127,29 +148,125 @@ namespace ft {
 			new_node->parent->color = BLACK;
 			new_node->uncle()->color = BLACK;
 			new_node->grandparent()->color = RED;
-			repair_tree(new_node->grandparent(), rbtree);
+			rb_insert_fixup(new_node->grandparent());
 		}
 		else {
 			if (new_node == new_node->grandparent()->left->right) {
-				left_rotation(new_node->parent, rbtree);
+				left_rotation(new_node->parent);
 				new_node = new_node->left;
 			}
 			else if (new_node == new_node->grandparent()->right->left) {
-				right_rotation(new_node->parent, rbtree);
+				right_rotation(new_node->parent);
 				new_node = new_node->right;
 			}
 			if (new_node == new_node->parent->left)
-				right_rotation(new_node->grandparent(), rbtree);
+				right_rotation(new_node->grandparent());
 			else
-				left_rotation(new_node->grandparent(), rbtree);
+				left_rotation(new_node->grandparent());
 
 			new_node->parent->color = BLACK;
 			new_node->sibling()->color = RED;
 		}
 	}
+
+
+	/* ------------- Node deletion ------------- */
+
+	void	rb_delete(rbnode<T> *z) {
+		rbnode<T> *x;
+		rbnode<T> *y = z;
+		bool y_original_color = y->color;
+
+		if (z->left == tnull) {			// no children or only right
+			x = z->right;
+			rb_transplant(z, z->right);
+		}
+		else if (z->right == tnull) {	// only left chilldren
+			x = z->left;
+			rb_transplant(z, z->left);
+		}
+		else {							// both children
+			y = minimum(z->right);
+			y_original_color = y->color;
+			x = y->right;
+			if (y->parent == z) {		// y is direct child of z
+				x->parent = y;
+			}
+			else {
+				rb_transplant(y, y->right);
+				y->right = z->right;
+				y->right->parent = y;
+			}
+			rb_transplant(z, y);
+			y->left = z->left;
+			y->left->parent = y;
+			y->color = z->color;
+		}
+		if (y_original_color == BLACK)
+			rb_delete_fixup(x);
+	}
+
+	void rb_delete_fixup(rbnode<T> *x) {
+		rbnode<T> *w;
+		while (x != root && x->color == BLACK) {
+			if (x == x->parent->left) {
+				w = x->parent->right;
+				if (w->color == RED) {	// case 1
+					w->color = BLACK;
+					x->parent->color = RED;
+					left_rotation(x->parent);
+					w = x->parent->right;
+				}
+				if (w->left->color == BLACK && w->right->color == BLACK) {	// case 2
+					w->color = RED;
+					x = x->parent;
+				}
+				else {	// case 3 or 4
+					if (w->right->color == BLACK) {	// case 3
+						w->left->color = BLACK;
+						w->color = RED;
+						right_rotation(w);
+						w = x->parent->right;
+					}
+					// case 4
+					w->color = x->parent->color;
+					x->parent->color = BLACK;
+					w->right->color = BLACK;
+					left_rotation(x->parent);
+					x = root;
+				}
+			}
+			else {
+				w = x->parent->left;
+				if (w->color == RED) {	// case 1
+					w->color = BLACK;
+					x->parent->color = RED;
+					right_rotation(x->parent);
+					w = x->parent->left;
+				}
+				if (w->right->color == BLACK && w->left->color == BLACK) {	// case 2
+					w->color = RED;
+					x = x->parent;
+				}
+				else {	// case 3 or 4
+					if (w->left->color == BLACK) {	// case 3
+						w->right->color = BLACK;
+						w->color = RED;
+						left_rotation(w);
+						w = x->parent->left;
+					}
+					// case 4
+					w->color = x->parent->color;
+					x->parent->color = BLACK;
+					w->left->color = BLACK;
+					right_rotation(x->parent);
+					x = root;
+				}
+			}
+		}
+		x->color = BLACK;
+	}
 	};
-
-
 }
 
 #endif
