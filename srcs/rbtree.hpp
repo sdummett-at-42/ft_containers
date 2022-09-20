@@ -8,9 +8,7 @@
 
 namespace ft {
 
-	template < typename T >
-	class rbnode;
-
+	// Note: define private/public member functions
 	template< typename T >
 	class rbtree {
 
@@ -135,8 +133,7 @@ namespace ft {
 				}
 				else
 					root->right = new_node;
-			}/* ------------- RBTree rotation ------------- */
-
+			}
 			new_node->parent = root;
 		}
 

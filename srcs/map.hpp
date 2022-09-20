@@ -13,9 +13,10 @@
 # ifndef MAP_HPP
 # define MAP_HPP
 
-#include <functional>	// Required for std::less<Key>
-#include <memory>		// Required for std::allocator<T>
-#include "pair.hpp"		// Required for ft::pair<const key_type,mapped_type>
+#include <functional>			// Required for std::less<Key>
+#include <memory>				// Required for std::allocator<T>
+#include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
+#include "rbtree_iterator.hpp"	// Required for iterator
 
 namespace ft {
 

@@ -66,7 +66,7 @@ namespace ft {
 
 		/* ------------- Operators ------------- */
 
-		Iter& operator*(){
+		Iter& operator*() {
 			return *_p;
 		}
 
@@ -85,13 +85,13 @@ namespace ft {
 			return tmp;
 		}
 
-		random_access_iterator& operator--(){
+		random_access_iterator& operator--() {
 			_p--;
 			return *this;
 
 		}
 
-		random_access_iterator operator--(int){
+		random_access_iterator operator--(int) {
 			random_access_iterator tmp(*this);
 			operator--();
 			return tmp;
