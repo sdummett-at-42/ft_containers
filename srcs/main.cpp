@@ -27,7 +27,7 @@
 #include <vector>
 #include <string>
 #include <stack>
-#include "rbnode.hpp"
+#include "rbtree.hpp"
 
 int main() {
 
@@ -40,23 +40,11 @@ int main() {
 	rbtree->insert(30, rbtree);
 	rbtree->insert(8, rbtree);
 	rbtree->insert(24, rbtree);
-
-	// rbtree->root->debug();
-	// rbtree->root->left->debug();
-	// rbtree->root->right->debug();
-	// rbtree->root->right->right->debug();
-	// rbtree->root->right->left->debug();
-	// rbtree->root->right->left->left->debug();
-	// rbtree->root->right->left->right->debug();
+	rbtree->pretty_print();
 
 	std::cout << "DELETION\n";
 	rbtree->rb_delete(rbtree->root->left);
+	rbtree->pretty_print();
 
-	rbtree->root->debug();
-	rbtree->root->right->debug();
-	rbtree->root->left->debug();
-	rbtree->root->left->right->debug();
-	rbtree->root->left->left->debug();
-	rbtree->root->left->left->right->debug();
 	delete rbtree;
 }

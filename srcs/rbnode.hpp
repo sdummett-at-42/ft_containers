@@ -1,80 +1,54 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <iostream>
-#include "rbtree.hpp"
-
-#define BLACK	0
-#define RED		1
-
-template< typename T >
-struct rbtree;
-
 namespace ft {
 
 	template < typename T >
 	class rbnode {
+
 		public:
-			/* ------------- Typedefs ------------- */
 
-			/* ------------- Constructors ------------- */
-			rbnode() {}
+		/* ------------- Constructors ------------- */
+		rbnode() {}
 
-			rbnode(const rbnode& x);
+		rbnode(const rbnode& x) {
+			*this = x;
+		}
 
-			// Note: maybe to remove later
-			// For implementation purpose
-			// rbnode(const T key) :
-			// key(key),
-			// parent(),
-			// left(),
-			// right(),
-			// color(RED) {}
+		/* ------------- operator= ------------- */
+		rbnode& operator= (const rbnode& x) {
+			key = x.key;
+			parent = x.parent;
+			left = x.left;
+			right = x.right;
+			color = x.color;
+			return *this;
+		}
 
-			/* ------------- operator= ------------- */
-			rbnode& operator= (const rbnode& x);
+		/* ------------- Destructor ------------- */
+		~rbnode() {}
 
-			/* ------------- Destructor ------------- */
-			~rbnode() {}
+		/* ------------- Node genealogy ------------- */
+		rbnode*	grandparent() const {
+			return parent->parent;
+		}
 
-			/* ------------- Node genealogy ------------- */
+		rbnode*	sibling() const {
+			if (parent->left == this)
+				return parent->right;
+			else
+				return parent->left;
+		}
 
-			rbnode*	grandparent() const {
-				if (parent == NULL)
-					return NULL;
-				return parent->parent;
-			}
+		rbnode*	uncle() const {
+			return parent->sibling();
+		}
 
-			rbnode*	sibling() const {
-				if (parent == NULL)
-					return NULL;
-				if (parent->left == this)
-					return parent->right;
-				else
-					return parent->left;
-			}
-
-			rbnode*	uncle() const {
-				if (grandparent() == NULL)
-					return NULL;
-				return parent->sibling();
-			}
-
-			// Notes: to delete (for implementation purpose)
-			void	debug() {
-				std::cout << "parent  : " << parent  << "\n";
-				std::cout << "left    : " << left    << "\n";
-				std::cout << "right   : " << right   << "\n";
-				std::cout << "color   : " << color   << "\n";
-				std::cout << "key     : " << key << "\n\n";
-			}
-
-			T		key;
-			rbnode*	parent;
-			rbnode*	left;
-			rbnode*	right;
-			bool	color;
-		protected:
+		T		key;
+		rbnode*	parent;
+		rbnode*	left;
+		rbnode*	right;
+		bool	color;
     };
 }
 
