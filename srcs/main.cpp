@@ -33,13 +33,13 @@ int main() {
 
 	ft::rbtree<int> *rbtree = new ft::rbtree<int>;
 
-	insert(new ft::rbnode<int>(42), rbtree);
-	insert(new ft::rbnode<int>(0), rbtree);
-	insert(new ft::rbnode<int>(1), rbtree);
-	insert(new ft::rbnode<int>(100), rbtree);
-	insert(new ft::rbnode<int>(30), rbtree);
-	insert(new ft::rbnode<int>(8), rbtree);
-	insert(new ft::rbnode<int>(24), rbtree);
+	rbtree->insert(42, rbtree);
+	rbtree->insert(0, rbtree);
+	rbtree->insert(1, rbtree);
+	rbtree->insert(100, rbtree);
+	rbtree->insert(30, rbtree);
+	rbtree->insert(8, rbtree);
+	rbtree->insert(24, rbtree);
 
 	rbtree->root->debug();
 	rbtree->root->left->debug();
@@ -60,4 +60,5 @@ int main() {
 	// rbtree->root->left->right->debug();
 	// rbtree->root->left->left->debug();
 
+	delete rbtree;
 }
