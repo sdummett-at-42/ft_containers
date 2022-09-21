@@ -28,23 +28,26 @@
 #include <string>
 #include <stack>
 #include "rbtree.hpp"
+#include <map>
 
+// Note: ft::pair not working with std::map
+
+// template<
+// 			typename Key,
+// 			typename T,
+// 			typename Compare = std::less<Key>,
+// 			typename Alloc = std::allocator<ft::pair<const Key, T> > >
+// 	class rbtree
 int main() {
 
-	ft::rbtree<int> *rbtree = new ft::rbtree<int>;
+	ft::rbtree<int, int> rb;
 
-	rbtree->insert(42, rbtree);
-	rbtree->insert(0, rbtree);
-	rbtree->insert(1, rbtree);
-	rbtree->insert(100, rbtree);
-	rbtree->insert(30, rbtree);
-	rbtree->insert(8, rbtree);
-	rbtree->insert(24, rbtree);
-	rbtree->pretty_print();
-
-	std::cout << "DELETION\n";
-	rbtree->rb_delete(rbtree->root->left);
-	rbtree->pretty_print();
-
-	delete rbtree;
+	rb.insert(42);
+	rb.insert(0);
+	rb.insert(1);
+	rb.insert(100);
+	rb.insert(30);
+	rb.insert(8);
+	rb.insert(24);
+	rb.pretty_print();
 }

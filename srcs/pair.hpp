@@ -30,12 +30,14 @@ namespace ft {
 		T1 first;
 		T2 second;
 
-		pair() {};
+		pair() :
+		 first(),
+		 second() {};
 
 		template<class U, class V>
-		pair (const pair<U,V>& src) {
-			*this = src;
-		};
+		pair (const pair<U,V>& src) :
+			first(src.first),
+			second(src.second) {}
 
 		pair(const first_type& u, const second_type& v) :
 			first(u),
@@ -56,10 +58,10 @@ namespace ft {
 			this->second = src.second;
 			src.first = tmpFirst;
 			src.second = tmpSecond;
-		};
+		}
 	};
 
-	/* ------------- Non-member functinos ------------- */
+	/* ------------- Non-member functions ------------- */
 	template <class T1, class T2>
 	bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs) {
 		return lhs.first == rhs.first && lhs.second == rhs.second;

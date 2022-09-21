@@ -16,6 +16,7 @@
 #include <functional>			// Required for std::less<Key>
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
+#include "rbtree.hpp"			// Required for Red-Black tree data structure
 #include "rbtree_iterator.hpp"	// Required for iterator
 
 namespace ft {
@@ -51,11 +52,15 @@ namespace ft {
 			/* ------------- Constructors ------------- */
 
 			explicit map (	const key_compare& comp = key_compare(),
-							const allocator_type& alloc = allocator_type());
-			template <class InputIterator>
-				map (InputIterator first, InputIterator last,
-				const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type());
+							const allocator_type& alloc = allocator_type()) :
+				_rbtree(comp, alloc) {
+			}
+
+			// template <class InputIterator>
+			// 	map (InputIterator first, InputIterator last,
+			// 	const key_compare& comp = key_compare(),
+			// 	const allocator_type& alloc = allocator_type());
+
 			map (const map& x);
 
 
@@ -138,6 +143,8 @@ namespace ft {
 			// ft::pair<iterator,iterator> equal_range (const key_type& k);
 			// ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
+			protected:
+				ft::rbtree< key_type, mapped_type, key_compare, allocator_type> _rbtree;
 	};
 
 

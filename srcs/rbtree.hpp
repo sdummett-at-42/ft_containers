@@ -1,6 +1,9 @@
 #ifndef RBTREE_HPP
 #define RBTREE_HPP
 
+#include <functional>			// Required for std::less<Key>
+#include <memory>				// Required for std::allocator<T>
+#include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "rbnode.hpp"
 
 #define BLACK	0
@@ -9,25 +12,46 @@
 namespace ft {
 
 	// Note: define private/public member functions
-	template< typename T >
+	template<
+			typename Key,
+			typename T,
+			typename Compare = std::less<Key>,
+			typename Alloc = std::allocator<ft::pair<const Key, T> > >
 	class rbtree {
 
 		public:
 
-		ft::rbnode<T> *root;
-		ft::rbnode<T> *tnull;
+		/* ------------- Typedefs ------------- */
 
-		rbtree() {
-			tnull = init_new_node(0);
+		typedef Key key_type;
+		typedef T mapped_type;
+		typedef ft::pair<const key_type,mapped_type> value_type;
+		typedef std::size_t size_type;
+		typedef std::ptrdiff_t difference_type;
+		typedef Compare key_compare;
+		typedef Alloc allocator_type;
+		typedef value_type& reference;
+		typedef const value_type& const_reference;
+		typedef typename allocator_type::pointer pointer;
+		typedef typename allocator_type::const_pointer const_pointer;
+
+		ft::rbnode<T> *root; // protected ?
+		ft::rbnode<T> *tnull; // protected ?
+
+
+		rbtree( const key_compare& comp = key_compare(), 
+				const allocator_type& alloc = allocator_type()) :
+			_comp(comp),
+			_alloc(alloc),
+			_p(0),
+			_size(0) {
+			tnull = init_new_node(0); // pimp my int_new_node()
 			tnull->color = BLACK;
 			tnull->left = NULL;
 			tnull->right = NULL;
 			root = tnull;
 		}
 
-		// Note: implement destuctor to
-		// release the memory (all the
-		// allocated nodes).
 		~rbtree() {
 			destroy_tree(root);
 			delete tnull;
@@ -52,7 +76,7 @@ namespace ft {
 		}
 		rbnode<T>	*init_new_node(T key) {
 			rbnode<T> *new_node = new rbnode<T>;
-			new_node->key = key;
+			new_node->content = key;
 			new_node->parent = tnull;
 			new_node->left = tnull;
 			new_node->right = tnull;
@@ -102,15 +126,15 @@ namespace ft {
 
 		/* ------------- RBTree insertion ------------- */
 
-		void	insert(T key, ft::rbtree<T> *rbtree) {
+		void	insert(T key) {
 			rbnode<T> *new_node = init_new_node(key);
 
-			if (rbtree->root == tnull) {
-				rbtree->root = new_node;
+			if (root == tnull) {
+				root = new_node;
 				new_node->color = BLACK;
 			}
 			else {
-				recursive_insertion(rbtree->root, new_node);
+				recursive_insertion(root, new_node);
 				rb_insert_fixup(new_node);
 			}
 		}
@@ -118,7 +142,7 @@ namespace ft {
 		/* Go deep down to tree until a leaf is found
 		*/
 		void recursive_insertion(rbnode<T> *root, rbnode<T> *new_node) {
-			if (root != tnull && new_node->key < root->key) {
+			if (root != tnull && new_node->content < root->content) {
 				if (root->left != tnull) {
 					recursive_insertion(root->left, new_node);
 					return ;
@@ -287,7 +311,7 @@ namespace ft {
 					indent += "|    ";
 				}
 				std::string sColor = root->color?"RED":"BLACK";
-				std::cout<<root->key<<"("<<sColor<<")"<<std::endl;
+				std::cout<<root->content<<"("<<sColor<<")"<<std::endl;
 				print_helper(root->left, indent, false);
 				print_helper(root->right, indent, true);
 			}
@@ -310,6 +334,12 @@ namespace ft {
 		void clear() {
 			destroy_tree(root);
 		}
+
+		protected:
+		key_compare		_comp;
+		allocator_type	_alloc;
+		pointer			_p;
+		size_type		_size;
 	};
 }
 
