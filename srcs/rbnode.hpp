@@ -17,7 +17,7 @@ namespace ft {
 
 		/* ------------- operator= ------------- */
 		rbnode& operator= (const rbnode& x) {
-			content = x.content;
+			*content = *(x.content);
 			parent = x.parent;
 			left = x.left;
 			right = x.right;
@@ -44,7 +44,7 @@ namespace ft {
 			return parent->sibling();
 		}
 
-		T		content;
+		T*		content;
 		rbnode*	parent;
 		rbnode*	left;
 		rbnode*	right;

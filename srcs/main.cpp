@@ -42,12 +42,13 @@ int main() {
 
 	ft::rbtree<int, int> rb;
 
-	rb.insert(42);
-	rb.insert(0);
-	rb.insert(1);
-	rb.insert(100);
-	rb.insert(30);
-	rb.insert(8);
-	rb.insert(24);
+	rb.insert(ft::pair<int,int>(42,24));
+	rb.insert(ft::pair<int,int>(0,24));
+	rb.insert(ft::pair<int,int>(1,24));
+	rb.insert(ft::pair<int,int>(100,24));
+	rb.insert(ft::pair<int,int>(30,24));
+	rb.insert(ft::pair<int,int>(8,24));
+	rb.insert(ft::pair<int,int>(24,24));
+	rb.insert(ft::pair<int,int>(42,24));
 	rb.pretty_print();
 }

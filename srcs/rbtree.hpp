@@ -4,6 +4,7 @@
 #include <functional>			// Required for std::less<Key>
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
+#include "make_pair.hpp"
 #include "rbnode.hpp"
 
 #define BLACK	0
@@ -25,7 +26,7 @@ namespace ft {
 
 		typedef Key key_type;
 		typedef T mapped_type;
-		typedef ft::pair<const key_type,mapped_type> value_type;
+		typedef ft::pair<const key_type, mapped_type> value_type;
 		typedef std::size_t size_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef Compare key_compare;
@@ -35,8 +36,8 @@ namespace ft {
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
 
-		ft::rbnode<T> *root; // protected ?
-		ft::rbnode<T> *tnull; // protected ?
+		ft::rbnode<value_type> *root; // protected ?
+		ft::rbnode<value_type> *tnull; // protected ?
 
 
 		rbtree( const key_compare& comp = key_compare(), 
@@ -45,7 +46,7 @@ namespace ft {
 			_alloc(alloc),
 			_p(0),
 			_size(0) {
-			tnull = init_new_node(0); // pimp my int_new_node()
+			tnull = init_tnull();
 			tnull->color = BLACK;
 			tnull->left = NULL;
 			tnull->right = NULL;
@@ -59,7 +60,7 @@ namespace ft {
 
 		/* ------------- RBTree utils ------------- */
 
-		void rb_transplant(rbnode<T> *u, rbnode<T> *v) {
+		void rb_transplant(rbnode<value_type> *u, rbnode<value_type> *v) {
 			if (u->parent == tnull)			// u is root
 				root = v;
 			else if (u == u->parent->left)	// u is left child
@@ -69,14 +70,25 @@ namespace ft {
 			v->parent = u->parent;
 		}
 
-		rbnode<T> *minimum(rbnode<T> *x) {
+		rbnode<value_type> *minimum(rbnode<value_type> *x) {
 			while (x->left != tnull)
 				x = x->left;
 			return x;
 		}
-		rbnode<T>	*init_new_node(T key) {
-			rbnode<T> *new_node = new rbnode<T>;
-			new_node->content = key;
+
+		rbnode<value_type>	*init_tnull() {
+			rbnode<value_type> *tnull = new rbnode<value_type>;
+			tnull->parent = tnull;
+			tnull->left = tnull;
+			tnull->right = tnull;
+			tnull->color = RED;
+			return tnull;
+		}
+
+		rbnode<value_type>	*init_new_node(value_type val) {
+			rbnode<value_type> *new_node = new rbnode<value_type>;
+			new_node->content = _alloc.allocate(sizeof(value_type));
+			_alloc.construct(new_node->content, val);
 			new_node->parent = tnull;
 			new_node->left = tnull;
 			new_node->right = tnull;
@@ -87,8 +99,8 @@ namespace ft {
 
 	/* ------------- RBTree rotation ------------- */
 
-		void	left_rotation(rbnode<T> *x) {
-			rbnode<T>	*y = x->right;
+		void	left_rotation(rbnode<value_type> *x) {
+			rbnode<value_type>	*y = x->right;
 			x->right = y->left;
 			if (y->left != tnull)
 				y->left->parent = x;
@@ -105,8 +117,8 @@ namespace ft {
 			x->parent = y;
 		}
 
-		void	right_rotation(rbnode<T> *x) {
-			rbnode<T>	*y = x->left;
+		void	right_rotation(rbnode<value_type> *x) {
+			rbnode<value_type>	*y = x->left;
 			x->left = y->right;
 			if (y->right != tnull)
 				y->right->parent = x;
@@ -126,8 +138,8 @@ namespace ft {
 
 		/* ------------- RBTree insertion ------------- */
 
-		void	insert(T key) {
-			rbnode<T> *new_node = init_new_node(key);
+		void	insert(value_type val) {
+			rbnode<value_type> *new_node = init_new_node(val);
 
 			if (root == tnull) {
 				root = new_node;
@@ -141,7 +153,7 @@ namespace ft {
 
 		/* Go deep down to tree until a leaf is found
 		*/
-		void recursive_insertion(rbnode<T> *root, rbnode<T> *new_node) {
+		void recursive_insertion(rbnode<value_type> *root, rbnode<value_type> *new_node) {
 			if (root != tnull && new_node->content < root->content) {
 				if (root->left != tnull) {
 					recursive_insertion(root->left, new_node);
@@ -161,7 +173,7 @@ namespace ft {
 			new_node->parent = root;
 		}
 
-		void rb_insert_fixup(rbnode<T> *new_node) {
+		void rb_insert_fixup(rbnode<value_type> *new_node) {
 			if (new_node->parent == tnull)
 				new_node->color = BLACK;
 			else if (new_node->parent->color == BLACK)
@@ -194,9 +206,9 @@ namespace ft {
 
 		/* ------------- RBTree deletion ------------- */
 
-		void	rb_delete(rbnode<T> *z) {
-			rbnode<T> *x;
-			rbnode<T> *y = z;
+		void	rb_delete(rbnode<value_type> *z) {
+			rbnode<value_type> *x;
+			rbnode<value_type> *y = z;
 			bool y_original_color = y->color;
 
 			if (z->left == tnull) {			// no children or only right
@@ -226,12 +238,14 @@ namespace ft {
 			}
 			if (y_original_color == BLACK)
 				rb_delete_fixup(x);
+			_alloc.destroy(z->content);
+			_alloc.deallocate(z->content, sizeof(value_type));
 			delete z;
 		}
 
 		// Note: Add comment that explain each case.
-		void rb_delete_fixup(rbnode<T> *x) {
-			rbnode<T> *w;
+		void rb_delete_fixup(rbnode<value_type> *x) {
+			rbnode<value_type> *w;
 			while (x != root && x->color == BLACK) {
 				if (x == x->parent->left) {
 					w = x->parent->right;
@@ -299,8 +313,9 @@ namespace ft {
 			x->color = BLACK;
 		}
 
-		void print_helper(rbnode<T> *root, std::string indent, bool last) {
-			// print the tree structure on the screen
+		/* Print the tree structure on the screen
+		*/
+		void print_helper(rbnode<value_type> *root, std::string indent, bool last) {
 			if (root != tnull) {
 				std::cout<<indent;
 				if (last) {
@@ -311,7 +326,7 @@ namespace ft {
 					indent += "|    ";
 				}
 				std::string sColor = root->color?"RED":"BLACK";
-				std::cout<<root->content<<"("<<sColor<<")"<<std::endl;
+				std::cout<<root->content->first<<"("<<sColor<<")"<<std::endl;
 				print_helper(root->left, indent, false);
 				print_helper(root->right, indent, true);
 			}
@@ -323,11 +338,13 @@ namespace ft {
 			}
 		}
 
-		void destroy_tree(rbnode<T> *root) {
+		void destroy_tree(rbnode<value_type> *root) {
 			if (root == tnull)
 				return ;
 			destroy_tree(root->left);
 			destroy_tree(root->right);
+			_alloc.destroy(root->content);
+			_alloc.deallocate(root->content, sizeof(value_type));
 			delete root;
 		}
 
