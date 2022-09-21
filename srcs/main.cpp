@@ -32,23 +32,19 @@
 
 // Note: ft::pair not working with std::map
 
-// template<
-// 			typename Key,
-// 			typename T,
-// 			typename Compare = std::less<Key>,
-// 			typename Alloc = std::allocator<ft::pair<const Key, T> > >
-// 	class rbtree
 int main() {
 
 	ft::rbtree<int, int> rb;
-
-	rb.insert(ft::pair<int,int>(42,24));
-	rb.insert(ft::pair<int,int>(0,24));
-	rb.insert(ft::pair<int,int>(1,24));
-	rb.insert(ft::pair<int,int>(100,24));
-	rb.insert(ft::pair<int,int>(30,24));
-	rb.insert(ft::pair<int,int>(8,24));
-	rb.insert(ft::pair<int,int>(24,24));
-	rb.insert(ft::pair<int,int>(42,24));
+	rb.insert(ft::make_pair<int,int>(42,42));
+	rb.insert(ft::make_pair<int,int>(42,42));
+	rb.insert(ft::make_pair<int,int>(0,42));
+	rb.insert(ft::make_pair<int,int>(1,42));
+	rb.insert(ft::make_pair<int,int>(100,42));
+	rb.insert(ft::make_pair<int,int>(30,42));
+	rb.insert(ft::make_pair<int,int>(8,42));
+	rb.insert(ft::make_pair<int,int>(24,42));
 	rb.pretty_print();
+	// rb.rb_delete()
+
+	ft::map<int, int> mp;
 }

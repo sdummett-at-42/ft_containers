@@ -36,8 +36,7 @@ namespace ft {
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
 
-		ft::rbnode<value_type> *root; // protected ?
-		ft::rbnode<value_type> *tnull; // protected ?
+
 
 
 		rbtree( const key_compare& comp = key_compare(), 
@@ -96,8 +95,25 @@ namespace ft {
 			return new_node;
 		}
 
+		size_type size() const {
+			return _size;
+		}
 
-	/* ------------- RBTree rotation ------------- */
+		bool empty() const {
+			if (_size == 0)
+				return true;
+			return false;
+		}
+
+		key_compare key_comp() const {
+			return _comp;
+		}
+
+		size_type max_size() const {
+			return _alloc.max_size();
+		}
+
+		/* ------------- RBTree rotation ------------- */
 
 		void	left_rotation(rbnode<value_type> *x) {
 			rbnode<value_type>	*y = x->right;
@@ -149,12 +165,16 @@ namespace ft {
 				recursive_insertion(root, new_node);
 				rb_insert_fixup(new_node);
 			}
+			++_size;
 		}
+
+		// Note: Fix duplicate keys in rbtree
 
 		/* Go deep down to tree until a leaf is found
 		*/
 		void recursive_insertion(rbnode<value_type> *root, rbnode<value_type> *new_node) {
-			if (root != tnull && new_node->content < root->content) {
+			if (root != tnull && _comp(new_node->content->first,
+				root->content->first)) {
 				if (root->left != tnull) {
 					recursive_insertion(root->left, new_node);
 					return ;
@@ -238,10 +258,10 @@ namespace ft {
 			}
 			if (y_original_color == BLACK)
 				rb_delete_fixup(x);
-			_alloc.destroy(z->content);
-			_alloc.deallocate(z->content, sizeof(value_type));
-			delete z;
+			destroy_node(z);
+			--_size;
 		}
+
 
 		// Note: Add comment that explain each case.
 		void rb_delete_fixup(rbnode<value_type> *x) {
@@ -313,6 +333,28 @@ namespace ft {
 			x->color = BLACK;
 		}
 
+		void destroy_node(rbnode<value_type> *to_destroy) {
+			_alloc.destroy(to_destroy->content);
+			_alloc.deallocate(to_destroy->content, sizeof(value_type));
+			delete to_destroy;
+		}
+
+		void destroy_tree(rbnode<value_type> *root) {
+			if (root == tnull)
+				return ;
+			destroy_tree(root->left);
+			destroy_tree(root->right);
+			destroy_node(root);
+		}
+
+		void clear() {
+			destroy_tree(root);
+			_size = 0;
+		}
+
+
+		/* ------------- RBTree display ------------- */
+
 		/* Print the tree structure on the screen
 		*/
 		void print_helper(rbnode<value_type> *root, std::string indent, bool last) {
@@ -338,25 +380,13 @@ namespace ft {
 			}
 		}
 
-		void destroy_tree(rbnode<value_type> *root) {
-			if (root == tnull)
-				return ;
-			destroy_tree(root->left);
-			destroy_tree(root->right);
-			_alloc.destroy(root->content);
-			_alloc.deallocate(root->content, sizeof(value_type));
-			delete root;
-		}
-
-		void clear() {
-			destroy_tree(root);
-		}
-
 		protected:
-		key_compare		_comp;
-		allocator_type	_alloc;
-		pointer			_p;
-		size_type		_size;
+		key_compare				_comp;
+		allocator_type			_alloc;
+		pointer					_p;
+		size_type				_size;
+		ft::rbnode<value_type>	*root;
+		ft::rbnode<value_type>	*tnull;
 	};
 }
 

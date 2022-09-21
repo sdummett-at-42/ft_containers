@@ -76,7 +76,7 @@ namespace ft {
 
 			/* ------------- Destructor ------------- */
 
-			~map();
+			~map() {}
 
 
 			/* ------------- Iterators ------------- */
@@ -93,9 +93,15 @@ namespace ft {
 
 			/* ------------- Capacity ------------- */
 
-			bool empty() const;
-			size_type size() const;
-			size_type max_size() const;
+			bool empty() const {
+				return _rbtree.empty();
+			}
+			size_type size() const {
+				return _rbtree.size();
+			}
+			size_type max_size() const {
+				return _rbtree.max_size();
+			}
 
 
 			/* ------------- Element access ------------- */
@@ -122,12 +128,18 @@ namespace ft {
 			// iterator erase( iterator first, iterator last );
 			// size_type erase (const key_type& k);
 			void swap (map& x);
-			void clear();
+
+			void clear() {
+				_rbtree.clear();
+			}
 
 
 			/* ------------- Observers ------------- */
 
-			key_compare key_comp() const;
+			key_compare key_comp() const {
+				return _rbtree.key_comp();
+			}
+
 			// value_compare value_comp() const;
 
 
@@ -144,7 +156,7 @@ namespace ft {
 			// ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
 			protected:
-				ft::rbtree< key_type, mapped_type, key_compare, allocator_type> _rbtree;
+			ft::rbtree< key_type, mapped_type, key_compare, allocator_type> _rbtree;
 	};
 
 
