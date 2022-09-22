@@ -53,8 +53,8 @@ namespace ft {
 		}
 
 		rbtree(const rbtree& x) :
-			_comp(key_compare()),
-			_alloc(allocator_type()),
+			_comp(x._comp),
+			_alloc(x._alloc),
 			_p(0),
 			_size(0) {
 			tnull = init_tnull();

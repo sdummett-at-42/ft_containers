@@ -61,12 +61,16 @@ namespace ft {
 			// 	const key_compare& comp = key_compare(),
 			// 	const allocator_type& alloc = allocator_type());
 
-			map (const map& x);
+			map (const map& x) :
+				_rbtree(x._rbtree) {
+			}
 
 
 			/* ------------- operator= ------------- */
 
-			map& operator= (const map& x);
+			map& operator= (const map& x) {
+				_rbtree = x._rbtree;
+			}
 
 
 			/* ------------- Allocator ------------- */
