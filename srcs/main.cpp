@@ -34,17 +34,23 @@
 
 int main() {
 
-	ft::rbtree<int, int> rb;
-	rb.insert(ft::make_pair<int,int>(42,42));
-	rb.insert(ft::make_pair<int,int>(42,42));
-	rb.insert(ft::make_pair<int,int>(0,42));
-	rb.insert(ft::make_pair<int,int>(1,42));
-	rb.insert(ft::make_pair<int,int>(100,42));
-	rb.insert(ft::make_pair<int,int>(30,42));
-	rb.insert(ft::make_pair<int,int>(8,42));
-	rb.insert(ft::make_pair<int,int>(24,42));
-	rb.pretty_print();
-	// rb.rb_delete()
+	ft::rbtree<int, int> *rb = new ft::rbtree<int,int>;
+	rb->insert(ft::make_pair<int,int>(42,42));
+	rb->insert(ft::make_pair<int,int>(42,42));
+	rb->insert(ft::make_pair<int,int>(0,42));
+	rb->insert(ft::make_pair<int,int>(1,42));
+	rb->insert(ft::make_pair<int,int>(100,42));
+	rb->insert(ft::make_pair<int,int>(30,42));
+	rb->insert(ft::make_pair<int,int>(8,42));
+	rb->insert(ft::make_pair<int,int>(24,42));
+	rb->pretty_print();
 
-	ft::map<int, int> mp;
+	ft::rbtree<int, int> *rb_copy = new ft::rbtree<int, int>;
+	*rb_copy = *rb;
+	delete rb;
+	rb_copy->pretty_print();
+	ft::rbtree<int,int> rb_copy_constru(*rb_copy);
+	delete rb_copy;
+	rb_copy_constru.pretty_print();
+	// ft::map<int, int> mp;
 }

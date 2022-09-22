@@ -52,10 +52,38 @@ namespace ft {
 			root = tnull;
 		}
 
+		rbtree(const rbtree& x) :
+			_comp(key_compare()),
+			_alloc(allocator_type()),
+			_p(0),
+			_size(0) {
+			tnull = init_tnull();
+			tnull->color = BLACK;
+			tnull->left = NULL;
+			tnull->right = NULL;
+			root = tnull;
+			*this = x;
+		}
+
 		~rbtree() {
 			destroy_tree(root);
 			delete tnull;
 		}
+
+		void recursive_copy(rbnode<value_type> *to_copy, const rbtree& x) {
+			if (to_copy == x.tnull)
+				return ;
+			recursive_copy(to_copy->left, x);
+			recursive_copy(to_copy->right, x);
+			insert(*(to_copy->content));
+		}
+
+		rbtree& operator= (const rbtree& x) {
+			clear();
+			recursive_copy(x.root, x);
+			return *this;
+		}
+
 
 		/* ------------- RBTree utils ------------- */
 
@@ -345,6 +373,7 @@ namespace ft {
 			destroy_tree(root->left);
 			destroy_tree(root->right);
 			destroy_node(root);
+			root = tnull;
 		}
 
 		void clear() {
