@@ -1,6 +1,7 @@
 #ifndef RBTREE_ITERATOR
 #define RBTREE_ITERATOR
 
+#include "rbtree.hpp"
 #include "iterator_traits.hpp"
 
 namespace ft {
@@ -13,42 +14,53 @@ namespace ft {
 	/* ------------- Typedefs ------------- */
 	typedef Iter iterator_type;
 	typedef typename std::iterator<std::bidirectional_iterator_tag, Iter>::iterator_category iterator_category;
-	typedef typename  std::iterator<std::bidirectional_iterator_tag, Iter>::value_type value_type;
-	typedef typename  std::iterator<std::bidirectional_iterator_tag, Iter>::difference_type	difference_type;
-	typedef typename  std::iterator<std::bidirectional_iterator_tag, Iter>::pointer pointer;
-	typedef typename  std::iterator<std::bidirectional_iterator_tag, Iter>::reference reference;
+	typedef typename std::iterator<std::bidirectional_iterator_tag, Iter>::value_type value_type;
+	typedef typename std::iterator<std::bidirectional_iterator_tag, Iter>::difference_type	difference_type;
+	typedef typename std::iterator<std::bidirectional_iterator_tag, Iter>::pointer pointer;
+	typedef typename std::iterator<std::bidirectional_iterator_tag, Iter>::reference reference;
+	typedef typename ft::rbnode<typename Iter::value_type> node_type;
+	typedef typename ft::rbnode<typename Iter::value_type>::value_type node_value_type;
+
+	protected:
+	node_type* current_node;
+	node_type* tnull;
+
+	public:
 	
 	/* ------------- Constructors ------------- */
 	rbtree_iterator() :
-		_p() {}
+		current_node(),
+		tnull() {}
 
 	template< typename T >
 	rbtree_iterator(const ft::rbtree_iterator<T>& it) :
-		_p(it.base()) {}
+		current_node(it.current_node),
+		tnull(it.tnull) {}
 
 	rbtree_iterator(pointer p) :
-		_p(p) {}
+		current_node(p->get_root()),
+		tnull(p->get_tnull()) {}
+
 
 	/* ------------- operator= ------------- */
+
 	rbtree_iterator& operator=(const rbtree_iterator& x) {
-		_p = x._p;
+		current_node = x.current_node;
+		tnull = x.tnull;
 		return *this;
 	}
 
 	~rbtree_iterator() {}
 
-	iterator_type* base() const {
-		return _p;
-	}
 
 	/* ------------- Operators ------------- */
 
-	Iter& operator*() {
-		return *_p;
+	node_value_type& operator*() {
+		return *(current_node->content);
 	}
 
-	Iter* operator->() {
-		return &(*_p);
+	node_value_type* operator->() {
+		return &(operator*());
 	}
 
 	rbtree_iterator& operator++() {
@@ -73,9 +85,11 @@ namespace ft {
 		return tmp;
 	}
 
-	protected:
-		iterator_type* _p;
+	// protected:
+	// 	rbnode<typename Iter::value_type>* root;
+	// 	rbnode<typename Iter::value_type>* tnull;
 	};
+
 
 	/* ------------- Non-member function ------------- */
 

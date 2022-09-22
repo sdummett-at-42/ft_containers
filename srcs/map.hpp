@@ -17,7 +17,6 @@
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "rbtree.hpp"			// Required for Red-Black tree data structure
-#include "rbtree_iterator.hpp"	// Required for iterator
 
 namespace ft {
 
@@ -43,18 +42,17 @@ namespace ft {
 			typedef const value_type& const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			// typedef ft::bidirectional_iterator<value_type> iterator;
-			// typedef ft::bidirectional_iterator<const value_type> const_iterator;
-			// typedef ft::reverse_iterator<iterator> reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; 
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::iterator iterator;
+			// // typedef ft::rbtree_iterator<const value_type> const_iterator;
+			// // typedef ft::reverse_iterator<iterator> reverse_iterator;
+			// // typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 
 			/* ------------- Constructors ------------- */
 
 			explicit map (	const key_compare& comp = key_compare(),
 							const allocator_type& alloc = allocator_type()) :
-				_rbtree(comp, alloc) {
-			}
+				_rbtree(comp, alloc) {}
 
 			// template <class InputIterator>
 			// 	map (InputIterator first, InputIterator last,
@@ -75,7 +73,9 @@ namespace ft {
 
 			/* ------------- Allocator ------------- */
 
-			allocator_type get_allocator() const;
+			allocator_type get_allocator() const {
+				return _rbtree.get_allocator();
+			}
 
 
 			/* ------------- Destructor ------------- */
@@ -85,7 +85,9 @@ namespace ft {
 
 			/* ------------- Iterators ------------- */
 
-			// iterator begin();
+			iterator begin() {
+				return _rbtree.begin();
+			}
 			// const_iterator begin() const;
 			// iterator end();
 			// const_iterator end() const;
@@ -117,7 +119,15 @@ namespace ft {
 
 			/* ------------- Modfiers ------------- */
 
-			// ft::pair<iterator,bool> insert (const value_type& val);
+			// Note: temporary insert -> to delete and use the one below
+			void insert (const value_type& val) {
+				_rbtree.insert(val);
+			}
+			// ft::pair<iterator,bool> insert (const value_type& val) {
+			// 	_rbtree.insert(val);
+			// 	return ft::pair<iterator, bool>();
+			// }
+
 			// iterator insert (iterator position, const value_type& val);
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last);

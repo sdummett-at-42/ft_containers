@@ -6,7 +6,10 @@ namespace ft {
 	template < typename T >
 	class rbnode {
 
+
 		public:
+
+		typedef T value_type;
 
 		/* ------------- Constructors ------------- */
 		rbnode() {}

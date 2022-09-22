@@ -6,6 +6,7 @@
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "make_pair.hpp"
 #include "rbnode.hpp"
+#include "rbtree_iterator.hpp"
 
 #define BLACK	0
 #define RED		1
@@ -16,7 +17,7 @@ namespace ft {
 	template<
 			typename Key,
 			typename T,
-			typename Compare = std::less<Key>,
+			typename Compare = std::less<const Key>,
 			typename Alloc = std::allocator<ft::pair<const Key, T> > >
 	class rbtree {
 
@@ -35,9 +36,14 @@ namespace ft {
 		typedef const value_type& const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
+		typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
+		// typedef ft::rbtree_iterator<const value_type> const_iterator;
+		// typedef ft::reverse_iterator<iterator> reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 
 
+		/* ------------- Constructors ------------- */
 
 		rbtree( const key_compare& comp = key_compare(), 
 				const allocator_type& alloc = allocator_type()) :
@@ -65,10 +71,8 @@ namespace ft {
 			*this = x;
 		}
 
-		~rbtree() {
-			destroy_tree(root);
-			delete tnull;
-		}
+
+		/* ------------- operator= ------------- */
 
 		void recursive_copy(rbnode<value_type> *to_copy, const rbtree& x) {
 			if (to_copy == x.tnull)
@@ -83,6 +87,35 @@ namespace ft {
 			recursive_copy(x.root, x);
 			return *this;
 		}
+
+
+		/* ------------- Allocator ------------- */
+
+		allocator_type get_allocator() const {
+			return _alloc;
+		}
+
+
+		/* ------------- Destructor ------------- */
+
+		~rbtree() {
+			destroy_tree(root);
+			delete tnull;
+		}
+
+
+		/* ------------- Iterators ------------- */
+
+		iterator begin() {
+			return static_cast<iterator>(this);
+		}
+		// const_iterator begin() const;
+		// iterator end();
+		// const_iterator end() const;
+		// reverse_iterator rbegin();
+		// const_reverse_iterator rbegin() const;
+		// reverse_iterator rend();
+		// const_reverse_iterator rend() const;
 
 
 		/* ------------- RBTree utils ------------- */
@@ -123,6 +156,15 @@ namespace ft {
 			return new_node;
 		}
 
+		rbnode<value_type>	*get_root() const {
+			return root;
+		}
+		rbnode<value_type>	*get_tnull() const {
+			return tnull;
+		}
+
+		/* ------------- Capacity ------------- */
+
 		size_type size() const {
 			return _size;
 		}
@@ -140,6 +182,7 @@ namespace ft {
 		size_type max_size() const {
 			return _alloc.max_size();
 		}
+
 
 		/* ------------- RBTree rotation ------------- */
 

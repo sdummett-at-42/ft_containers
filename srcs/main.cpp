@@ -34,23 +34,43 @@
 
 int main() {
 
-	ft::rbtree<int, int> *rb = new ft::rbtree<int,int>;
-	rb->insert(ft::make_pair<int,int>(42,42));
-	rb->insert(ft::make_pair<int,int>(42,42));
-	rb->insert(ft::make_pair<int,int>(0,42));
-	rb->insert(ft::make_pair<int,int>(1,42));
-	rb->insert(ft::make_pair<int,int>(100,42));
-	rb->insert(ft::make_pair<int,int>(30,42));
-	rb->insert(ft::make_pair<int,int>(8,42));
-	rb->insert(ft::make_pair<int,int>(24,42));
-	rb->pretty_print();
+	// std::map<int, int> mp;
+	// mp.insert(std::pair<int,int>(42,43));
+	// mp.insert(std::pair<int,int>(0,1));
+	// mp.insert(std::pair<int,int>(1,2));
+	// mp.insert(std::pair<int,int>(100,101));
+	// mp.insert(std::pair<int,int>(30,31));
+	// mp.insert(std::pair<int,int>(8,9));
+	// mp.insert(std::pair<int,int>(24,25));
 
-	ft::rbtree<int, int> *rb_copy = new ft::rbtree<int, int>;
-	*rb_copy = *rb;
-	delete rb;
-	rb_copy->pretty_print();
-	ft::rbtree<int,int> rb_copy_constru(*rb_copy);
-	delete rb_copy;
-	rb_copy_constru.pretty_print();
-	// ft::map<int, int> mp;
+	// std::map<int,int>::iterator it = mp.begin();
+	// std::pair<int,int> pr = *it;
+	// std::cout << pr.first << " " << pr.second << "\n";
+	// std::cout << it->first << " " << it->second << "\n";
+
+
+	// std::map<int,int>::iterator it = mp.begin();
+	// for (; it != mp.end(); it++) {
+	// 	std::cout << it->first << " <=> " << it->second << "\n";
+	// }
+
+	// ------------------------------ //
+
+	ft::map<int, int> mp;
+	mp.insert(ft::pair<int,int>(42,43));
+	mp.insert(ft::pair<int,int>(0,1));
+	mp.insert(ft::pair<int,int>(1,2));
+	mp.insert(ft::pair<int,int>(100,101));
+	mp.insert(ft::pair<int,int>(30,31));
+	mp.insert(ft::pair<int,int>(8,9));
+	mp.insert(ft::pair<int,int>(24,25));
+
+	ft::map<int,int>::iterator it = mp.begin();
+	ft::pair<int,int> pr = *it;
+	std::cout << pr.first << " " << pr.second << "\n";
+	std::cout << it->first << " " << it->second << "\n";
+
+	// for (; it != mp.end(); it++) {
+	// 	std::cout << it->first << " <=> " << it->second << "\n";
+	// }
 }
