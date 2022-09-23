@@ -126,8 +126,12 @@ namespace ft {
 
 			/* ------------- Element access ------------- */
 
-			mapped_type& at( const key_type& key );
-			const mapped_type& at( const key_type& key ) const;
+			mapped_type& at( const key_type& key ) {
+				return static_cast<mapped_type&>(_rbtree.at(key));
+			}
+			const mapped_type& at( const key_type& key ) const {
+				return static_cast<const mapped_type&>(_rbtree.at(key));
+			}
 			// mapped_type& operator[] (const key_type& k);
 
 

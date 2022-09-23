@@ -52,6 +52,18 @@ int main() {
 	for (; it != mp.rbegin(); --it) {
 		std::cout << it->first << " ";
 	}
+	std::cout << "\n";
+
+	try {
+		int mt = mp.at(24);
+		std::cout << "mapped_type: " << mt << "\n";
+
+		(void)mt;
+	} catch (std::out_of_range& e) {
+        std::cerr << e.what() << std::endl;
+        // return -1;
+    }
+
 	std::cout << "\nFTTTT\n";
 
 	// ------------------------------ //
@@ -67,22 +79,7 @@ int main() {
 
 
 	ft::map<int,int>::reverse_iterator itft = mpft.rbegin();
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// std::cout << itft->first << "\n";
-	// itft++;
-	// if (itft == mpft.rend())
-	// 	std::cout << "YOUPIII\n";
+
 
 	for (; itft != mpft.rend(); itft++) {
 		std::cout << itft->first << " ";
@@ -95,7 +92,14 @@ int main() {
 	}
 	std::cout << "\n";
 
-
+	try {
+		int mtft = mpft.at(24);
+		std::cout << "mapped_type: " << mtft << "\n";
+		(void)mtft;
+	} catch (std::out_of_range& e) {
+        std::cerr << e.what() << std::endl;
+        // return -1;
+    }
 
 	// ft::map<int,int>::iterator it = mp.begin();
 	// (void)it;

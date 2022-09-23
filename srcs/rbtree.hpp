@@ -43,6 +43,15 @@ namespace ft {
 		typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_reverse_iterator;
 
 
+		protected:
+		key_compare				_comp;
+		allocator_type			_alloc;
+		pointer					_p;
+		size_type				_size;
+		ft::rbnode<value_type>	*root;
+		ft::rbnode<value_type>	*tnull;
+
+		public:
 		/* ------------- Constructors ------------- */
 
 		rbtree( const key_compare& comp = key_compare(), 
@@ -139,6 +148,44 @@ namespace ft {
 			const_reverse_iterator crit(tnull, this);
 			return static_cast<const_reverse_iterator>(crit);
 		}
+
+
+		/* ------------- Element access ------------- */
+
+		rbnode<value_type>* recursive_search(rbnode<value_type> *root_, mapped_type key) {
+			if (root_ != tnull && key == root_->content->first)
+				return root_;
+			else if (root_ != tnull && _comp(key, root_->content->first)) {
+				if (root_->left != tnull)
+					return recursive_search(root_->left, key);
+			}
+			else if (root_ != tnull) {
+				if (root_->right != tnull)
+					return recursive_search(root_->right, key);
+			}
+			return tnull;
+		}
+
+		mapped_type& at( const key_type& key ) {
+			rbnode<value_type>* found = recursive_search(root, key);
+
+			if (found == tnull) {
+				std::cout << "map::at";
+				throw std::out_of_range("");
+			}
+			return static_cast<mapped_type&>(found->content->second);
+		}
+
+		const mapped_type& at( const key_type& key ) const {
+			rbnode<value_type>* found = recursive_search(root, key);
+
+			if (found == tnull) {
+				std::cout << "map::at";
+				throw std::out_of_range("");
+			}
+			return static_cast<const mapped_type&>(found->content->second);
+		}
+		// mapped_type& operator[] (const key_type& k);
 
 
 		/* ------------- RBTree utils ------------- */
@@ -279,25 +326,25 @@ namespace ft {
 
 		/* Go deep down to tree until a leaf is found
 		*/
-		void recursive_insertion(rbnode<value_type> *root, rbnode<value_type> *new_node) {
-			if (root != tnull && _comp(new_node->content->first,
-				root->content->first)) {
-				if (root->left != tnull) {
-					recursive_insertion(root->left, new_node);
+		void recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
+			if (root_ != tnull && _comp(new_node->content->first,
+				root_->content->first)) {
+				if (root_->left != tnull) {
+					recursive_insertion(root_->left, new_node);
 					return ;
 				}
 				else
-					root->left = new_node;
+					root_->left = new_node;
 			}
-			else if (root != tnull) {
-				if (root->right != tnull) {
-					recursive_insertion(root->right, new_node);
+			else if (root_ != tnull) {
+				if (root_->right != tnull) {
+					recursive_insertion(root_->right, new_node);
 					return ;
 				}
 				else
-					root->right = new_node;
+					root_->right = new_node;
 			}
-			new_node->parent = root;
+			new_node->parent = root_;
 		}
 
 		void rb_insert_fixup(rbnode<value_type> *new_node) {
@@ -487,14 +534,6 @@ namespace ft {
 				print_helper(root, "", true);
 			}
 		}
-
-		protected:
-		key_compare				_comp;
-		allocator_type			_alloc;
-		pointer					_p;
-		size_type				_size;
-		ft::rbnode<value_type>	*root;
-		ft::rbnode<value_type>	*tnull;
 	};
 }
 
