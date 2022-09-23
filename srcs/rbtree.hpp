@@ -317,6 +317,29 @@ namespace ft {
 		}
 
 
+		/* ------------- Modifiers ------------- */
+		void erase( iterator pos ) {
+			rb_delete(pos.base());
+		}
+
+		void erase( iterator first, iterator last ) {
+			rbnode<value_type>* to_del;
+
+			while (first != last) {
+				to_del = first.base();
+				first++;
+				rb_delete(to_del);
+			}
+		}
+		size_type erase( const Key& key ) {
+			rbnode<value_type>* found = recursive_search(root, key);
+
+			if (found == tnull)
+				return 0;
+			rb_delete(found);
+			return 1;
+		}
+
 		/* ------------- RBTree insertion ------------- */
 
 		ft::pair<iterator, bool>	insert(value_type val) {

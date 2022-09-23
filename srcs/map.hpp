@@ -139,11 +139,6 @@ namespace ft {
 
 			/* ------------- Modfiers ------------- */
 
-			//  Returns a pair consisting of an iterator to the inserted element
-			// (or to the element that prevented the insertion) and a bool
-			// denoting whether the insertion took place.
-
-			// Note: temporary insert -> to delete and use the one below
 			ft::pair<iterator, bool> insert (const value_type& val) {
 				return _rbtree.insert(val);
 			}
@@ -155,15 +150,16 @@ namespace ft {
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last);
 
-			// Notes : erase with iterator as parameter have
-			// 			different return type on cplusplus.com
-			//			and cppreference.com
-			// void erase (iterator position);
-			// void erase (iterator first, iterator last);
-			// 			OR
-			// iterator erase( iterator pos );
-			// iterator erase( iterator first, iterator last );
-			// size_type erase (const key_type& k);
+			void erase( iterator pos ) {
+				_rbtree.erase(pos);
+			}
+			void erase( iterator first, iterator last ) {
+				_rbtree.erase(first, last);
+			}
+			size_type erase( const Key& key ) {
+				return _rbtree.erase(key);
+			}
+
 			void swap (map& x);
 
 			void clear() {

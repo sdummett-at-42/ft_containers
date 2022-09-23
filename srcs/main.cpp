@@ -70,7 +70,42 @@ int main() {
 	std::cout << "pr.first: " << pr.first->first << "| pr.second: " << pr.second << "\n";
 	pr = mp.insert(std::pair<int,int>(1337,25));
 	std::cout << "pr.first: " << pr.first->first << "| pr.second: " << pr.second << "\n";
+
+	std::cout << "Before erase\n";
+	for (it = mp.rbegin(); it != mp.rend(); it++)
+		std::cout << it->first << " ";
+	std::cout << "\n";
+	mp.erase(pr.first);
+	std::cout << "After erase\n";
+	for (it = mp.rbegin(); it != mp.rend(); it++)
+		std::cout << it->first << " ";
+	std::cout << "\n";
+
+	std::cout << "\nBefore erase with first,last\n";
+	std::map<int,int>::iterator itfirst = mp.begin();
+	std::map<int,int>::iterator itlast = mp.begin();
+	for (itfirst = mp.begin(); itfirst != mp.end(); itfirst++)
+		std::cout << itfirst->first << " ";
+	std::cout << "\n";
+	itfirst = mp.begin();
+	itlast = mp.begin();
+	itlast++;
+	itlast++;
+	itlast++;
+	mp.erase(itfirst, itlast);
+	std::cout << "After erase with first,last\n";
+	for (itfirst = mp.begin(); itfirst != mp.end(); itfirst++)
+		std::cout << itfirst->first << " ";
+	std::cout << "\n";
+
+	std :: cout << mp.erase(100) << "\n";
+	std :: cout << mp.erase(50) << "\n";
+	std::cout << "After erase with key\n";
+	for (itfirst = mp.begin(); itfirst != mp.end(); itfirst++)
+		std::cout << itfirst->first << " ";
+	std::cout << "\n";
 	std::cout << "Final size : " << mp.size() << "\n";
+
 	// ------------------------------ //
 	std::cout << "\nFTTTT\n";
 
@@ -110,6 +145,39 @@ int main() {
 	std::cout << "pr.first: " << ftpr.first->first << "| pr.second: " << ftpr.second << "\n";
 	ftpr = ftmp.insert(ft::pair<int,int>(1337,25));
 	std::cout << "pr.first: " << ftpr.first->first << "| pr.second: " << ftpr.second << "\n";
-	std::cout << "Final size : " << ftmp.size() << "\n";
 
+	std::cout << "Before erase\n";
+	for (ftit = ftmp.rbegin(); ftit != ftmp.rend(); ftit++)
+		std::cout << ftit->first << " ";
+	std::cout << "\n";
+	ftmp.erase(ftpr.first);
+	std::cout << "After erase\n";
+	for (ftit = ftmp.rbegin(); ftit != ftmp.rend(); ftit++)
+		std::cout << ftit->first << " ";
+	std::cout << "\n";
+
+	std::cout << "\nBefore erase with first,last\n";
+	ft::map<int,int>::iterator ftitfirst = ftmp.begin();
+	ft::map<int,int>::iterator ftitlast = ftmp.begin();
+	for (ftitfirst = ftmp.begin(); ftitfirst != ftmp.end(); ftitfirst++)
+		std::cout << ftitfirst->first << " ";
+	std::cout << "\n";
+	ftitfirst = ftmp.begin();
+	ftitlast = ftmp.begin();
+	ftitlast++;
+	ftitlast++;
+	ftitlast++;
+	ftmp.erase(ftitfirst, ftitlast);
+	std::cout << "After erase with first,last\n";
+	for (ftitfirst = ftmp.begin(); ftitfirst != ftmp.end(); ftitfirst++)
+		std::cout << ftitfirst->first << " ";
+	std::cout << "\n";
+
+	std :: cout << ftmp.erase(100) << "\n";
+	std :: cout << ftmp.erase(50) << "\n";
+	std::cout << "After erase with key\n";
+	for (ftitfirst = ftmp.begin(); ftitfirst != ftmp.end(); ftitfirst++)
+		std::cout << ftitfirst->first << " ";
+	std::cout << "\n";
+	std::cout << "Final size : " << ftmp.size() << "\n";
 }
