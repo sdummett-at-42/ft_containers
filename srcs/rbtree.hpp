@@ -185,7 +185,18 @@ namespace ft {
 			}
 			return static_cast<const mapped_type&>(found->content->second);
 		}
-		// mapped_type& operator[] (const key_type& k);
+
+		// Note: Error when using operator[] with a different type :
+		// implicit conversion from 'long' to 'ft::map<int, int>::mapped_type'
+		// (aka 'int') changes value from 133333333337 to 189347161
+		mapped_type& operator[] (const key_type& k) {
+			rbnode<value_type>* found = recursive_search(root, k);
+
+			if (found == tnull)
+				insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
+			found = recursive_search(root, k);
+			return found->content->second;
+		}
 
 
 		/* ------------- RBTree utils ------------- */

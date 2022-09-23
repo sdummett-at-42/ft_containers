@@ -132,7 +132,9 @@ namespace ft {
 			const mapped_type& at( const key_type& key ) const {
 				return static_cast<const mapped_type&>(_rbtree.at(key));
 			}
-			// mapped_type& operator[] (const key_type& k);
+			mapped_type& operator[] (const key_type& k) {
+				return _rbtree[k];
+			}
 
 
 			/* ------------- Modfiers ------------- */

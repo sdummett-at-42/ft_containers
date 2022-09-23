@@ -43,6 +43,10 @@ int main() {
 	mp.insert(std::pair<int,int>(8,9));
 	mp.insert(std::pair<int,int>(24,25));
 
+	std::cout << "STD OPERATOR[]\n";
+	for (int i = 0; i < 6; i++)
+		std::cout << mp[i] << " ";
+	mp[42] = 133333337;
 	std::map<int,int>::reverse_iterator it = mp.rbegin();
 	for (; it != mp.rend(); it++) {
 		std::cout << it->first << " ";
@@ -50,69 +54,49 @@ int main() {
 	std::cout << "\n";
 	it--;
 	for (; it != mp.rbegin(); --it) {
-		std::cout << it->first << " ";
+		std::cout << "[" << it->first << ", " << it->second << "]" <<" ";
 	}
 	std::cout << "\n";
 
 	try {
 		int mt = mp.at(24);
 		std::cout << "mapped_type: " << mt << "\n";
-
-		(void)mt;
 	} catch (std::out_of_range& e) {
         std::cerr << e.what() << std::endl;
-        // return -1;
     }
 
-	std::cout << "\nFTTTT\n";
 
 	// ------------------------------ //
+	std::cout << "\nFTTTT\n";
 
-	ft::map<int, int> mpft;
-	mpft.insert(ft::pair<int,int>(42,43));
-	mpft.insert(ft::pair<int,int>(0,1));
-	mpft.insert(ft::pair<int,int>(1,2));
-	mpft.insert(ft::pair<int,int>(100,101));
-	mpft.insert(ft::pair<int,int>(30,31));
-	mpft.insert(ft::pair<int,int>(8,9));
-	mpft.insert(ft::pair<int,int>(24,25));
+	ft::map<int, int> ftmp;
+	ftmp.insert(ft::pair<int,int>(42,43));
+	ftmp.insert(ft::pair<int,int>(0,1));
+	ftmp.insert(ft::pair<int,int>(1,2));
+	ftmp.insert(ft::pair<int,int>(100,101));
+	ftmp.insert(ft::pair<int,int>(30,31));
+	ftmp.insert(ft::pair<int,int>(8,9));
+	ftmp.insert(ft::pair<int,int>(24,25));
 
-
-	ft::map<int,int>::reverse_iterator itft = mpft.rbegin();
-
-
-	for (; itft != mpft.rend(); itft++) {
-		std::cout << itft->first << " ";
+	std::cout << "FT OPERATOR[]\n";
+	for (int i = 0; i < 6; i++)
+		std::cout << ftmp[i] << " ";
+	ftmp[42] = 133333337;
+	ft::map<int,int>::reverse_iterator ftit = ftmp.rbegin();
+	for (; ftit != ftmp.rend(); ftit++) {
+		std::cout << ftit->first << " ";
 	}
-
 	std::cout << "\n";
-	itft--;
-	for (; itft != mpft.rbegin(); --itft) {
-		std::cout << itft->first << " ";
+	ftit--;
+	for (; ftit != ftmp.rbegin(); --ftit) {
+		std::cout << "[" << ftit->first << ", " << ftit->second << "]" <<" ";
 	}
 	std::cout << "\n";
 
 	try {
-		int mtft = mpft.at(24);
-		std::cout << "mapped_type: " << mtft << "\n";
-		(void)mtft;
+		int mt = ftmp.at(24);
+		std::cout << "mapped_type: " << mt << "\n";
 	} catch (std::out_of_range& e) {
         std::cerr << e.what() << std::endl;
-        // return -1;
     }
-
-	// ft::map<int,int>::iterator it = mp.begin();
-	// (void)it;
-
-	// ft::pair<int,int> pr = *it;
-	// (void)pr;
-	// for (int i = 0; i < 6; i++) {
-	// 	std::cout << it->first << " " << it->second << "\n";
-	// 	it.next();
-	// }
-	// std::cout << pr.first << " " << pr.second << "\n";
-
-	// for (; it != mp.end(); it++) {
-	// 	std::cout << it->first << " <=> " << it->second << "\n";
-	// }
 }
