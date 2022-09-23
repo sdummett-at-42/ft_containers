@@ -23,30 +23,34 @@ namespace ft {
 
 	protected:
 	node_type* current_node;
-	node_type* tnull;
+	pointer rbtree;
 
 	public:
 	
 	/* ------------- Constructors ------------- */
+
 	rbtree_iterator() :
 		current_node(),
-		tnull() {}
+		rbtree() {}
 
 	template< typename T >
 	rbtree_iterator(const ft::rbtree_iterator<T>& it) :
 		current_node(it.current_node),
-		tnull(it.tnull) {}
+		rbtree(it.rbtree) {}
 
-	rbtree_iterator(pointer p) :
-		current_node(p->get_root()),
-		tnull(p->get_tnull()) {}
+	rbtree_iterator(node_type* current_node, pointer rbtree) :
+		current_node(current_node),
+		rbtree(rbtree) {}
 
+	node_type* base() const {
+		return current_node;
+	}
 
 	/* ------------- operator= ------------- */
 
 	rbtree_iterator& operator=(const rbtree_iterator& x) {
 		current_node = x.current_node;
-		tnull = x.tnull;
+		rbtree = x.rbtree;
 		return *this;
 	}
 
@@ -64,7 +68,7 @@ namespace ft {
 	}
 
 	rbtree_iterator& operator++() {
-		// Note: to implement
+		current_node = next(current_node);
 		return *this;
 	}
 
@@ -75,7 +79,10 @@ namespace ft {
 	}
 
 	rbtree_iterator& operator--() {
-		// Note: to implement
+		if (current_node == rbtree->get_tnull())
+			current_node = rbtree->greatest();
+		else
+			current_node = previous(current_node);
 		return *this;
 	}
 
@@ -85,9 +92,47 @@ namespace ft {
 		return tmp;
 	}
 
-	// protected:
-	// 	rbnode<typename Iter::value_type>* root;
-	// 	rbnode<typename Iter::value_type>* tnull;
+	/* Find the next node in sorted order
+	** Returns tnull if nothing was found.
+	*/
+	node_type *next(node_type *curr) const {
+		node_type *tmp = curr;
+		if (curr == rbtree->get_tnull())
+			return curr;
+		else if (curr->right != rbtree->get_tnull()) {
+			curr = curr->right;
+			while (curr->left != rbtree->get_tnull())
+				curr = curr->left;
+			return curr;
+		}
+		curr = curr->parent;
+		while (curr != rbtree->get_tnull() && curr->right == tmp) {
+			tmp = curr;
+			curr = curr->parent;
+		}
+		return curr;
+	}
+	/* Find the previous node in sorted order
+	** Returns tnull if nothing was found.
+	*/
+	node_type *previous(node_type *curr) const {
+		node_type *tmp = curr;
+
+		if (curr == rbtree->get_tnull())
+			return curr;
+		else if (curr->left != rbtree->get_tnull()) {
+			curr = curr->left;
+			while (curr->right != rbtree->get_tnull())
+				curr = curr->right;
+			return curr;
+		}
+		curr = curr->parent;
+		while (curr != rbtree->get_tnull() && curr->left == tmp) {
+			tmp = curr;
+			curr = curr->parent;
+		}
+		return curr;
+	}
 	};
 
 

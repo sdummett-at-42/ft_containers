@@ -37,10 +37,9 @@ namespace ft {
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
-		// typedef ft::rbtree_iterator<const value_type> const_iterator;
-		// typedef ft::reverse_iterator<iterator> reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-
+		typedef ft::rbtree_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_iterator;
+		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
+		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_reverse_iterator;
 
 
 		/* ------------- Constructors ------------- */
@@ -107,11 +106,21 @@ namespace ft {
 		/* ------------- Iterators ------------- */
 
 		iterator begin() {
-			return static_cast<iterator>(this);
+			iterator it(lowest(), this);
+			return static_cast<iterator>(it);
 		}
-		// const_iterator begin() const;
-		// iterator end();
-		// const_iterator end() const;
+		const_iterator begin() const {
+			const_iterator cit(lowest(), this);
+			return static_cast<const_iterator>(cit);
+		}
+		iterator end() {
+			iterator it(tnull, this);
+			return static_cast<iterator>(it);
+		}
+		const_iterator end() const {
+			const_iterator cit(tnull, this);
+			return static_cast<const_iterator>(cit);
+		}
 		// reverse_iterator rbegin();
 		// const_reverse_iterator rbegin() const;
 		// reverse_iterator rend();
@@ -119,6 +128,19 @@ namespace ft {
 
 
 		/* ------------- RBTree utils ------------- */
+
+		rbnode<value_type> *lowest() const {
+			ft::rbnode<value_type> *lowest = root;
+			while (lowest->left != tnull)
+				lowest = lowest->left;
+			return lowest;
+		}
+		rbnode<value_type> *greatest() const {
+			ft::rbnode<value_type> *greatest = root;
+			while (greatest->right != tnull)
+				greatest = greatest->right;
+			return greatest;
+		}
 
 		void rb_transplant(rbnode<value_type> *u, rbnode<value_type> *v) {
 			if (u->parent == tnull)			// u is root

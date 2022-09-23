@@ -34,41 +34,61 @@
 
 int main() {
 
-	// std::map<int, int> mp;
-	// mp.insert(std::pair<int,int>(42,43));
-	// mp.insert(std::pair<int,int>(0,1));
-	// mp.insert(std::pair<int,int>(1,2));
-	// mp.insert(std::pair<int,int>(100,101));
-	// mp.insert(std::pair<int,int>(30,31));
-	// mp.insert(std::pair<int,int>(8,9));
-	// mp.insert(std::pair<int,int>(24,25));
+	std::map<int, int> mp;
+	mp.insert(std::pair<int,int>(42,43));
+	mp.insert(std::pair<int,int>(0,1));
+	mp.insert(std::pair<int,int>(1,2));
+	mp.insert(std::pair<int,int>(100,101));
+	mp.insert(std::pair<int,int>(30,31));
+	mp.insert(std::pair<int,int>(8,9));
+	mp.insert(std::pair<int,int>(24,25));
 
-	// std::map<int,int>::iterator it = mp.begin();
-	// std::pair<int,int> pr = *it;
-	// std::cout << pr.first << " " << pr.second << "\n";
-	// std::cout << it->first << " " << it->second << "\n";
-
-
-	// std::map<int,int>::iterator it = mp.begin();
-	// for (; it != mp.end(); it++) {
-	// 	std::cout << it->first << " <=> " << it->second << "\n";
-	// }
+	std::map<int,int>::iterator it = mp.begin();
+	for (; it != mp.end(); it++) {
+		std::cout << it->first << " ";
+	}
+	std::cout << "\n";
+	it--;
+	for (; it != mp.begin(); --it) {
+		std::cout << it->first << " ";
+	}
+	std::cout << "\nFTTTT\n";
 
 	// ------------------------------ //
 
-	ft::map<int, int> mp;
-	mp.insert(ft::pair<int,int>(42,43));
-	mp.insert(ft::pair<int,int>(0,1));
-	mp.insert(ft::pair<int,int>(1,2));
-	mp.insert(ft::pair<int,int>(100,101));
-	mp.insert(ft::pair<int,int>(30,31));
-	mp.insert(ft::pair<int,int>(8,9));
-	mp.insert(ft::pair<int,int>(24,25));
+	ft::map<int, int> mpft;
+	mpft.insert(ft::pair<int,int>(42,43));
+	mpft.insert(ft::pair<int,int>(0,1));
+	mpft.insert(ft::pair<int,int>(1,2));
+	mpft.insert(ft::pair<int,int>(100,101));
+	mpft.insert(ft::pair<int,int>(30,31));
+	mpft.insert(ft::pair<int,int>(8,9));
+	mpft.insert(ft::pair<int,int>(24,25));
 
-	ft::map<int,int>::iterator it = mp.begin();
-	ft::pair<int,int> pr = *it;
-	std::cout << pr.first << " " << pr.second << "\n";
-	std::cout << it->first << " " << it->second << "\n";
+	ft::map<int,int>::iterator itft = mpft.begin();
+	for (; itft != mpft.end(); itft++) {
+		std::cout << itft->first << " ";
+	}
+
+	std::cout << "\n";
+	itft--;
+	for (; itft != mpft.begin(); --itft) {
+		std::cout << itft->first << " ";
+	}
+	std::cout << "\n";
+
+
+
+	// ft::map<int,int>::iterator it = mp.begin();
+	// (void)it;
+
+	// ft::pair<int,int> pr = *it;
+	// (void)pr;
+	// for (int i = 0; i < 6; i++) {
+	// 	std::cout << it->first << " " << it->second << "\n";
+	// 	it.next();
+	// }
+	// std::cout << pr.first << " " << pr.second << "\n";
 
 	// for (; it != mp.end(); it++) {
 	// 	std::cout << it->first << " <=> " << it->second << "\n";
