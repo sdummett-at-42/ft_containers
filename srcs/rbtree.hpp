@@ -343,6 +343,31 @@ namespace ft {
 			return pr;
 		}
 
+		iterator insert (iterator position, const value_type& val) {
+			rbnode<value_type> *new_node = init_new_node(val);
+			ft::pair<iterator, bool> pr;
+
+			if (root == tnull) {
+				root = new_node;
+				new_node->color = BLACK;
+				pr.first = iterator(new_node, this);
+				pr.second = true;
+				++_size;
+			}
+			else {
+
+				pr = recursive_insertion(position.base(), new_node);
+				if (pr.second == true) {
+					rb_insert_fixup(new_node);
+					++_size;
+				}
+				else
+					destroy_node(new_node);
+			}
+			return pr.first;
+		}
+
+
 		// Note: Fix duplicate keys in rbtree
 
 		/* Go deep down to tree until a leaf is found

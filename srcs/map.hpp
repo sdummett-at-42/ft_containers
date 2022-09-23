@@ -147,12 +147,11 @@ namespace ft {
 			ft::pair<iterator, bool> insert (const value_type& val) {
 				return _rbtree.insert(val);
 			}
-			// ft::pair<iterator,bool> insert (const value_type& val) {
-			// 	_rbtree.insert(val);
-			// 	return ft::pair<iterator, bool>();
-			// }
 
-			// iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val) {
+				return _rbtree.insert(position, val);
+			}
+
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last);
 
