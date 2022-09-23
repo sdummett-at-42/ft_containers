@@ -36,6 +36,7 @@ int main() {
 
 	std::map<int, int> mp;
 	mp.insert(std::pair<int,int>(42,43));
+	mp.insert(std::pair<int,int>(42,43));
 	mp.insert(std::pair<int,int>(0,1));
 	mp.insert(std::pair<int,int>(1,2));
 	mp.insert(std::pair<int,int>(100,101));
@@ -65,11 +66,16 @@ int main() {
         std::cerr << e.what() << std::endl;
     }
 
-
+	std::pair<std::map<int,int>::iterator, bool> pr = mp.insert(std::pair<int,int>(24,25));
+	std::cout << "pr.first: " << pr.first->first << "| pr.second: " << pr.second << "\n";
+	pr = mp.insert(std::pair<int,int>(1337,25));
+	std::cout << "pr.first: " << pr.first->first << "| pr.second: " << pr.second << "\n";
+	std::cout << "Final size : " << mp.size() << "\n";
 	// ------------------------------ //
 	std::cout << "\nFTTTT\n";
 
 	ft::map<int, int> ftmp;
+	ftmp.insert(ft::pair<int,int>(42,43));
 	ftmp.insert(ft::pair<int,int>(42,43));
 	ftmp.insert(ft::pair<int,int>(0,1));
 	ftmp.insert(ft::pair<int,int>(1,2));
@@ -99,4 +105,11 @@ int main() {
 	} catch (std::out_of_range& e) {
         std::cerr << e.what() << std::endl;
     }
+
+	ft::pair<ft::map<int,int>::iterator, bool> ftpr = ftmp.insert(ft::pair<int,int>(24,25));
+	std::cout << "pr.first: " << ftpr.first->first << "| pr.second: " << ftpr.second << "\n";
+	ftpr = ftmp.insert(ft::pair<int,int>(1337,25));
+	std::cout << "pr.first: " << ftpr.first->first << "| pr.second: " << ftpr.second << "\n";
+	std::cout << "Final size : " << ftmp.size() << "\n";
+
 }

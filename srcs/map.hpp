@@ -139,9 +139,13 @@ namespace ft {
 
 			/* ------------- Modfiers ------------- */
 
+			//  Returns a pair consisting of an iterator to the inserted element
+			// (or to the element that prevented the insertion) and a bool
+			// denoting whether the insertion took place.
+
 			// Note: temporary insert -> to delete and use the one below
-			void insert (const value_type& val) {
-				_rbtree.insert(val);
+			ft::pair<iterator, bool> insert (const value_type& val) {
+				return _rbtree.insert(val);
 			}
 			// ft::pair<iterator,bool> insert (const value_type& val) {
 			// 	_rbtree.insert(val);

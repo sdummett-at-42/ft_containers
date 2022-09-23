@@ -319,43 +319,52 @@ namespace ft {
 
 		/* ------------- RBTree insertion ------------- */
 
-		void	insert(value_type val) {
+		ft::pair<iterator, bool>	insert(value_type val) {
 			rbnode<value_type> *new_node = init_new_node(val);
+			ft::pair<iterator, bool> pr;
 
 			if (root == tnull) {
 				root = new_node;
 				new_node->color = BLACK;
+				pr.first = iterator(new_node, this);
+				pr.second = true;
+				++_size;
 			}
 			else {
-				recursive_insertion(root, new_node);
-				rb_insert_fixup(new_node);
+
+				pr = recursive_insertion(root, new_node);
+				if (pr.second == true) {
+					rb_insert_fixup(new_node);
+					++_size;
+				}
+				else
+					destroy_node(new_node);
 			}
-			++_size;
+			return pr;
 		}
 
 		// Note: Fix duplicate keys in rbtree
 
 		/* Go deep down to tree until a leaf is found
 		*/
-		void recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
+		ft::pair<iterator, bool> recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
+			if (root != tnull && new_node->content->first == root_->content->first)
+				return ft::pair<iterator,bool>(iterator(root_, this), false);
 			if (root_ != tnull && _comp(new_node->content->first,
 				root_->content->first)) {
-				if (root_->left != tnull) {
-					recursive_insertion(root_->left, new_node);
-					return ;
-				}
+				if (root_->left != tnull)
+					return recursive_insertion(root_->left, new_node);
 				else
 					root_->left = new_node;
 			}
 			else if (root_ != tnull) {
-				if (root_->right != tnull) {
-					recursive_insertion(root_->right, new_node);
-					return ;
-				}
+				if (root_->right != tnull)
+					return recursive_insertion(root_->right, new_node);
 				else
 					root_->right = new_node;
 			}
 			new_node->parent = root_;
+			return ft::pair<iterator, bool>(iterator(new_node, this), true);
 		}
 
 		void rb_insert_fixup(rbnode<value_type> *new_node) {
