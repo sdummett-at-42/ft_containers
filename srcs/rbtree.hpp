@@ -7,6 +7,7 @@
 #include "make_pair.hpp"
 #include "rbnode.hpp"
 #include "rbtree_iterator.hpp"
+#include "rbtree_reverse_iterator.hpp"
 
 #define BLACK	0
 #define RED		1
@@ -38,8 +39,8 @@ namespace ft {
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
 		typedef ft::rbtree_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_iterator;
-		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
-		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_reverse_iterator;
+		typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
+		typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_reverse_iterator;
 
 
 		/* ------------- Constructors ------------- */
@@ -121,10 +122,23 @@ namespace ft {
 			const_iterator cit(tnull, this);
 			return static_cast<const_iterator>(cit);
 		}
-		// reverse_iterator rbegin();
-		// const_reverse_iterator rbegin() const;
-		// reverse_iterator rend();
-		// const_reverse_iterator rend() const;
+
+		reverse_iterator rbegin() {
+			reverse_iterator rit(greatest(), this);
+			return static_cast<reverse_iterator>(rit);
+		}
+		const_reverse_iterator rbegin() const {
+			const_reverse_iterator crit(greatest(), this);
+			return static_cast<const_reverse_iterator>(crit);
+		}
+		reverse_iterator rend() {
+			reverse_iterator rit(tnull, this);
+			return static_cast<reverse_iterator>(rit);
+		}
+		const_reverse_iterator rend() const {
+			const_reverse_iterator crit(tnull, this);
+			return static_cast<const_reverse_iterator>(crit);
+		}
 
 
 		/* ------------- RBTree utils ------------- */

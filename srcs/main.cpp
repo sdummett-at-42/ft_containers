@@ -43,13 +43,13 @@ int main() {
 	mp.insert(std::pair<int,int>(8,9));
 	mp.insert(std::pair<int,int>(24,25));
 
-	std::map<int,int>::iterator it = mp.begin();
-	for (; it != mp.end(); it++) {
+	std::map<int,int>::reverse_iterator it = mp.rbegin();
+	for (; it != mp.rend(); it++) {
 		std::cout << it->first << " ";
 	}
 	std::cout << "\n";
 	it--;
-	for (; it != mp.begin(); --it) {
+	for (; it != mp.rbegin(); --it) {
 		std::cout << it->first << " ";
 	}
 	std::cout << "\nFTTTT\n";
@@ -65,14 +65,32 @@ int main() {
 	mpft.insert(ft::pair<int,int>(8,9));
 	mpft.insert(ft::pair<int,int>(24,25));
 
-	ft::map<int,int>::iterator itft = mpft.begin();
-	for (; itft != mpft.end(); itft++) {
+
+	ft::map<int,int>::reverse_iterator itft = mpft.rbegin();
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// std::cout << itft->first << "\n";
+	// itft++;
+	// if (itft == mpft.rend())
+	// 	std::cout << "YOUPIII\n";
+
+	for (; itft != mpft.rend(); itft++) {
 		std::cout << itft->first << " ";
 	}
 
 	std::cout << "\n";
 	itft--;
-	for (; itft != mpft.begin(); --itft) {
+	for (; itft != mpft.rbegin(); --itft) {
 		std::cout << itft->first << " ";
 	}
 	std::cout << "\n";

@@ -44,8 +44,8 @@ namespace ft {
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::iterator iterator;
 			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::const_iterator const_iterator;
-			// typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::reverse_iterator reverse_iterator;
-			// typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::const_reverse_iterator const_reverse_iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::reverse_iterator reverse_iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::const_reverse_iterator const_reverse_iterator;
 
 
 			/* ------------- Constructors ------------- */
@@ -97,10 +97,18 @@ namespace ft {
 			const_iterator end() const {
 				return static_cast<const_iterator>(_rbtree.end());
 			}
-			// reverse_iterator rbegin();
-			// const_reverse_iterator rbegin() const;
-			// reverse_iterator rend();
-			// const_reverse_iterator rend() const;
+			reverse_iterator rbegin() {
+				return static_cast<reverse_iterator>(_rbtree.rbegin());
+			}
+			const_reverse_iterator rbegin() const {
+				return static_cast<const_reverse_iterator>(_rbtree.rbegin());
+			}
+			reverse_iterator rend() {
+				return static_cast<reverse_iterator>(_rbtree.rend());
+			}
+			const_reverse_iterator rend() const {
+				return static_cast<const_reverse_iterator>(_rbtree.rend());
+			}
 
 
 			/* ------------- Capacity ------------- */
