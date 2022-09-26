@@ -90,8 +90,7 @@ int main() {
 	itfirst = mp.begin();
 	itlast = mp.begin();
 	itlast++;
-	itlast++;
-	itlast++;
+ 	itlast++;
 	mp.erase(itfirst, itlast);
 	std::cout << "After erase with first,last\n";
 	for (itfirst = mp.begin(); itfirst != mp.end(); itfirst++)
@@ -106,6 +105,15 @@ int main() {
 	std::cout << "\n";
 	std::cout << "Final size : " << mp.size() << "\n";
 
+	// itfirst = mp.lower_bound(5);
+	// std::cout << "lower_bound : " << itfirst->first << "\n";
+	// itfirst = mp.lower_bound(6);
+	// std::cout << "lower_bound : " << itfirst->first << "\n";
+	// itfirst = mp.upper_bound(5);
+	// std::cout << "upper_bound : " << itfirst->first << "\n";
+	// itfirst = mp.upper_bound(6);
+	// std::cout << "upper_bound : " << itfirst->first << "\n";
+	// ------------------------------ //
 	// ------------------------------ //
 	std::cout << "\nFTTTT\n";
 
@@ -180,4 +188,15 @@ int main() {
 		std::cout << ftitfirst->first << " ";
 	std::cout << "\n";
 	std::cout << "Final size : " << ftmp.size() << "\n";
+	
+	// ftitfirst = ftmp.lower_bound(5);
+	// std::cout << "lower_bound : " << ftitfirst->first << "\n";
+	// ftitfirst = ftmp.lower_bound(6);
+	// std::cout << "lower_bound : " << ftitfirst->first << "\n";
+	// ftitfirst = ftmp.upper_bound(5);
+	// std::cout << "upper_bound : " << ftitfirst->first << "\n";
+	// ftitfirst = ftmp.upper_bound(6);
+	// std::cout << "upper_bound : " << ftitfirst->first << "\n";
+
+
 }

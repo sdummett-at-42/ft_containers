@@ -17,6 +17,8 @@
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "rbtree.hpp"			// Required for Red-Black tree data structure
+#include "enable_if.hpp"
+#include "is_integral.hpp"
 
 namespace ft {
 
@@ -54,10 +56,12 @@ namespace ft {
 							const allocator_type& alloc = allocator_type()) :
 				_rbtree(comp, alloc) {}
 
-			// template <class InputIterator>
-			// 	map (InputIterator first, InputIterator last,
-			// 	const key_compare& comp = key_compare(),
-			// 	const allocator_type& alloc = allocator_type());
+			template <class InputIterator>
+				map (InputIterator first, InputIterator last,
+				const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0):
+				_rbtree(first, last, comp, alloc) {}
 
 			map (const map& x) :
 				_rbtree(x._rbtree) {
@@ -178,13 +182,27 @@ namespace ft {
 
 			/* ------------- Lookup ------------- */
 
-			// iterator find (const key_type& k);
-			// const_iterator find (const key_type& k) const;
-			size_type count (const key_type& k) const;
-			// iterator lower_bound (const key_type& k);
-			// const_iterator lower_bound (const key_type& k) const;
-			// iterator upper_bound (const key_type& k);
-			// const_iterator upper_bound (const key_type& k) const;
+			iterator find (const key_type& k) {
+				return _rbtree.find(k);
+			}
+			const_iterator find (const key_type& k) const {
+				return _rbtree.find(k);
+			}
+			size_type count (const key_type& k) const {
+				return _rbtree.count(k);
+			}
+			iterator lower_bound (const key_type& k) {
+				return _rbtree.lower_bound(k);
+			}
+			const_iterator lower_bound (const key_type& k) const {
+				return _rbtree.lower_bound(k);
+			}
+			iterator upper_bound (const key_type& k) {
+				return _rbtree.upper_bound(k);
+			}
+			const_iterator upper_bound (const key_type& k) const {
+				return _rbtree.upper_bound(k);
+			}
 			// ft::pair<iterator,iterator> equal_range (const key_type& k);
 			// ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 

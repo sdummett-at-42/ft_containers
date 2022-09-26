@@ -8,6 +8,8 @@
 #include "rbnode.hpp"
 #include "rbtree_iterator.hpp"
 #include "rbtree_reverse_iterator.hpp"
+#include "enable_if.hpp"
+#include "is_integral.hpp"
 
 #define BLACK	0
 #define RED		1
@@ -46,7 +48,6 @@ namespace ft {
 		protected:
 		key_compare				_comp;
 		allocator_type			_alloc;
-		pointer					_p;
 		size_type				_size;
 		ft::rbnode<value_type>	*root;
 		ft::rbnode<value_type>	*tnull;
@@ -58,24 +59,31 @@ namespace ft {
 				const allocator_type& alloc = allocator_type()) :
 			_comp(comp),
 			_alloc(alloc),
-			_p(0),
 			_size(0) {
 			tnull = init_tnull();
-			tnull->color = BLACK;
-			tnull->left = NULL;
-			tnull->right = NULL;
 			root = tnull;
+		}
+
+		template <class InputIterator>
+			rbtree (InputIterator first, InputIterator last,
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type(),
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0) :
+			_comp(comp),
+			_alloc(alloc),
+			_size(0) {
+			tnull = init_tnull();
+			while (first != last) {
+				insert(*first);
+				++first;
+			}
 		}
 
 		rbtree(const rbtree& x) :
 			_comp(x._comp),
 			_alloc(x._alloc),
-			_p(0),
 			_size(0) {
 			tnull = init_tnull();
-			tnull->color = BLACK;
-			tnull->left = NULL;
-			tnull->right = NULL;
 			root = tnull;
 			*this = x;
 		}
@@ -339,6 +347,58 @@ namespace ft {
 			rb_delete(found);
 			return 1;
 		}
+
+
+		/* ------------- Lookup ------------- */
+
+		iterator find (const key_type& k) {
+			return static_cast<iterator> (recursive_search(root, k));
+		}
+		const_iterator find (const key_type& k) const {
+			return static_cast<const_iterator> (recursive_search(root, k));
+		}
+		size_type count (const key_type& k) const {
+			if (recursive_search(root, k) != tnull)
+				return 1;
+			return 0;
+		}
+
+		rbnode<value_type>* recursive_search_lower_bound(rbnode<value_type> *root_, mapped_type key) {
+			if (root_ != tnull && !_comp(key, root_->content->first))
+				return root_;
+			else if (root_ != tnull) {
+				if (root_->right != tnull)
+					return recursive_search(root_->right, key);
+			}
+			return tnull;
+		}
+		iterator lower_bound (const key_type& k) {
+			iterator it(minimum(root), this);
+			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
+				it++;
+			return static_cast<iterator>(it);
+		}
+		const_iterator lower_bound (const key_type& k) const {
+			const_iterator it(minimum(root), this);
+			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
+				it++;
+			return static_cast<const_iterator>(it);
+		}
+		iterator upper_bound (const key_type& k) {
+			iterator it(minimum(root), this);
+			while (it.base() != tnull && !_comp(k, it->first))
+				it++;
+			return static_cast<iterator>(it);
+		}
+		const_iterator upper_bound (const key_type& k) const {
+			const_iterator it(minimum(root), this);
+			while (it.base() != tnull && !_comp(k, it->first))
+				it++;
+			return static_cast<const_iterator>(it);
+		}
+		ft::pair<iterator,iterator> equal_range (const key_type& k);
+		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+
 
 		/* ------------- RBTree insertion ------------- */
 
