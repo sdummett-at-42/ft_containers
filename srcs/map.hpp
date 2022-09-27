@@ -44,10 +44,10 @@ namespace ft {
 			typedef const value_type& const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::iterator iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::const_iterator const_iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::reverse_iterator reverse_iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type>::const_reverse_iterator const_reverse_iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::iterator iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::const_iterator const_iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::reverse_iterator reverse_iterator;
+			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::const_reverse_iterator const_reverse_iterator;
 
 
 			/* ------------- Constructors ------------- */
@@ -72,6 +72,7 @@ namespace ft {
 
 			map& operator= (const map& x) {
 				_rbtree = x._rbtree;
+				return *this;
 			}
 
 
@@ -203,8 +204,12 @@ namespace ft {
 			const_iterator upper_bound (const key_type& k) const {
 				return _rbtree.upper_bound(k);
 			}
-			// ft::pair<iterator,iterator> equal_range (const key_type& k);
-			// ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+			ft::pair<iterator,iterator> equal_range (const key_type& k) {
+				return _rbtree.equal_range(k);
+			}
+			ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+				return _rbtree.equal_range(k);
+			}
 
 			protected:
 			ft::rbtree< key_type, mapped_type, key_compare, allocator_type> _rbtree;

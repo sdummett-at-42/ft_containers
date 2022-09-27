@@ -22,7 +22,7 @@ namespace ft {
 	*/
 	template< class Iter > 
 	class random_access_iterator {
-		
+
 		public:
 
 		/* ------------- Typedefs ------------- */
@@ -33,7 +33,7 @@ namespace ft {
 		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::pointer pointer;
 		typedef typename  std::iterator<std::random_access_iterator_tag, Iter>::reference reference;
 
-		
+
 		/* ------------- Constructors ------------- */
 		random_access_iterator() :
 			_p(0) {}
@@ -44,8 +44,8 @@ namespace ft {
 
 		random_access_iterator(pointer p) :
 			_p(p) {}
-		
-		
+
+
 		/* ------------- operator= ------------- */
 		random_access_iterator& operator=(const random_access_iterator& x) {
 			_p = x._p;

@@ -10,6 +10,7 @@
 #include "rbtree_reverse_iterator.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
+#include "reverse_iterator.hpp"
 
 #define BLACK	0
 #define RED		1
@@ -39,10 +40,14 @@ namespace ft {
 		typedef const value_type& const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
-		typedef ft::rbtree_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_iterator;
-		typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
-		typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, const mapped_type, key_compare, allocator_type> > const_reverse_iterator;
+		typedef ft::rbtree_iterator<value_type>		iterator;
+		typedef ft::rbtree_const_iterator<value_type>	const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		// typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
+		// typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > const_iterator;
+		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
+		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > const_reverse_iterator;
 
 
 		protected:
@@ -124,43 +129,43 @@ namespace ft {
 		/* ------------- Iterators ------------- */
 
 		iterator begin() {
-			iterator it(lowest(), this);
+			iterator it(lowest(), root, tnull);
 			return static_cast<iterator>(it);
 		}
 		const_iterator begin() const {
-			const_iterator cit(lowest(), this);
+			const_iterator cit(lowest(), root, tnull);
 			return static_cast<const_iterator>(cit);
 		}
 		iterator end() {
-			iterator it(tnull, this);
+			iterator it(tnull, root, tnull);
 			return static_cast<iterator>(it);
 		}
 		const_iterator end() const {
-			const_iterator cit(tnull, this);
+			const_iterator cit(tnull, root, tnull);
 			return static_cast<const_iterator>(cit);
 		}
 
 		reverse_iterator rbegin() {
-			reverse_iterator rit(greatest(), this);
+			reverse_iterator rit(greatest(), root, tnull);
 			return static_cast<reverse_iterator>(rit);
 		}
 		const_reverse_iterator rbegin() const {
-			const_reverse_iterator crit(greatest(), this);
+			const_reverse_iterator crit(greatest(), root, tnull);
 			return static_cast<const_reverse_iterator>(crit);
 		}
 		reverse_iterator rend() {
-			reverse_iterator rit(tnull, this);
+			reverse_iterator rit(tnull, root, tnull);
 			return static_cast<reverse_iterator>(rit);
 		}
 		const_reverse_iterator rend() const {
-			const_reverse_iterator crit(tnull, this);
+			const_reverse_iterator crit(tnull, root, tnull);
 			return static_cast<const_reverse_iterator>(crit);
 		}
 
 
 		/* ------------- Element access ------------- */
 
-		rbnode<value_type>* recursive_search(rbnode<value_type> *root_, mapped_type key) {
+		rbnode<value_type>* recursive_search(rbnode<value_type> *root_, key_type key) const {
 			if (root_ != tnull && key == root_->content->first)
 				return root_;
 			else if (root_ != tnull && _comp(key, root_->content->first)) {
@@ -232,7 +237,7 @@ namespace ft {
 			v->parent = u->parent;
 		}
 
-		rbnode<value_type> *minimum(rbnode<value_type> *x) {
+		rbnode<value_type> *minimum(rbnode<value_type> *x) const {
 			while (x->left != tnull)
 				x = x->left;
 			return x;
@@ -352,10 +357,12 @@ namespace ft {
 		/* ------------- Lookup ------------- */
 
 		iterator find (const key_type& k) {
-			return static_cast<iterator> (recursive_search(root, k));
+			iterator it(recursive_search(root, k), root, tnull);
+			return static_cast<iterator>(it);
 		}
 		const_iterator find (const key_type& k) const {
-			return static_cast<const_iterator> (recursive_search(root, k));
+			const_iterator cit(recursive_search(root, k), root, tnull);
+			return static_cast<const_iterator>(cit);
 		}
 		size_type count (const key_type& k) const {
 			if (recursive_search(root, k) != tnull)
@@ -373,32 +380,42 @@ namespace ft {
 			return tnull;
 		}
 		iterator lower_bound (const key_type& k) {
-			iterator it(minimum(root), this);
+			iterator it(minimum(root), root, tnull);
 			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
 				it++;
 			return static_cast<iterator>(it);
 		}
 		const_iterator lower_bound (const key_type& k) const {
-			const_iterator it(minimum(root), this);
+			const_iterator it(minimum(root), root, tnull);
 			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
 				it++;
 			return static_cast<const_iterator>(it);
 		}
 		iterator upper_bound (const key_type& k) {
-			iterator it(minimum(root), this);
+			iterator it(minimum(root), root, tnull);
 			while (it.base() != tnull && !_comp(k, it->first))
 				it++;
 			return static_cast<iterator>(it);
 		}
 		const_iterator upper_bound (const key_type& k) const {
-			const_iterator it(minimum(root), this);
+			const_iterator it(minimum(root), root, tnull);
 			while (it.base() != tnull && !_comp(k, it->first))
 				it++;
 			return static_cast<const_iterator>(it);
 		}
-		ft::pair<iterator,iterator> equal_range (const key_type& k);
-		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
+		ft::pair<iterator,iterator> equal_range (const key_type& k) {
+			ft::pair<iterator,iterator> pr;
+			pr.first = lower_bound(k);
+			pr.second = upper_bound(k);
+			return pr;
+		}
+		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			ft::pair<const_iterator,const_iterator> pr;
+			pr.first = lower_bound(k);
+			pr.second = upper_bound(k);
+			return pr;
+		}
 
 		/* ------------- RBTree insertion ------------- */
 
@@ -409,7 +426,7 @@ namespace ft {
 			if (root == tnull) {
 				root = new_node;
 				new_node->color = BLACK;
-				pr.first = iterator(new_node, this);
+				pr.first = iterator(new_node, root, tnull);
 				pr.second = true;
 				++_size;
 			}
@@ -433,7 +450,7 @@ namespace ft {
 			if (root == tnull) {
 				root = new_node;
 				new_node->color = BLACK;
-				pr.first = iterator(new_node, this);
+				pr.first = iterator(new_node, root, tnull);
 				pr.second = true;
 				++_size;
 			}
@@ -457,7 +474,7 @@ namespace ft {
 		*/
 		ft::pair<iterator, bool> recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
 			if (root != tnull && new_node->content->first == root_->content->first)
-				return ft::pair<iterator,bool>(iterator(root_, this), false);
+				return ft::pair<iterator,bool>(iterator(root_, root, tnull), false);
 			if (root_ != tnull && _comp(new_node->content->first,
 				root_->content->first)) {
 				if (root_->left != tnull)
@@ -472,7 +489,7 @@ namespace ft {
 					root_->right = new_node;
 			}
 			new_node->parent = root_;
-			return ft::pair<iterator, bool>(iterator(new_node, this), true);
+			return ft::pair<iterator, bool>(iterator(new_node, root, tnull), true);
 		}
 
 		void rb_insert_fixup(rbnode<value_type> *new_node) {

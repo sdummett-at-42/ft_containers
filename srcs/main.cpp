@@ -198,5 +198,5 @@ int main() {
 	// ftitfirst = ftmp.upper_bound(6);
 	// std::cout << "upper_bound : " << ftitfirst->first << "\n";
 
-
+	ft::map<int,int>::const_iterator cit = ftmp.begin();
 }
