@@ -44,10 +44,6 @@ namespace ft {
 		typedef ft::rbtree_const_iterator<value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
-		// typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > iterator;
-		// typedef ft::rbtree_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > const_iterator;
-		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > reverse_iterator;
-		// typedef ft::rbtree_reverse_iterator<ft::rbtree<key_type, mapped_type, key_compare, allocator_type> > const_reverse_iterator;
 
 
 		protected:
@@ -78,6 +74,7 @@ namespace ft {
 			_alloc(alloc),
 			_size(0) {
 			tnull = init_tnull();
+			root = tnull;
 			while (first != last) {
 				insert(*first);
 				++first;
@@ -92,7 +89,6 @@ namespace ft {
 			root = tnull;
 			*this = x;
 		}
-
 
 		/* ------------- operator= ------------- */
 
@@ -146,19 +142,19 @@ namespace ft {
 		}
 
 		reverse_iterator rbegin() {
-			reverse_iterator rit(greatest(), root, tnull);
+			reverse_iterator rit(end());
 			return static_cast<reverse_iterator>(rit);
 		}
 		const_reverse_iterator rbegin() const {
-			const_reverse_iterator crit(greatest(), root, tnull);
+			const_reverse_iterator crit(end());
 			return static_cast<const_reverse_iterator>(crit);
 		}
 		reverse_iterator rend() {
-			reverse_iterator rit(tnull, root, tnull);
+			reverse_iterator rit(begin());
 			return static_cast<reverse_iterator>(rit);
 		}
 		const_reverse_iterator rend() const {
-			const_reverse_iterator crit(tnull, root, tnull);
+			const_reverse_iterator crit(begin());
 			return static_cast<const_reverse_iterator>(crit);
 		}
 
@@ -351,6 +347,26 @@ namespace ft {
 				return 0;
 			rb_delete(found);
 			return 1;
+		}
+
+		void swap (rbtree& x) {
+			key_compare tmp_comp = _comp;
+			allocator_type tmp_alloc = _alloc;
+			size_type tmp_size = _size;
+			ft::rbnode<value_type>* tmp_root = root;
+			ft::rbnode<value_type>* tmp_tnull = tnull;
+
+			_comp = x._comp;
+			_alloc = x._alloc;
+			_size = x._size;
+			root = x.root;
+			tnull = x.tnull;
+
+			x._comp = tmp_comp;
+			x._alloc = tmp_alloc;
+			x._size = tmp_size;
+			x.root = tmp_root;
+			x.tnull = tmp_tnull;
 		}
 
 
