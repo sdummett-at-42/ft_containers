@@ -92,17 +92,14 @@ namespace ft {
 
 		/* ------------- operator= ------------- */
 
-		void recursive_copy(rbnode<value_type> *to_copy, const rbtree& x) {
-			if (to_copy == x._tnull)
-				return ;
-			recursive_copy(to_copy->left, x);
-			recursive_copy(to_copy->right, x);
-			insert(*(to_copy->content));
-		}
-
 		rbtree& operator= (const rbtree& x) {
 			clear();
-			recursive_copy(x._tree_root, x);
+			_comp = x._comp;
+			_alloc = x._alloc;
+			const_iterator	first = x.begin();
+			const_iterator	last = x.end();
+			for (; first != last; first++)
+				insert(*first);
 			return *this;
 		}
 
@@ -650,6 +647,7 @@ namespace ft {
 			_alloc.destroy(to_destroy->content);
 			_alloc.deallocate(to_destroy->content, sizeof(value_type));
 			delete to_destroy;
+			--_size;
 		}
 
 		void destroy_tree(rbnode<value_type> *root_) {
@@ -658,11 +656,11 @@ namespace ft {
 			destroy_tree(root_->left);
 			destroy_tree(root_->right);
 			destroy_node(root_);
-			root_ = _tnull;
 		}
 
 		void clear() {
-			// destroy_tree(_tree_root);
+			destroy_tree(_tree_root);
+			_tree_root = _tnull;
 			_size = 0;
 		}
 
