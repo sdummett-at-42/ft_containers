@@ -50,8 +50,8 @@ namespace ft {
 		key_compare				_comp;
 		allocator_type			_alloc;
 		size_type				_size;
-		ft::rbnode<value_type>	*root;
-		ft::rbnode<value_type>	*tnull;
+		ft::rbnode<value_type>	*_tree_root;
+		ft::rbnode<value_type>	*_tnull;
 
 		public:
 		/* ------------- Constructors ------------- */
@@ -61,8 +61,8 @@ namespace ft {
 			_comp(comp),
 			_alloc(alloc),
 			_size(0) {
-			tnull = init_tnull();
-			root = tnull;
+			_tnull = init_tnull();
+			_tree_root = _tnull;
 		}
 
 		template <class InputIterator>
@@ -73,8 +73,8 @@ namespace ft {
 			_comp(comp),
 			_alloc(alloc),
 			_size(0) {
-			tnull = init_tnull();
-			root = tnull;
+			_tnull = init_tnull();
+			_tree_root = _tnull;
 			while (first != last) {
 				insert(*first);
 				++first;
@@ -85,15 +85,15 @@ namespace ft {
 			_comp(x._comp),
 			_alloc(x._alloc),
 			_size(0) {
-			tnull = init_tnull();
-			root = tnull;
+			_tnull = init_tnull();
+			_tree_root = _tnull;
 			*this = x;
 		}
 
 		/* ------------- operator= ------------- */
 
 		void recursive_copy(rbnode<value_type> *to_copy, const rbtree& x) {
-			if (to_copy == x.tnull)
+			if (to_copy == x._tnull)
 				return ;
 			recursive_copy(to_copy->left, x);
 			recursive_copy(to_copy->right, x);
@@ -102,7 +102,7 @@ namespace ft {
 
 		rbtree& operator= (const rbtree& x) {
 			clear();
-			recursive_copy(x.root, x);
+			recursive_copy(x._tree_root, x);
 			return *this;
 		}
 
@@ -117,27 +117,27 @@ namespace ft {
 		/* ------------- Destructor ------------- */
 
 		~rbtree() {
-			destroy_tree(root);
-			delete tnull;
+			destroy_tree(_tree_root);
+			delete _tnull;
 		}
 
 
 		/* ------------- Iterators ------------- */
 
 		iterator begin() {
-			iterator it(lowest(), root, tnull);
+			iterator it(lowest(), _tree_root, _tnull);
 			return static_cast<iterator>(it);
 		}
 		const_iterator begin() const {
-			const_iterator cit(lowest(), root, tnull);
+			const_iterator cit(lowest(), _tree_root, _tnull);
 			return static_cast<const_iterator>(cit);
 		}
 		iterator end() {
-			iterator it(tnull, root, tnull);
+			iterator it(_tnull, _tree_root, _tnull);
 			return static_cast<iterator>(it);
 		}
 		const_iterator end() const {
-			const_iterator cit(tnull, root, tnull);
+			const_iterator cit(_tnull, _tree_root, _tnull);
 			return static_cast<const_iterator>(cit);
 		}
 
@@ -162,23 +162,23 @@ namespace ft {
 		/* ------------- Element access ------------- */
 
 		rbnode<value_type>* recursive_search(rbnode<value_type> *root_, key_type key) const {
-			if (root_ != tnull && key == root_->content->first)
+			if (root_ != _tnull && key == root_->content->first)
 				return root_;
-			else if (root_ != tnull && _comp(key, root_->content->first)) {
-				if (root_->left != tnull)
+			else if (root_ != _tnull && _comp(key, root_->content->first)) {
+				if (root_->left != _tnull)
 					return recursive_search(root_->left, key);
 			}
-			else if (root_ != tnull) {
-				if (root_->right != tnull)
+			else if (root_ != _tnull) {
+				if (root_->right != _tnull)
 					return recursive_search(root_->right, key);
 			}
-			return tnull;
+			return _tnull;
 		}
 
 		mapped_type& at( const key_type& key ) {
-			rbnode<value_type>* found = recursive_search(root, key);
+			rbnode<value_type>* found = recursive_search(_tree_root, key);
 
-			if (found == tnull) {
+			if (found == _tnull) {
 				std::cout << "map::at";
 				throw std::out_of_range("");
 			}
@@ -186,9 +186,9 @@ namespace ft {
 		}
 
 		const mapped_type& at( const key_type& key ) const {
-			rbnode<value_type>* found = recursive_search(root, key);
+			rbnode<value_type>* found = recursive_search(_tree_root, key);
 
-			if (found == tnull) {
+			if (found == _tnull) {
 				std::cout << "map::at";
 				throw std::out_of_range("");
 			}
@@ -199,11 +199,11 @@ namespace ft {
 		// implicit conversion from 'long' to 'ft::map<int, int>::mapped_type'
 		// (aka 'int') changes value from 133333333337 to 189347161
 		mapped_type& operator[] (const key_type& k) {
-			rbnode<value_type>* found = recursive_search(root, k);
+			rbnode<value_type>* found = recursive_search(_tree_root, k);
 
-			if (found == tnull)
+			if (found == _tnull)
 				insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
-			found = recursive_search(root, k);
+			found = recursive_search(_tree_root, k);
 			return found->content->second;
 		}
 
@@ -211,21 +211,21 @@ namespace ft {
 		/* ------------- RBTree utils ------------- */
 
 		rbnode<value_type> *lowest() const {
-			ft::rbnode<value_type> *lowest = root;
-			while (lowest->left != tnull)
+			ft::rbnode<value_type> *lowest = _tree_root;
+			while (lowest->left != _tnull)
 				lowest = lowest->left;
 			return lowest;
 		}
 		rbnode<value_type> *greatest() const {
-			ft::rbnode<value_type> *greatest = root;
-			while (greatest->right != tnull)
+			ft::rbnode<value_type> *greatest = _tree_root;
+			while (greatest->right != _tnull)
 				greatest = greatest->right;
 			return greatest;
 		}
 
 		void rb_transplant(rbnode<value_type> *u, rbnode<value_type> *v) {
-			if (u->parent == tnull)			// u is root
-				root = v;
+			if (u->parent == _tnull)			// u is root
+				_tree_root = v;
 			else if (u == u->parent->left)	// u is left child
 				u->parent->left = v;
 			else							// u is right child
@@ -234,36 +234,36 @@ namespace ft {
 		}
 
 		rbnode<value_type> *minimum(rbnode<value_type> *x) const {
-			while (x->left != tnull)
+			while (x->left != _tnull)
 				x = x->left;
 			return x;
 		}
 
 		rbnode<value_type>	*init_tnull() {
-			rbnode<value_type> *tnull = new rbnode<value_type>;
-			tnull->parent = tnull;
-			tnull->left = tnull;
-			tnull->right = tnull;
-			tnull->color = RED;
-			return tnull;
+			rbnode<value_type> *_tnull = new rbnode<value_type>;
+			_tnull->parent = _tnull;
+			_tnull->left = _tnull;
+			_tnull->right = _tnull;
+			_tnull->color = RED;
+			return _tnull;
 		}
 
 		rbnode<value_type>	*init_new_node(value_type val) {
 			rbnode<value_type> *new_node = new rbnode<value_type>;
 			new_node->content = _alloc.allocate(sizeof(value_type));
 			_alloc.construct(new_node->content, val);
-			new_node->parent = tnull;
-			new_node->left = tnull;
-			new_node->right = tnull;
+			new_node->parent = _tnull;
+			new_node->left = _tnull;
+			new_node->right = _tnull;
 			new_node->color = RED;
 			return new_node;
 		}
 
 		rbnode<value_type>	*get_root() const {
-			return root;
+			return _tree_root;
 		}
 		rbnode<value_type>	*get_tnull() const {
-			return tnull;
+			return _tnull;
 		}
 
 		/* ------------- Capacity ------------- */
@@ -292,12 +292,12 @@ namespace ft {
 		void	left_rotation(rbnode<value_type> *x) {
 			rbnode<value_type>	*y = x->right;
 			x->right = y->left;
-			if (y->left != tnull)
+			if (y->left != _tnull)
 				y->left->parent = x;
 
 			y->parent = x->parent;
-			if (x->parent == tnull	)
-				root = y;
+			if (x->parent == _tnull	)
+				_tree_root = y;
 			else if (x == x->parent->left)
 				x->parent->left = y;
 			else
@@ -310,12 +310,12 @@ namespace ft {
 		void	right_rotation(rbnode<value_type> *x) {
 			rbnode<value_type>	*y = x->left;
 			x->left = y->right;
-			if (y->right != tnull)
+			if (y->right != _tnull)
 				y->right->parent = x;
 
 			y->parent = x->parent;
-			if (x->parent == tnull)
-				root = y;
+			if (x->parent == _tnull)
+				_tree_root = y;
 			else if (x == x->parent->right)
 				x->parent->right = y;
 			else
@@ -341,9 +341,9 @@ namespace ft {
 			}
 		}
 		size_type erase( const Key& key ) {
-			rbnode<value_type>* found = recursive_search(root, key);
+			rbnode<value_type>* found = recursive_search(_tree_root, key);
 
-			if (found == tnull)
+			if (found == _tnull)
 				return 0;
 			rb_delete(found);
 			return 1;
@@ -353,69 +353,69 @@ namespace ft {
 			key_compare tmp_comp = _comp;
 			allocator_type tmp_alloc = _alloc;
 			size_type tmp_size = _size;
-			ft::rbnode<value_type>* tmp_root = root;
-			ft::rbnode<value_type>* tmp_tnull = tnull;
+			ft::rbnode<value_type>* tmp_root = _tree_root;
+			ft::rbnode<value_type>* tmp_tnull = _tnull;
 
 			_comp = x._comp;
 			_alloc = x._alloc;
 			_size = x._size;
-			root = x.root;
-			tnull = x.tnull;
+			_tree_root = x._tree_root;
+			_tnull = x._tnull;
 
 			x._comp = tmp_comp;
 			x._alloc = tmp_alloc;
 			x._size = tmp_size;
-			x.root = tmp_root;
-			x.tnull = tmp_tnull;
+			x._tree_root = tmp_root;
+			x._tnull = tmp_tnull;
 		}
 
 
 		/* ------------- Lookup ------------- */
 
 		iterator find (const key_type& k) {
-			iterator it(recursive_search(root, k), root, tnull);
+			iterator it(recursive_search(_tree_root, k), _tree_root, _tnull);
 			return static_cast<iterator>(it);
 		}
 		const_iterator find (const key_type& k) const {
-			const_iterator cit(recursive_search(root, k), root, tnull);
+			const_iterator cit(recursive_search(_tree_root, k), _tree_root, _tnull);
 			return static_cast<const_iterator>(cit);
 		}
 		size_type count (const key_type& k) const {
-			if (recursive_search(root, k) != tnull)
+			if (recursive_search(_tree_root, k) != _tnull)
 				return 1;
 			return 0;
 		}
 
 		rbnode<value_type>* recursive_search_lower_bound(rbnode<value_type> *root_, mapped_type key) {
-			if (root_ != tnull && !_comp(key, root_->content->first))
+			if (root_ != _tnull && !_comp(key, root_->content->first))
 				return root_;
-			else if (root_ != tnull) {
-				if (root_->right != tnull)
+			else if (root_ != _tnull) {
+				if (root_->right != _tnull)
 					return recursive_search(root_->right, key);
 			}
-			return tnull;
+			return _tnull;
 		}
 		iterator lower_bound (const key_type& k) {
-			iterator it(minimum(root), root, tnull);
-			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
+			iterator it(minimum(_tree_root), _tree_root, _tnull);
+			while (it.base() != _tnull && k != it->first && !_comp(k, it->first))
 				it++;
 			return static_cast<iterator>(it);
 		}
 		const_iterator lower_bound (const key_type& k) const {
-			const_iterator it(minimum(root), root, tnull);
-			while (it.base() != tnull && k != it->first && !_comp(k, it->first))
+			const_iterator it(minimum(_tree_root), _tree_root, _tnull);
+			while (it.base() != _tnull && k != it->first && !_comp(k, it->first))
 				it++;
 			return static_cast<const_iterator>(it);
 		}
 		iterator upper_bound (const key_type& k) {
-			iterator it(minimum(root), root, tnull);
-			while (it.base() != tnull && !_comp(k, it->first))
+			iterator it(minimum(_tree_root), _tree_root, _tnull);
+			while (it.base() != _tnull && !_comp(k, it->first))
 				it++;
 			return static_cast<iterator>(it);
 		}
 		const_iterator upper_bound (const key_type& k) const {
-			const_iterator it(minimum(root), root, tnull);
-			while (it.base() != tnull && !_comp(k, it->first))
+			const_iterator it(minimum(_tree_root), _tree_root, _tnull);
+			while (it.base() != _tnull && !_comp(k, it->first))
 				it++;
 			return static_cast<const_iterator>(it);
 		}
@@ -439,16 +439,15 @@ namespace ft {
 			rbnode<value_type> *new_node = init_new_node(val);
 			ft::pair<iterator, bool> pr;
 
-			if (root == tnull) {
-				root = new_node;
+			if (_tree_root == _tnull) {
+				_tree_root = new_node;
 				new_node->color = BLACK;
-				pr.first = iterator(new_node, root, tnull);
+				pr.first = iterator(new_node, _tree_root, _tnull);
 				pr.second = true;
 				++_size;
 			}
 			else {
-
-				pr = recursive_insertion(root, new_node);
+				pr = recursive_insertion(_tree_root, new_node);
 				if (pr.second == true) {
 					rb_insert_fixup(new_node);
 					++_size;
@@ -463,15 +462,14 @@ namespace ft {
 			rbnode<value_type> *new_node = init_new_node(val);
 			ft::pair<iterator, bool> pr;
 
-			if (root == tnull) {
-				root = new_node;
+			if (_tree_root == _tnull) {
+				_tree_root = new_node;
 				new_node->color = BLACK;
-				pr.first = iterator(new_node, root, tnull);
+				pr.first = iterator(new_node, _tree_root, _tnull);
 				pr.second = true;
 				++_size;
 			}
 			else {
-
 				pr = recursive_insertion(position.base(), new_node);
 				if (pr.second == true) {
 					rb_insert_fixup(new_node);
@@ -489,27 +487,27 @@ namespace ft {
 		/* Go deep down to tree until a leaf is found
 		*/
 		ft::pair<iterator, bool> recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
-			if (root != tnull && new_node->content->first == root_->content->first)
-				return ft::pair<iterator,bool>(iterator(root_, root, tnull), false);
-			if (root_ != tnull && _comp(new_node->content->first,
+			if (root_ != _tnull && new_node->content->first == root_->content->first)
+				return ft::pair<iterator,bool>(iterator(root_, _tree_root, _tnull), false);
+			if (root_ != _tnull && _comp(new_node->content->first,
 				root_->content->first)) {
-				if (root_->left != tnull)
+				if (root_->left != _tnull)
 					return recursive_insertion(root_->left, new_node);
 				else
 					root_->left = new_node;
 			}
-			else if (root_ != tnull) {
-				if (root_->right != tnull)
+			else if (root_ != _tnull) {
+				if (root_->right != _tnull)
 					return recursive_insertion(root_->right, new_node);
 				else
 					root_->right = new_node;
 			}
 			new_node->parent = root_;
-			return ft::pair<iterator, bool>(iterator(new_node, root, tnull), true);
+			return ft::pair<iterator, bool>(iterator(new_node, _tree_root, _tnull), true);
 		}
 
 		void rb_insert_fixup(rbnode<value_type> *new_node) {
-			if (new_node->parent == tnull)
+			if (new_node->parent == _tnull)
 				new_node->color = BLACK;
 			else if (new_node->parent->color == BLACK)
 				return ;
@@ -546,11 +544,11 @@ namespace ft {
 			rbnode<value_type> *y = z;
 			bool y_original_color = y->color;
 
-			if (z->left == tnull) {			// no children or only right
+			if (z->left == _tnull) {			// no children or only right
 				x = z->right;
 				rb_transplant(z, z->right);
 			}
-			else if (z->right == tnull) {	// only left chilldren
+			else if (z->right == _tnull) {	// only left chilldren
 				x = z->left;
 				rb_transplant(z, z->left);
 			}
@@ -581,7 +579,7 @@ namespace ft {
 		// Note: Add comment that explain each case.
 		void rb_delete_fixup(rbnode<value_type> *x) {
 			rbnode<value_type> *w;
-			while (x != root && x->color == BLACK) {
+			while (x != _tree_root && x->color == BLACK) {
 				if (x == x->parent->left) {
 					w = x->parent->right;
 					/* case 1 */
@@ -610,7 +608,7 @@ namespace ft {
 						x->parent->color = BLACK;
 						w->right->color = BLACK;
 						left_rotation(x->parent);
-						x = root;
+						x = _tree_root;
 					}
 				}
 				else {
@@ -641,7 +639,7 @@ namespace ft {
 						x->parent->color = BLACK;
 						w->left->color = BLACK;
 						right_rotation(x->parent);
-						x = root;
+						x = _tree_root;
 					}
 				}
 			}
@@ -654,17 +652,17 @@ namespace ft {
 			delete to_destroy;
 		}
 
-		void destroy_tree(rbnode<value_type> *root) {
-			if (root == tnull)
+		void destroy_tree(rbnode<value_type> *root_) {
+			if (root_ == _tnull)
 				return ;
-			destroy_tree(root->left);
-			destroy_tree(root->right);
-			destroy_node(root);
-			root = tnull;
+			destroy_tree(root_->left);
+			destroy_tree(root_->right);
+			destroy_node(root_);
+			root_ = _tnull;
 		}
 
 		void clear() {
-			destroy_tree(root);
+			// destroy_tree(_tree_root);
 			_size = 0;
 		}
 
@@ -673,8 +671,8 @@ namespace ft {
 
 		/* Print the tree structure on the screen
 		*/
-		void print_helper(rbnode<value_type> *root, std::string indent, bool last) {
-			if (root != tnull) {
+		void print_helper(rbnode<value_type> *root_, std::string indent, bool last) {
+			if (root_ != _tnull) {
 				std::cout<<indent;
 				if (last) {
 					std::cout<<"R----";
@@ -683,16 +681,16 @@ namespace ft {
 					std::cout<<"L----";
 					indent += "|    ";
 				}
-				std::string sColor = root->color?"RED":"BLACK";
-				std::cout<<root->content->first<<"("<<sColor<<")"<<std::endl;
-				print_helper(root->left, indent, false);
-				print_helper(root->right, indent, true);
+				std::string sColor = root_->color?"RED":"BLACK";
+				std::cout<<root_->content->first<<"("<<sColor<<")"<<std::endl;
+				print_helper(root_->left, indent, false);
+				print_helper(root_->right, indent, true);
 			}
 		}
 
 		void pretty_print() {
-			if (root != tnull) {
-				print_helper(root, "", true);
+			if (_tree_root != _tnull) {
+				print_helper(_tree_root, "", true);
 			}
 		}
 	};
