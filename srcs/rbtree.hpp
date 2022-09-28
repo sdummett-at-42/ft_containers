@@ -436,50 +436,22 @@ namespace ft {
 			rbnode<value_type> *new_node = init_new_node(val);
 			ft::pair<iterator, bool> pr;
 
+			++_size;
 			if (_tree_root == _tnull) {
 				_tree_root = new_node;
 				new_node->color = BLACK;
 				pr.first = iterator(new_node, _tree_root, _tnull);
 				pr.second = true;
-				++_size;
 			}
 			else {
 				pr = recursive_insertion(_tree_root, new_node);
-				if (pr.second == true) {
+				if (pr.second == true)
 					rb_insert_fixup(new_node);
-					++_size;
-				}
 				else
 					destroy_node(new_node);
 			}
 			return pr;
 		}
-
-		iterator insert (iterator position, const value_type& val) {
-			rbnode<value_type> *new_node = init_new_node(val);
-			ft::pair<iterator, bool> pr;
-
-			if (_tree_root == _tnull) {
-				_tree_root = new_node;
-				new_node->color = BLACK;
-				pr.first = iterator(new_node, _tree_root, _tnull);
-				pr.second = true;
-				++_size;
-			}
-			else {
-				pr = recursive_insertion(position.base(), new_node);
-				if (pr.second == true) {
-					rb_insert_fixup(new_node);
-					++_size;
-				}
-				else
-					destroy_node(new_node);
-			}
-			return pr.first;
-		}
-
-
-		// Note: Fix duplicate keys in rbtree
 
 		/* Go deep down to tree until a leaf is found
 		*/
@@ -499,6 +471,7 @@ namespace ft {
 				else
 					root_->right = new_node;
 			}
+
 			new_node->parent = root_;
 			return ft::pair<iterator, bool>(iterator(new_node, _tree_root, _tnull), true);
 		}
@@ -569,7 +542,6 @@ namespace ft {
 			if (y_original_color == BLACK)
 				rb_delete_fixup(x);
 			destroy_node(z);
-			--_size;
 		}
 
 

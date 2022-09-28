@@ -157,7 +157,8 @@ namespace ft {
 			}
 
 			iterator insert (iterator position, const value_type& val) {
-				return _rbtree.insert(position, val);
+				(void)position;
+				return _rbtree.insert(val).first;
 			}
 
 			template <class InputIterator>
