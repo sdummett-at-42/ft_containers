@@ -1,45 +1,35 @@
-#ifndef RBTREE_HPP
-#define RBTREE_HPP
+#ifndef RBTREE_SET_HPP
+#define RBTREE_SET_HPP	
 
-#include <functional>			// Required for std::less<Key>
-#include <memory>				// Required for std::allocator<T>
-#include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
-#include "make_pair.hpp"
+#include <functional>
+#include <memory>
 #include "rbnode.hpp"
 #include "rbtree_iterator.hpp"
 #include "rbtree_reverse_iterator.hpp"
-#include "enable_if.hpp"
-#include "is_integral.hpp"
 #include "reverse_iterator.hpp"
-
-#define BLACK	0
-#define RED		1
 
 namespace ft {
 
-	// Note: define private/public member functions
 	template<
-			typename Key,
-			typename T,
-			typename Compare = std::less<const Key>,
-			typename Alloc = std::allocator<ft::pair<const Key, T> > >
-	class rbtree {
+		typename Key,
+		typename Compare = std::less<Key>,
+		typename Alloc = std::allocator<Key> >
+	class rbtree_set {
 
 	public:
 
 	/* ------------- Typedefs ------------- */
 
-	typedef Key key_type;
-	typedef T mapped_type;
-	typedef ft::pair<const key_type, mapped_type> value_type;
-	typedef std::size_t size_type;
-	typedef std::ptrdiff_t difference_type;
-	typedef Compare key_compare;
-	typedef Alloc allocator_type;
-	typedef value_type& reference;
-	typedef const value_type& const_reference;
-	typedef typename allocator_type::pointer pointer;
-	typedef typename allocator_type::const_pointer const_pointer;
+	typedef Key										key_type;
+	typedef Key										value_type;
+	typedef std::size_t								size_type;
+	typedef std::ptrdiff_t							difference_type;
+	typedef Compare									key_compare;
+	typedef Alloc									allocator_type;
+	typedef value_type&								reference;
+	typedef const value_type&						const_reference;
+	typedef typename allocator_type::pointer		pointer;
+	typedef typename allocator_type::const_pointer	const_pointer;
 	typedef ft::rbtree_iterator<value_type>			iterator;
 	typedef ft::rbtree_const_iterator<value_type>	const_iterator;
 	typedef ft::reverse_iterator<iterator>			reverse_iterator;
@@ -56,7 +46,7 @@ namespace ft {
 	public:
 	/* ------------- Constructors ------------- */
 
-	rbtree( const key_compare& comp = key_compare(), 
+	rbtree_set( const key_compare& comp = key_compare(), 
 			const allocator_type& alloc = allocator_type()) :
 		_comp(comp),
 		_alloc(alloc),
@@ -66,7 +56,7 @@ namespace ft {
 	}
 
 	template <class InputIterator>
-		rbtree (InputIterator first, InputIterator last,
+		rbtree_set (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
 		const allocator_type& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0) :
@@ -81,7 +71,7 @@ namespace ft {
 		}
 	}
 
-	rbtree(const rbtree& x) :
+	rbtree_set(const rbtree_set& x) :
 		_comp(x._comp),
 		_alloc(x._alloc),
 		_size(0) {
@@ -92,7 +82,7 @@ namespace ft {
 
 	/* ------------- operator= ------------- */
 
-	rbtree& operator= (const rbtree& x) {
+	rbtree_set& operator= (const rbtree_set& x) {
 		clear();
 		_comp = x._comp;
 		_alloc = x._alloc;
@@ -113,7 +103,7 @@ namespace ft {
 
 	/* ------------- Destructor ------------- */
 
-	~rbtree() {
+	~rbtree_set() {
 		destroy_tree(_tree_root);
 		delete _tnull;
 	}
@@ -159,9 +149,9 @@ namespace ft {
 	/* ------------- Element access ------------- */
 
 	rbnode<value_type>* recursive_search(rbnode<value_type> *root_, key_type key) const {
-		if (root_ != _tnull && key == root_->content->first)
+		if (root_ != _tnull && key == *root_->content)
 			return root_;
-		else if (root_ != _tnull && _comp(key, root_->content->first)) {
+		else if (root_ != _tnull && _comp(key, *root_->content)) {
 			if (root_->left != _tnull)
 				return recursive_search(root_->left, key);
 		}
@@ -170,35 +160,6 @@ namespace ft {
 				return recursive_search(root_->right, key);
 		}
 		return _tnull;
-	}
-
-	mapped_type& at( const key_type& key ) {
-		rbnode<value_type>* found = recursive_search(_tree_root, key);
-
-		if (found == _tnull) {
-			std::cout << "map::at";
-			throw std::out_of_range("");
-		}
-		return static_cast<mapped_type&>(found->content->second);
-	}
-
-	const mapped_type& at( const key_type& key ) const {
-		rbnode<value_type>* found = recursive_search(_tree_root, key);
-
-		if (found == _tnull) {
-			std::cout << "map::at";
-			throw std::out_of_range("");
-		}
-		return static_cast<const mapped_type&>(found->content->second);
-	}
-
-	mapped_type& operator[] (const key_type& k) {
-		rbnode<value_type>* found = recursive_search(_tree_root, k);
-
-		if (found == _tnull)
-			insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
-		found = recursive_search(_tree_root, k);
-		return found->content->second;
 	}
 
 
@@ -343,7 +304,7 @@ namespace ft {
 		return 1;
 	}
 
-	void swap (rbtree& x) {
+	void swap (rbtree_set& x) {
 		key_compare tmp_comp = _comp;
 		allocator_type tmp_alloc = _alloc;
 		size_type tmp_size = _size;
@@ -380,8 +341,8 @@ namespace ft {
 		return 0;
 	}
 
-	rbnode<value_type>* recursive_search_lower_bound(rbnode<value_type> *root_, mapped_type key) {
-		if (root_ != _tnull && !_comp(key, root_->content->first))
+	rbnode<value_type>* recursive_search_lower_bound(rbnode<value_type> *root_, key_type key) {
+		if (root_ != _tnull && !_comp(key, *root_->content))
 			return root_;
 		else if (root_ != _tnull) {
 			if (root_->right != _tnull)
@@ -391,25 +352,25 @@ namespace ft {
 	}
 	iterator lower_bound (const key_type& k) {
 		iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && k != it->first && !_comp(k, it->first))
+		while (it.base() != _tnull && k != *it && !_comp(k, *it))
 			it++;
 		return static_cast<iterator>(it);
 	}
 	const_iterator lower_bound (const key_type& k) const {
 		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && k != it->first && !_comp(k, it->first))
+		while (it.base() != _tnull && k != *it && !_comp(k, *it))
 			it++;
 		return static_cast<const_iterator>(it);
 	}
 	iterator upper_bound (const key_type& k) {
 		iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && !_comp(k, it->first))
+		while (it.base() != _tnull && !_comp(k, *it))
 			it++;
 		return static_cast<iterator>(it);
 	}
 	const_iterator upper_bound (const key_type& k) const {
 		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && !_comp(k, it->first))
+		while (it.base() != _tnull && !_comp(k, *it))
 			it++;
 		return static_cast<const_iterator>(it);
 	}
@@ -453,10 +414,9 @@ namespace ft {
 	/* Go deep down to tree until a leaf is found
 	*/
 	ft::pair<iterator, bool> recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
-		if (root_ != _tnull && new_node->content->first == root_->content->first)
+		if (root_ != _tnull && *new_node->content == *root_->content)
 			return ft::pair<iterator,bool>(iterator(root_, _tree_root, _tnull), false);
-		if (root_ != _tnull && _comp(new_node->content->first,
-			root_->content->first)) {
+		if (root_ != _tnull && _comp(*new_node->content, *root_->content)) {
 			if (root_->left != _tnull)
 				return recursive_insertion(root_->left, new_node);
 			else
@@ -649,7 +609,7 @@ namespace ft {
 				indent += "|    ";
 			}
 			std::string sColor = root_->color?"RED":"BLACK";
-			std::cout<<root_->content->first<<"("<<sColor<<")"<<std::endl;
+			std::cout<<*root_->content<<"("<<sColor<<")"<<std::endl;
 			print_helper(root_->left, indent, false);
 			print_helper(root_->right, indent, true);
 		}
@@ -661,7 +621,6 @@ namespace ft {
 		}
 	}
 	};
-
 }
 
 #endif
