@@ -49,14 +49,9 @@ namespace ft {
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0):
 		_rbtree(first, last, comp, alloc) {}
 
-	set( const set& other );
-
-	// class value_compare {
-	// public:
-	// bool operator()(const value_type &a, const value_type &b) const {
-	// 	return (key_compare()(a.first, b.first));
-	// }
-	// };
+	set( const set& other ) {
+		_rbtree = other._rbtree;
+	}
 
 	/* ------------- operator= ------------- */
 
