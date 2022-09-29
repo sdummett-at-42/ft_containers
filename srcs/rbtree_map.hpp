@@ -1,16 +1,16 @@
-#ifndef RBTREE_HPP
-#define RBTREE_HPP
+#ifndef RBTREE_MAP_HPP
+#define RBTREE_MAP_HPP
 
 #include <functional>			// Required for std::less<Key>
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "make_pair.hpp"
 #include "rbnode.hpp"
+#include "reverse_iterator.hpp"
 #include "rbtree_iterator.hpp"
 #include "rbtree_reverse_iterator.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
-#include "reverse_iterator.hpp"
 
 #define BLACK	0
 #define RED		1
@@ -23,7 +23,7 @@ namespace ft {
 			typename T,
 			typename Compare = std::less<const Key>,
 			typename Alloc = std::allocator<ft::pair<const Key, T> > >
-	class rbtree {
+	class rbtree_map {
 
 	public:
 
@@ -56,7 +56,7 @@ namespace ft {
 	public:
 	/* ------------- Constructors ------------- */
 
-	rbtree( const key_compare& comp = key_compare(), 
+	rbtree_map( const key_compare& comp = key_compare(), 
 			const allocator_type& alloc = allocator_type()) :
 		_comp(comp),
 		_alloc(alloc),
@@ -66,7 +66,7 @@ namespace ft {
 	}
 
 	template <class InputIterator>
-		rbtree (InputIterator first, InputIterator last,
+		rbtree_map (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
 		const allocator_type& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0) :
@@ -81,7 +81,7 @@ namespace ft {
 		}
 	}
 
-	rbtree(const rbtree& x) :
+	rbtree_map(const rbtree_map& x) :
 		_comp(x._comp),
 		_alloc(x._alloc),
 		_size(0) {
@@ -92,7 +92,7 @@ namespace ft {
 
 	/* ------------- operator= ------------- */
 
-	rbtree& operator= (const rbtree& x) {
+	rbtree_map& operator= (const rbtree_map& x) {
 		clear();
 		_comp = x._comp;
 		_alloc = x._alloc;
@@ -113,7 +113,7 @@ namespace ft {
 
 	/* ------------- Destructor ------------- */
 
-	~rbtree() {
+	~rbtree_map() {
 		destroy_tree(_tree_root);
 		delete _tnull;
 	}
@@ -343,7 +343,7 @@ namespace ft {
 		return 1;
 	}
 
-	void swap (rbtree& x) {
+	void swap (rbtree_map& x) {
 		key_compare tmp_comp = _comp;
 		allocator_type tmp_alloc = _alloc;
 		size_type tmp_size = _size;

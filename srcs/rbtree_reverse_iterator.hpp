@@ -1,7 +1,6 @@
 #ifndef RBTREE_REVERSE_ITERATOR
 #define RBTREE_REVERSE_ITERATOR
 
-#include "rbtree.hpp"
 #include "iterator_traits.hpp"
 
 namespace ft {

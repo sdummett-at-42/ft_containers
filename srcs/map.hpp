@@ -16,7 +16,7 @@
 #include <functional>			// Required for std::less<Key>
 #include <memory>				// Required for std::allocator<T>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
-#include "rbtree.hpp"			// Required for Red-Black tree data structure
+#include "rbtree_map.hpp"		// Required for Red-Black tree data structure
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "equal.hpp"
@@ -46,11 +46,15 @@ namespace ft {
 			typedef const value_type& const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::iterator iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::const_iterator const_iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::reverse_iterator reverse_iterator;
-			typedef typename ft::rbtree< key_type, mapped_type, key_compare, allocator_type >::const_reverse_iterator const_reverse_iterator;
+			typedef typename ft::rbtree_map< key_type, mapped_type, key_compare, allocator_type >::iterator iterator;
+			typedef typename ft::rbtree_map< key_type, mapped_type, key_compare, allocator_type >::const_iterator const_iterator;
+			typedef typename ft::rbtree_map< key_type, mapped_type, key_compare, allocator_type >::reverse_iterator reverse_iterator;
+			typedef typename ft::rbtree_map< key_type, mapped_type, key_compare, allocator_type >::const_reverse_iterator const_reverse_iterator;
 
+			protected:
+			ft::rbtree_map< key_type, mapped_type, key_compare, allocator_type> _rbtree;
+
+			public:
 
 			/* ------------- Constructors ------------- */
 
@@ -232,8 +236,6 @@ namespace ft {
 				return _rbtree.equal_range(k);
 			}
 
-			protected:
-			ft::rbtree< key_type, mapped_type, key_compare, allocator_type> _rbtree;
 	};
 
 

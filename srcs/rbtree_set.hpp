@@ -7,6 +7,12 @@
 #include "rbtree_iterator.hpp"
 #include "rbtree_reverse_iterator.hpp"
 #include "reverse_iterator.hpp"
+#include "enable_if.hpp"
+#include "pair.hpp"
+#include "is_integral.hpp"
+
+#define BLACK	0
+#define RED		1
 
 namespace ft {
 
