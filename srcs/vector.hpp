@@ -126,7 +126,7 @@ namespace ft {
 			** is deallocated.
 			*/
 			~vector() {
-				empty();
+				clear();
 				_alloc.deallocate(_p, _capacity);
 			}
 
@@ -351,9 +351,11 @@ namespace ft {
 			** value value
 			*/
 			void assign (size_type n, const value_type& val) {
+				size_type old_size = _size;
 				reserve(n);
 				for (size_type i = 0; i < n; i++) {
-					_alloc.destroy(_p + i);
+					if (i < old_size)
+						_alloc.destroy(_p + i);
 					_alloc.construct(_p + i, val);
 				}
 				_size = n;
@@ -460,23 +462,15 @@ namespace ft {
 			/* Removes the element at pos.
 			*/
 			iterator erase (iterator position){
-				iterator it;
-				size_type i = 0;
-				for (it = iterator(_p); it != end(); it++) {
-					if (it == position) {
-						_alloc.destroy(_p + i);
-						while (i + 1 != _size) {
-							*(_p + i) = *(_p + i + 1);
-
-							_alloc.destroy(_p + i + 1);
-							++i;
-						}
-						--_size;
-						break ;
-					}
-					++i;
+				size_type pos = position - begin();
+				pointer p = position.base();
+				_alloc.destroy(_p + pos);
+				for (; pos + 1 < _size; pos++) {
+					_alloc.construct(_p + pos, *(_p + pos + 1));
+					_alloc.destroy(_p + pos + 1);
 				}
-				return it;
+				--_size;
+				return iterator(p);
 			}
 
 			/* Removes the elements in the range [first, last).
@@ -484,22 +478,17 @@ namespace ft {
 			iterator erase (iterator first, iterator last) {
 				if (first == last)
 					return last;
-				difference_type diff = last - first;
-				difference_type pos = 0;
-				for (pos = first - begin(); diff != 0; pos++) {
-					_alloc.destroy(_p + pos);
-					--diff;
-					--_size;
+				size_type pos = first - begin();
+				size_type diff = last - first;
+				for (; first != last; first++)
+					_alloc.destroy(first.base());
+
+				for (size_type i = pos; i + diff < _size; i++) {
+					_alloc.construct(_p + i, *(_p + i + diff));
+					_alloc.destroy(_p + i + diff);
 				}
-				pos = first - begin();
-				diff = last - first;
-				iterator ret = first;
-				while (first != end()) {
-					*(_p + pos) = *(first + diff);
-					++first;
-					++pos;
-				}
-				return ret;
+				_size -= diff;
+				return iterator(_p + pos);
 			}
 
 			/* Exchanges the contents of the container with those of other. 
