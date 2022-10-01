@@ -43,15 +43,20 @@ namespace ft {
 
 
 	protected:
+
 	key_compare				_comp;
 	allocator_type			_alloc;
 	size_type				_size;
 	ft::rbnode<value_type>	*_tree_root;
 	ft::rbnode<value_type>	*_tnull;
 
+
 	public:
+
 	/* ------------- Constructors ------------- */
 
+	/* Constructs an empty container.
+	*/
 	rbtree_set( const key_compare& comp = key_compare(), 
 			const allocator_type& alloc = allocator_type()) :
 		_comp(comp),
@@ -61,6 +66,10 @@ namespace ft {
 		_tree_root = _tnull;
 	}
 
+	/* Constructs the container with the contents of the range [first, last).
+	** If multiple elements in the range have keys that compare equivalent,
+	** it is unspecified which element is inserted
+	*/
 	template <class InputIterator>
 		rbtree_set (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
@@ -77,6 +86,9 @@ namespace ft {
 		}
 	}
 
+	/* Copy constructor.
+	** Constructs the container with the copy of the contents of other.
+	*/
 	rbtree_set(const rbtree_set& x) :
 		_comp(x._comp),
 		_alloc(x._alloc),
@@ -88,6 +100,9 @@ namespace ft {
 
 	/* ------------- operator= ------------- */
 
+	/* Copy assignment operator.
+	** Replaces the contents with a copy of the contents of other.
+	*/
 	rbtree_set& operator= (const rbtree_set& x) {
 		clear();
 		_comp = x._comp;
@@ -102,6 +117,8 @@ namespace ft {
 
 	/* ------------- Allocator ------------- */
 
+	/* Returns the allocator associated with the container.
+	*/
 	allocator_type get_allocator() const {
 		return _alloc;
 	}
@@ -109,6 +126,10 @@ namespace ft {
 
 	/* ------------- Destructor ------------- */
 
+	/* Destructs the map. The destructors of the elements are called
+	** and the used storage is deallocated. Note, that if the elements
+	** are pointers, the pointed-to objects are not destroyed.
+	*/
 	~rbtree_set() {
 		destroy_tree(_tree_root);
 		delete _tnull;
@@ -117,6 +138,10 @@ namespace ft {
 
 	/* ------------- Iterators ------------- */
 
+	/* Returns an iterator to the first element of the vector.
+	** If the vector is empty, the returned iterator will be equal to 
+	** end(). 
+	*/
 	iterator begin() {
 		iterator it(lowest(), _tree_root, _tnull);
 		return static_cast<iterator>(it);
@@ -125,6 +150,12 @@ namespace ft {
 		const_iterator cit(lowest(), _tree_root, _tnull);
 		return static_cast<const_iterator>(cit);
 	}
+
+	/* Returns an iterator to the element following the last element
+	** of the vector.
+	** This element acts as a placeholder; attempting to access it 
+	** results in undefined behavior. 
+	*/
 	iterator end() {
 		iterator it(_tnull, _tree_root, _tnull);
 		return static_cast<iterator>(it);
@@ -134,6 +165,11 @@ namespace ft {
 		return static_cast<const_iterator>(cit);
 	}
 
+	/* Returns a reverse iterator to the first element of the reversed
+	** vector. It corresponds to the last element of the non-reversed 
+	** vector. If the vector is empty, the returned iterator is equal 
+	** to rend(). 
+	*/
 	reverse_iterator rbegin() {
 		reverse_iterator rit(end());
 		return static_cast<reverse_iterator>(rit);
@@ -142,6 +178,13 @@ namespace ft {
 		const_reverse_iterator crit(end());
 		return static_cast<const_reverse_iterator>(crit);
 	}
+
+	/* Returns a reverse iterator to the element following the last
+	** element of the reversed map. It corresponds to the element
+	** preceding the first element of the non-reversed map.
+	** This element acts as a placeholder, attempting to access it
+	** results in undefined behavior.
+	*/
 	reverse_iterator rend() {
 		reverse_iterator rit(begin());
 		return static_cast<reverse_iterator>(rit);
@@ -152,54 +195,251 @@ namespace ft {
 	}
 
 
-	/* ------------- Element access ------------- */
+	/* ------------- Capacity ------------- */
 
-	rbnode<value_type>* recursive_search(rbnode<value_type> *root_, key_type key) const {
-		if (root_ != _tnull && key == *root_->content)
-			return root_;
-		else if (root_ != _tnull && _comp(key, *root_->content)) {
-			if (root_->left != _tnull)
-				return recursive_search(root_->left, key);
+	/* Checks if the container has no elements,
+	** i.e. whether begin() == end(). 
+	*/
+	bool empty() const {
+		if (_size == 0)
+			return true;
+		return false;
+	}
+
+	/* Returns the number of elements in the container.
+	*/
+	size_type size() const {
+		return _size;
+	}
+
+	/* Returns the maximum number of elements
+	** the container is able to hold due to system
+	** or library implementation limitations
+	*/
+	size_type max_size() const {
+		return _alloc.max_size();
+	}
+
+
+	/* ------------- Modifiers ------------- */
+
+	/*  Inserts value.
+	*/
+	ft::pair<iterator, bool>	insert(value_type val) {
+		rbnode<value_type> *new_node = init_new_node(val);
+		ft::pair<iterator, bool> pr;
+
+		++_size;
+		if (_tree_root == _tnull) {
+			_tree_root = new_node;
+			new_node->color = BLACK;
+			pr.first = iterator(new_node, _tree_root, _tnull);
+			pr.second = true;
 		}
-		else if (root_ != _tnull) {
-			if (root_->right != _tnull)
-				return recursive_search(root_->right, key);
+		else {
+			pr = recursive_insertion(_tree_root, new_node);
+			if (pr.second == true)
+				rb_insert_fixup(new_node);
+			else
+				destroy_node(new_node);
 		}
+		return pr;
+	}
+
+	/* Removes the element at pos.
+	*/
+	void erase( iterator pos ) {
+		rb_delete(pos.base());
+	}
+
+	/* Removes the elements in the range [first; last),
+	** which must be a valid range in *this.
+	*/
+	void erase( iterator first, iterator last ) {
+		rbnode<value_type>* to_del;
+
+		while (first != last) {
+			to_del = first.base();
+			first++;
+			rb_delete(to_del);
+		}
+	}
+
+	/* Removes the element (if one exists)
+	** with the key equivalent to key.
+	*/
+	size_type erase( const Key& key ) {
+		rbnode<value_type>* found = recursive_search(_tree_root, key);
+
+		if (found == _tnull)
+			return 0;
+		rb_delete(found);
+		return 1;
+	}
+
+	/* Exchanges the contents of the container with those of other.
+	** Does not invoke any move, copy, or swap operations on individual elements.
+	** All iterators and references remain valid.
+	** The past-the-end iterator is invalidated.
+	** The Compare objects must be Swappable,
+	** and they are exchanged using unqualified call to non-member swap. 
+	*/
+	void swap (rbtree_set& x) {
+		key_compare tmp_comp = _comp;
+		allocator_type tmp_alloc = _alloc;
+		size_type tmp_size = _size;
+		ft::rbnode<value_type>* tmp_root = _tree_root;
+		ft::rbnode<value_type>* tmp_tnull = _tnull;
+
+		_comp = x._comp;
+		_alloc = x._alloc;
+		_size = x._size;
+		_tree_root = x._tree_root;
+		_tnull = x._tnull;
+
+		x._comp = tmp_comp;
+		x._alloc = tmp_alloc;
+		x._size = tmp_size;
+		x._tree_root = tmp_root;
+		x._tnull = tmp_tnull;
+	}
+
+	/* Erases all elements from the container.
+	** After this call, size() returns zero.
+	** Invalidates any references, pointers,
+	** or iterators referring to contained elements.
+	** Any past-the-end iterator remains valid.
+	*/
+	void clear() {
+		destroy_tree(_tree_root);
+		_tree_root = _tnull;
+		_size = 0;
+	}
+
+
+	/* ------------- Lookup ------------- */
+
+	/* Finds an element with key equivalent to key. 
+	*/
+	iterator find (const key_type& k) {
+		iterator it(recursive_search(_tree_root, k), _tree_root, _tnull);
+		return static_cast<iterator>(it);
+	}
+	const_iterator find (const key_type& k) const {
+		const_iterator cit(recursive_search(_tree_root, k), _tree_root, _tnull);
+		return static_cast<const_iterator>(cit);
+	}
+
+	/* Returns the number of elements with key that compares
+	** equivalent to the specified argument, which is
+	** either 1 or 0 since this container does not allow duplicates.
+	*/
+	size_type count (const key_type& k) const {
+		if (recursive_search(_tree_root, k) != _tnull)
+			return 1;
+		return 0;
+	}
+
+	/* Returns an iterator pointing to the first element
+	** that is not less than (i.e. greater or equal to) key.
+	*/
+	iterator lower_bound (const key_type& k) {
+		iterator it(minimum(_tree_root), _tree_root, _tnull);
+		while (it.base() != _tnull && k != *it && !_comp(k, *it))
+			it++;
+		return static_cast<iterator>(it);
+	}
+	const_iterator lower_bound (const key_type& k) const {
+		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
+		while (it.base() != _tnull && k != *it && !_comp(k, *it))
+			it++;
+		return static_cast<const_iterator>(it);
+	}
+
+	/* Returns an iterator pointing to the first element
+	** that is greater than key.
+	*/
+	iterator upper_bound (const key_type& k) {
+		iterator it(minimum(_tree_root), _tree_root, _tnull);
+		while (it.base() != _tnull && !_comp(k, *it))
+			it++;
+		return static_cast<iterator>(it);
+	}
+	const_iterator upper_bound (const key_type& k) const {
+		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
+		while (it.base() != _tnull && !_comp(k, *it))
+			it++;
+		return static_cast<const_iterator>(it);
+	}
+
+	/* Returns a range containing all elements with the given key in the container.
+	** The range is defined by two iterators, one pointing to the first element
+	** that is not less than key and another pointing to the first element greater
+	** than key. Alternatively, the first iterator may be obtained with lower_bound(),
+	** and the second with upper_bound().
+	*/
+	ft::pair<iterator,iterator> equal_range (const key_type& k) {
+		ft::pair<iterator,iterator> pr;
+		pr.first = lower_bound(k);
+		pr.second = upper_bound(k);
+		return pr;
+	}
+	ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+		ft::pair<const_iterator,const_iterator> pr;
+		pr.first = lower_bound(k);
+		pr.second = upper_bound(k);
+		return pr;
+	}
+
+
+	/* ------------- Observers ------------- */
+
+	/* Returns the function object that compares the keys,
+	** which is a copy of this container's constructor argument comp. 
+	*/
+	key_compare key_comp() const {
+		return _comp;
+	}
+
+	/* Return root node
+	*/
+	rbnode<value_type>	*get_root() const {
+		return _tree_root;
+	}
+
+	/* Return tnull node
+	*/
+	rbnode<value_type>	*get_tnull() const {
 		return _tnull;
 	}
 
 
+	private:
+
 	/* ------------- RBTree utils ------------- */
 
+	/* Returns the minimum from the whole tree.
+	*/
 	rbnode<value_type> *lowest() const {
 		ft::rbnode<value_type> *lowest = _tree_root;
 		while (lowest->left != _tnull)
 			lowest = lowest->left;
 		return lowest;
 	}
-	rbnode<value_type> *greatest() const {
-		ft::rbnode<value_type> *greatest = _tree_root;
-		while (greatest->right != _tnull)
-			greatest = greatest->right;
-		return greatest;
-	}
 
-	void rb_transplant(rbnode<value_type> *u, rbnode<value_type> *v) {
-		if (u->parent == _tnull)			// u is root
-			_tree_root = v;
-		else if (u == u->parent->left)	// u is left child
-			u->parent->left = v;
-		else							// u is right child
-			u->parent->right = v;
-		v->parent = u->parent;
-	}
-
+	/* Returns the minimum from a given subtree.
+	*/
 	rbnode<value_type> *minimum(rbnode<value_type> *x) const {
 		while (x->left != _tnull)
 			x = x->left;
 		return x;
 	}
 
+
+	/* ------------- RBTree node utils ------------- */
+
+	/* Initialize leaf node.
+	*/
 	rbnode<value_type>	*init_tnull() {
 		rbnode<value_type> *_tnull = new rbnode<value_type>;
 		_tnull->parent = _tnull;
@@ -209,6 +449,8 @@ namespace ft {
 		return _tnull;
 	}
 
+	/* Initialize node with val value.
+	*/
 	rbnode<value_type>	*init_new_node(value_type val) {
 		rbnode<value_type> *new_node = new rbnode<value_type>;
 		new_node->content = _alloc.allocate(sizeof(value_type));
@@ -220,33 +462,15 @@ namespace ft {
 		return new_node;
 	}
 
-	rbnode<value_type>	*get_root() const {
-		return _tree_root;
+	void rb_transplant(rbnode<value_type> *u, rbnode<value_type> *v) {
+		if (u->parent == _tnull)		// u is root
+			_tree_root = v;
+		else if (u == u->parent->left)	// u is left child
+			u->parent->left = v;
+		else							// u is right child
+			u->parent->right = v;
+		v->parent = u->parent;
 	}
-	rbnode<value_type>	*get_tnull() const {
-		return _tnull;
-	}
-
-	/* ------------- Capacity ------------- */
-
-	size_type size() const {
-		return _size;
-	}
-
-	bool empty() const {
-		if (_size == 0)
-			return true;
-		return false;
-	}
-
-	key_compare key_comp() const {
-		return _comp;
-	}
-
-	size_type max_size() const {
-		return _alloc.max_size();
-	}
-
 
 	/* ------------- RBTree rotation ------------- */
 
@@ -287,64 +511,20 @@ namespace ft {
 	}
 
 
-	/* ------------- Modifiers ------------- */
-	void erase( iterator pos ) {
-		rb_delete(pos.base());
-	}
+	/* ------------- RBTree search ------------- */
 
-	void erase( iterator first, iterator last ) {
-		rbnode<value_type>* to_del;
-
-		while (first != last) {
-			to_del = first.base();
-			first++;
-			rb_delete(to_del);
+	rbnode<value_type>* recursive_search(rbnode<value_type> *root_, key_type key) const {
+		if (root_ != _tnull && key == *root_->content)
+			return root_;
+		else if (root_ != _tnull && _comp(key, *root_->content)) {
+			if (root_->left != _tnull)
+				return recursive_search(root_->left, key);
 		}
-	}
-	size_type erase( const Key& key ) {
-		rbnode<value_type>* found = recursive_search(_tree_root, key);
-
-		if (found == _tnull)
-			return 0;
-		rb_delete(found);
-		return 1;
-	}
-
-	void swap (rbtree_set& x) {
-		key_compare tmp_comp = _comp;
-		allocator_type tmp_alloc = _alloc;
-		size_type tmp_size = _size;
-		ft::rbnode<value_type>* tmp_root = _tree_root;
-		ft::rbnode<value_type>* tmp_tnull = _tnull;
-
-		_comp = x._comp;
-		_alloc = x._alloc;
-		_size = x._size;
-		_tree_root = x._tree_root;
-		_tnull = x._tnull;
-
-		x._comp = tmp_comp;
-		x._alloc = tmp_alloc;
-		x._size = tmp_size;
-		x._tree_root = tmp_root;
-		x._tnull = tmp_tnull;
-	}
-
-
-	/* ------------- Lookup ------------- */
-
-	iterator find (const key_type& k) {
-		iterator it(recursive_search(_tree_root, k), _tree_root, _tnull);
-		return static_cast<iterator>(it);
-	}
-	const_iterator find (const key_type& k) const {
-		const_iterator cit(recursive_search(_tree_root, k), _tree_root, _tnull);
-		return static_cast<const_iterator>(cit);
-	}
-	size_type count (const key_type& k) const {
-		if (recursive_search(_tree_root, k) != _tnull)
-			return 1;
-		return 0;
+		else if (root_ != _tnull) {
+			if (root_->right != _tnull)
+				return recursive_search(root_->right, key);
+		}
+		return _tnull;
 	}
 
 	rbnode<value_type>* recursive_search_lower_bound(rbnode<value_type> *root_, key_type key) {
@@ -356,68 +536,12 @@ namespace ft {
 		}
 		return _tnull;
 	}
-	iterator lower_bound (const key_type& k) {
-		iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && k != *it && !_comp(k, *it))
-			it++;
-		return static_cast<iterator>(it);
-	}
-	const_iterator lower_bound (const key_type& k) const {
-		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && k != *it && !_comp(k, *it))
-			it++;
-		return static_cast<const_iterator>(it);
-	}
-	iterator upper_bound (const key_type& k) {
-		iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && !_comp(k, *it))
-			it++;
-		return static_cast<iterator>(it);
-	}
-	const_iterator upper_bound (const key_type& k) const {
-		const_iterator it(minimum(_tree_root), _tree_root, _tnull);
-		while (it.base() != _tnull && !_comp(k, *it))
-			it++;
-		return static_cast<const_iterator>(it);
-	}
 
-	ft::pair<iterator,iterator> equal_range (const key_type& k) {
-		ft::pair<iterator,iterator> pr;
-		pr.first = lower_bound(k);
-		pr.second = upper_bound(k);
-		return pr;
-	}
-	ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
-		ft::pair<const_iterator,const_iterator> pr;
-		pr.first = lower_bound(k);
-		pr.second = upper_bound(k);
-		return pr;
-	}
 
 	/* ------------- RBTree insertion ------------- */
 
-	ft::pair<iterator, bool>	insert(value_type val) {
-		rbnode<value_type> *new_node = init_new_node(val);
-		ft::pair<iterator, bool> pr;
-
-		++_size;
-		if (_tree_root == _tnull) {
-			_tree_root = new_node;
-			new_node->color = BLACK;
-			pr.first = iterator(new_node, _tree_root, _tnull);
-			pr.second = true;
-		}
-		else {
-			pr = recursive_insertion(_tree_root, new_node);
-			if (pr.second == true)
-				rb_insert_fixup(new_node);
-			else
-				destroy_node(new_node);
-		}
-		return pr;
-	}
-
-	/* Go deep down to tree until a leaf is found
+	/* Go deep down to tree until a node is found
+	** or a leaf is reached.
 	*/
 	ft::pair<iterator, bool> recursive_insertion(rbnode<value_type> *root_, rbnode<value_type> *new_node) {
 		if (root_ != _tnull && *new_node->content == *root_->content)
@@ -472,6 +596,8 @@ namespace ft {
 
 	/* ------------- RBTree deletion ------------- */
 
+	/* Delete a given node
+	*/
 	void	rb_delete(rbnode<value_type> *z) {
 		rbnode<value_type> *x;
 		rbnode<value_type> *y = z;
@@ -507,8 +633,6 @@ namespace ft {
 		destroy_node(z);
 	}
 
-
-	// Note: Add comment that explain each case.
 	void rb_delete_fixup(rbnode<value_type> *x) {
 		rbnode<value_type> *w;
 		while (x != _tree_root && x->color == BLACK) {
@@ -591,12 +715,6 @@ namespace ft {
 		destroy_tree(root_->left);
 		destroy_tree(root_->right);
 		destroy_node(root_);
-	}
-
-	void clear() {
-		destroy_tree(_tree_root);
-		_tree_root = _tnull;
-		_size = 0;
 	}
 
 
