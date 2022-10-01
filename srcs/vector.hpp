@@ -16,6 +16,7 @@
 #include <sstream>						// Required for std::stringstream
 #include <memory>						// Required for std::allocator<T>
 #include <cstddef>						// Required for std::ptrdiff_t
+#include <iostream>						// Required for std::cout
 #include "random_access_iterator.hpp"	// Required for iterators
 #include "reverse_iterator.hpp"			// Required for iterators
 #include "lexicographical_compare.hpp"	// Required for non-member functions
@@ -107,11 +108,11 @@ namespace ft {
 			/* Copy assignment operator. Replaces the contents with a copy of   ** the contents of other. 
 			*/
 			vector& operator= (const vector& x) {
-				reserve(x._size);
-				_size = x._size;
 				for (size_type i = 0; i < _size; i++) {
 					_alloc.destroy(_p + i);
 				}
+				reserve(x._size);
+				_size = x._size;
 				for (size_type i = 0; i < _size; i++) {
 					_alloc.construct(_p + i, *(x._p + i));
 				}
