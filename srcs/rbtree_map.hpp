@@ -3,6 +3,7 @@
 
 #include <functional>			// Required for std::less<Key>
 #include <memory>				// Required for std::allocator<T>
+#include <iostream>
 #include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
 #include "make_pair.hpp"
 #include "rbnode.hpp"

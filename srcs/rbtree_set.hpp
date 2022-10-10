@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <iostream>
 #include "rbnode.hpp"
 #include "rbtree_iterator.hpp"
 #include "rbtree_reverse_iterator.hpp"

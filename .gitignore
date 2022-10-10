@@ -30,7 +30,15 @@
 *.exe
 *.out
 *.app
-ft_containers
+vector_ft_test
+vector_std_test
+stack_ft_test
+stack_std_test
+map_ft_test
+map_std_test
+set_ft_test
+set_std_test
 
 # Directories
 containers_test/
+42TESTERS-CONTAINERS
