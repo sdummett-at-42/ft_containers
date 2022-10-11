@@ -21,7 +21,7 @@ int main() {
 	li.push_back(2);
 	li.push_back(3);
 
-	std::cout << "Launching vector tests\n\n";
+	std::cout << "Launching stack tests\n\n";
 
 	/* ------------- Constructor ------------- */
 	std::cout << "Constructor\n";
@@ -33,6 +33,7 @@ int main() {
 	stack<int> sta2(sta1); 
 	stack<int, std::list<int>> sta3(li);
 	stack<int> sta4;
+	std::cout << "\n";
 
 	/* ------------- Destructor ------------- */
 	/* All the containers will be destroyed at the end.
@@ -96,12 +97,6 @@ int main() {
 	}
 	std::cout << "\n";
 
-	std::cout << sta1.size() << "\n";
-	std::cout << sta2.size() << "\n";
-	std::cout << sta3.size() << "\n";
-	std::cout << sta4.size() << "\n";
-	std::cout << "\n";
-
 	std::cout << "NON-MEMBER FUNCTIONS\n";
 	sta4 = sta2;
 	/* ------------- operator== ------------- */
@@ -111,6 +106,7 @@ int main() {
 	if (sta1 == sta2)
 		std::cout << "sta1 == sta2\n";
 	std::cout << "\n";
+
 	/* ------------- operator!= ------------- */
 	std::cout << "operator!=\n";
 	if (sta4 != sta2)
@@ -118,6 +114,7 @@ int main() {
 	if (sta1 != sta2)
 		std::cout << "sta1 != sta2\n";
 	std::cout << "\n";
+
 	/* ------------- operator< ------------- */
 	std::cout << "operator<\n";
 	if (sta4 < sta2)
@@ -125,6 +122,7 @@ int main() {
 	if (sta1 < sta2)
 		std::cout << "sta1 < sta2\n";
 	std::cout << "\n";
+
 	/* ------------- operator> ------------- */
 	std::cout << "operator>\n";
 	if (sta4 > sta2)
@@ -132,6 +130,7 @@ int main() {
 	if (sta1 > sta2)
 		std::cout << "sta1 > sta2\n";
 	std::cout << "\n";
+
 	/* ------------- operator<= ------------- */
 	std::cout << "operator<=\n";
 	if (sta4 <= sta2)
@@ -139,6 +138,7 @@ int main() {
 	if (sta1 <= sta2)
 		std::cout << "sta1 <= sta2\n";
 	std::cout << "\n";
+
 	/* ------------- operator>= ------------- */
 	std::cout << "operator>=\n";
 	if (sta4 >= sta2)

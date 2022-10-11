@@ -14,7 +14,7 @@ int main() {
 	#else
 	std::cout << "STD\n";
 	#endif
-	std::cout << "Launching vector tests\n\n";
+	std::cout << "Launching set tests\n\n";
 
 	std::cout << "Constructor\n";
 	std::cout << "Destructor\n";

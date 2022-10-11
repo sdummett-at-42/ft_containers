@@ -54,10 +54,11 @@ int main()
 
 	/* ------------- Constructor ------------- */
 	std::cout << "Constructor\n";
-		vector<int> vec1;
-		vector<int> vec2(42, 42);
-		vector<std::string> vec3(listr.begin(), listr.end());
-		vector<int> vec4(vec1);
+	vector<int> vec1;
+	vector<int> vec2(42, 42);
+	vector<std::string> vec3(listr.begin(), listr.end());
+	vector<int> vec4(vec1);
+	std::cout << "\n";
 
 	/* ------------- Destructor ------------- */
 	/* All the containers will be destroyed at the end.
@@ -188,6 +189,7 @@ int main()
 	std::cout << "clear\n";
 	vec4.clear();
 	std::cout << vec4.empty() << "\n";
+	std::cout << "\n";
 
 	/* ------------- insert ------------- */
 	std::cout << "insert\n";
@@ -235,7 +237,7 @@ int main()
 	std::cout << "swap\n";
 	print_int_vector(vec1);
 	print_int_vector(vec4);
-	vec4.swap(vec1);
+	swap(vec4, vec1);
 	print_int_vector(vec1);
 	print_int_vector(vec4);
 	std::cout << "\n";
@@ -246,24 +248,29 @@ int main()
 	vec2 = vec4;
 	if (vec4 == vec2)
 		std::cout << "vec4 == vec2\n\n";
+
 	/* ------------- operator!= ------------- */
 	std::cout << "operator!=\n";
 	if (vec4 != vec2)
 		std::cout << "vec4 != vec2\n\n";
 	if (vec1 != vec4)
 		std::cout << "vec1 != vec4\n\n";
+
 	/* ------------- operator< ------------- */
 	std::cout << "operator<\n";
 	if (vec1 < vec4)
 		std::cout << "vec1 < vec4\n\n";
+
 	/* ------------- operator> ------------- */
 	std::cout << "operator>\n";
 	if (vec1 > vec4)
 		std::cout << "vec1 > vec4\n\n";
+
 	/* ------------- operator<= ------------- */
 	std::cout << "operator<=\n";
 	if (vec1 <= vec4)
 		std::cout << "vec1 <= vec4\n\n";
+
 	/* ------------- operator>= ------------- */
 	std::cout << "operator>=\n";
 	if (vec1 >= vec4)
