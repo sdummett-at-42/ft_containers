@@ -46,11 +46,11 @@ int main()
 	liint.push_back(59);
 	liint.push_back(60);
 
-	vector<int>::size_type i;
-	vector<int>::iterator it;
-	vector<int>::iterator ite;
-	vector<int>::reverse_iterator rit;
-	vector<int>::reverse_iterator rite;
+	vector<int>::size_type			i;
+	vector<int>::iterator			it;
+	vector<int>::iterator			ite;
+	vector<int>::reverse_iterator	rit;
+	vector<int>::reverse_iterator	rite;
 
 	/* ------------- Constructor ------------- */
 	std::cout << "Constructor\n";
@@ -87,9 +87,11 @@ int main()
 		std::cout << *it << " ";
 	std::cout << "\n\n";
 
+	/* ------------- get_allocator ------------- */
 	std::cout << "get_allocator\n";
 
 	std::cout << "ELEMENT ACCESS\n";
+	/* ------------- at ------------- */
 	std::cout << "at\n";
 	i = 0;
 	while (i < vec4.size()) {
@@ -98,6 +100,7 @@ int main()
 	}
 	std::cout << "\n\n";
 
+	/* ------------- operator[] ------------- */
 	std::cout << "operator[]\n";
 	i = 0;
 	while (i < vec4.size()) {
@@ -106,15 +109,18 @@ int main()
 	}
 	std::cout << "\n\n";
 
+	/* ------------- front ------------- */
 	std::cout << "front\n";
 	std::cout << vec4.front() << "\n\n";
 
+	/* ------------- back ------------- */
 	std::cout << "back\n";
 	while (vec4.size()) {
 		std::cout << vec4.back() << " ";
 		vec4.pop_back();
 	}
 
+	/* ------------- data ------------- */
 	std::cout << "data\n";
 	vec4.assign(liint.begin(), liint.end());
 	vector<int>::pointer ptr = vec4.data();
@@ -124,11 +130,13 @@ int main()
 	std::cout << "\n\n";
 
 	std::cout << "ITERATORS\n";
+	/* ------------- begin ------------- */
 	std::cout << "begin\n";
 	it = vec4.begin();
 	std::cout << *it << "\n";
 	std::cout << *(it + 1) << "\n\n";
 
+	/* ------------- end ------------- */
 	std::cout << "end\n";
 	ite = vec4.end();
 	std::cout << *(ite - 1) << "\n";
@@ -136,11 +144,13 @@ int main()
 		std::cout << *it << " ";
 	std::cout << "\n\n";
 
+	/* ------------- rbegin ------------- */
 	std::cout << "rbegin\n";
 	rit = vec4.rbegin();
 	std::cout << *rit << "\n";
 	std::cout << *(rit + 1) << "\n\n";
 
+	/* ------------- rend ------------- */
 	std::cout << "rend\n";
 	rite = vec4.rend();
 	std::cout << *(rite - 1) << "\n";
@@ -149,30 +159,37 @@ int main()
 	std::cout << "\n\n";
 
 	std::cout << "CAPACITY\n";
+	/* ------------- empty ------------- */
 	std::cout << "empty\n";
 	std::cout << vec4.empty() << "\n";
 	vec4.clear();
 	std::cout << vec4.empty() << "\n\n";
 
+	/* ------------- size ------------- */
 	std::cout << "size\n";
 	std::cout << vec4.size() << "\n";
 	vec4.assign(liint.begin(), liint.end());
 	std::cout << vec4.size() << "\n\n";
 
+	/* ------------- max_size ------------- */
 	std::cout << "max_size\n";
 	std::cout << vec4.max_size() << "\n\n";
 
+	/* ------------- reserve ------------- */
 	std::cout << "reserve\n";
 	vec4.reserve(42);
 
+	/* ------------- capacity ------------- */
 	std::cout << "capacity\n";
 	std::cout << vec4.capacity() << "\n\n";
 
 	std::cout << "MODIFIERS\n";
+	/* ------------- clear ------------- */
 	std::cout << "clear\n";
 	vec4.clear();
 	std::cout << vec4.empty() << "\n";
 
+	/* ------------- insert ------------- */
 	std::cout << "insert\n";
 	vec4.assign(liint.begin(), liint.end());
 	print_int_vector(vec4);
@@ -183,13 +200,15 @@ int main()
 	print_int_vector(vec4);
 	std::cout << "\n";
 
-	std::cout << ";erase\n";
+	/* ------------- erase ------------- */
+	std::cout << "erase\n";
 	it = vec4.erase(it);
 	print_int_vector(vec4);
 	vec4.erase(it, it + 5);
 	print_int_vector(vec4);
 	std::cout << "\n";
 
+	/* ------------- push_back ------------- */
 	std::cout << "push_back\n";
 	vec4.push_back(42);
 	vec4.push_back(21);
@@ -197,12 +216,14 @@ int main()
 	print_int_vector(vec4);
 	std::cout << "\n";
 
+	/* ------------- pop_back ------------- */
 	std::cout << "pop_back\n";
 	vec4.pop_back();
 	vec4.pop_back();
 	print_int_vector(vec4);
 	std::cout << "\n";
 
+	/* ------------- resize ------------- */
 	std::cout << "resize\n";
 	vec4.resize(2);
 	print_int_vector(vec4);
@@ -210,6 +231,7 @@ int main()
 	print_int_vector(vec4);
 	std::cout << "\n";
 
+	/* ------------- swap ------------- */
 	std::cout << "swap\n";
 	print_int_vector(vec1);
 	print_int_vector(vec4);
@@ -219,24 +241,30 @@ int main()
 	std::cout << "\n";
 
 	std::cout << "NON-MEMBER FUNCTIONS\n";
+	/* ------------- operator== ------------- */
 	std::cout << "operator==\n";
 	vec2 = vec4;
 	if (vec4 == vec2)
 		std::cout << "vec4 == vec2\n\n";
+	/* ------------- operator!= ------------- */
 	std::cout << "operator!=\n";
 	if (vec4 != vec2)
 		std::cout << "vec4 != vec2\n\n";
 	if (vec1 != vec4)
 		std::cout << "vec1 != vec4\n\n";
+	/* ------------- operator< ------------- */
 	std::cout << "operator<\n";
 	if (vec1 < vec4)
 		std::cout << "vec1 < vec4\n\n";
+	/* ------------- operator> ------------- */
 	std::cout << "operator>\n";
 	if (vec1 > vec4)
 		std::cout << "vec1 > vec4\n\n";
+	/* ------------- operator<= ------------- */
 	std::cout << "operator<=\n";
 	if (vec1 <= vec4)
 		std::cout << "vec1 <= vec4\n\n";
+	/* ------------- operator>= ------------- */
 	std::cout << "operator>=\n";
 	if (vec1 >= vec4)
 		std::cout << "vec1 >= vec4\n\n";
