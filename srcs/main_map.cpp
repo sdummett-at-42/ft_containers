@@ -110,7 +110,7 @@ int main() {
 	/* ------------- begin ------------- */
 	std::cout << "begin\n";
 	it = mp1.begin();
-	std::cout << it->first << " " << it->second << "\n";
+	std::cout << it->first << "," << it->second << "\n";
 	std::cout << (it++)->first << "," << (it++)->second << "\n\n";
 
 	/* ------------- end ------------- */
@@ -124,7 +124,7 @@ int main() {
 	/* ------------- rbegin ------------- */
 	std::cout << "rbegin\n";
 	rit = mp1.rbegin();
-	std::cout << rit->first << " " << rit->second << "\n";
+	std::cout << rit->first << "," << rit->second << "\n";
 	std::cout << (rit++)->first << "," << (rit++)->second << "\n\n";
 
 	/* ------------- rend ------------- */

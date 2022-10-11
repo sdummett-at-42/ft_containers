@@ -90,6 +90,8 @@ int main()
 
 	/* ------------- get_allocator ------------- */
 	std::cout << "get_allocator\n";
+	vector<int>::allocator_type alloc = vec1.get_allocator();
+	std::cout << "\n";
 
 	std::cout << "ELEMENT ACCESS\n";
 	/* ------------- at ------------- */
