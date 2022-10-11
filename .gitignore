@@ -39,6 +39,20 @@ map_std_test
 set_ft_test
 set_std_test
 
+# Files
+vector_ft_test.log
+vector_std_test.log
+vector_test.diff
+stack_ft_test.log
+stack_std_test.log
+stack_test.diff
+map_ft_test.log
+map_std_test.log
+map_test.diff
+set_ft_test.log
+set_std_test.log
+set_test.diff
+
 # Directories
 containers_test/
 42TESTERS-CONTAINERS
