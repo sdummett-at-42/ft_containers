@@ -27,6 +27,7 @@ namespace ft {
 
 		typedef T1 first_type;
 		typedef T2 second_type;
+
 		T1 first;
 		T2 second;
 
@@ -34,28 +35,32 @@ namespace ft {
 		 first(),
 		 second() {};
 
+		pair(const pair& src) :
+			first(src.first),
+			second(src.second) {}
+
 		template<class U, class V>
 		pair (const pair<U,V>& src) :
 			first(src.first),
 			second(src.second) {}
 
-		pair(const first_type& u, const second_type& v) :
+		pair(const T1& u, const T2& v) :
 			first(u),
 			second(v) {};
 
 		pair& operator= (const pair& src) {
-			this->first = src.first;
-			this->second = src.second;
+			first = src.first;
+			second = src.second;
 			return *this;
 		}
 
 		void swap (pair& src) { 
 			T1 tmpFirst;
 			T2 tmpSecond;
-			tmpFirst = this->first;
-			tmpSecond = this->second;
-			this->first = src.first;
-			this->second = src.second;
+			tmpFirst = first;
+			tmpSecond = second;
+			first = src.first;
+			second = src.second;
 			src.first = tmpFirst;
 			src.second = tmpSecond;
 		}

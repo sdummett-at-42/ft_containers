@@ -248,11 +248,13 @@ int main() {
 	/* ------------- key_comp ------------- */
 	std::cout << "key_comp\n";
 	map<int,int>::key_compare kc = mp4.key_comp();
+	(void)kc;
 	std::cout << "\n";
 
 	/* ------------- value_comp ------------- */
 	std::cout << "value_comp\n";
 	map<int,int>::value_compare vc = mp4.value_comp();
+	(void)vc;
 	std::cout << "\n";
 
 	std::cout << "NON-MEMBER FUNCTIONS\n";
