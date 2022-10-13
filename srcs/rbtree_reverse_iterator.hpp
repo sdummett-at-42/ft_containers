@@ -21,8 +21,8 @@ namespace ft {
 	typedef typename ft::rbnode<typename Iter::value_type>::value_type node_value_type;
 
 	protected:
-	node_type* current_node;
-	pointer rbtree;
+	node_type*	current_node;
+	pointer		rbtree;
 
 	public:
 	

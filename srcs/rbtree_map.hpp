@@ -1,10 +1,10 @@
 #ifndef RBTREE_MAP_HPP
 #define RBTREE_MAP_HPP
 
-#include <functional>			// Required for std::less<Key>
-#include <memory>				// Required for std::allocator<T>
+#include <functional>
+#include <memory>
 #include <iostream>
-#include "pair.hpp"				// Required for ft::pair<const key_type,mapped_type>
+#include "pair.hpp"
 #include "make_pair.hpp"
 #include "rbnode.hpp"
 #include "reverse_iterator.hpp"
@@ -19,10 +19,10 @@
 namespace ft {
 
 	template<
-			typename Key,
-			typename T,
-			typename Compare = std::less<const Key>,
-			typename Alloc = std::allocator<ft::pair<const Key, T> > >
+	typename Key,
+	typename T,
+	typename Compare = std::less<const Key>,
+	typename Alloc = std::allocator<ft::pair<const Key, T> > >
 	class rbtree_map {
 
 	public:

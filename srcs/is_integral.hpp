@@ -13,8 +13,11 @@
 # ifndef IS_INTEGRAL_HPP
 # define IS_INTEGRAL_HPP
 
-// Yes, it is C++11 but you will be able to implement it in a C++98 manner.
-// This is asked so you can discover SFINAE. [Subject]
+/* Checks whether T is an integral type. Provides the member constant
+** value which is equal to true, if T is the type bool, char, short, int, long,
+** long long, or any implementation-defined extended integer types, including
+** any signed, unsigned, and cv-qualified variants. Otherwise, value is equal to false. 
+*/
 
 namespace ft {
 
@@ -32,16 +35,6 @@ namespace ft {
 	struct is_integral<char> {
 		const static bool value = true;
 	};
-
-	// template<>
-	// struct is_integral<char16_t> {
-	// 	const static bool value = true;
-	// };
-
-	// template<>
-	// struct is_integral<char32_t> {
-	// 	const static bool value = true;
-	// };
 
 	template<>
 	struct is_integral<wchar_t> {

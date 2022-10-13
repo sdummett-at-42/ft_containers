@@ -16,10 +16,10 @@
 #include <cstddef> // std::ptrdiff_t
 #include "iterator_traits.hpp"
 
+/* https://cplusplus.com/reference/iterator/RandomAccessIterator/
+*/
 namespace ft {
 
-	/* https://cplusplus.com/reference/iterator/RandomAccessIterator/
-	*/
 	template< class Iter > 
 	class random_access_iterator {
 

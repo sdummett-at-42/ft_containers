@@ -17,11 +17,16 @@
 #include <memory>						// Required for std::allocator<T>
 #include "pair.hpp"						// Required for ft::pair<const key_type,mapped_type>
 #include "rbtree_map.hpp"				// Required for Red-Black tree data structure
-#include "enable_if.hpp"
-#include "is_integral.hpp"
-#include "equal.hpp"
-#include "lexicographical_compare.hpp"
+#include "enable_if.hpp"				// Required for ft::enable_if
+#include "is_integral.hpp"				// Required for ft::is_integral
+#include "equal.hpp"					// Required for ft::equal
+#include "lexicographical_compare.hpp"	// Required for ft::lexicographical_compare
 
+/* std::map is a sorted associative container that contains
+** key-value pairs with unique keys. Keys are sorted by using the comparison
+** function Compare. Search, removal, and insertion operations have logarithmic
+** complexity. Maps are usually implemented as red-black trees.
+*/
 namespace ft {
 
 	template<

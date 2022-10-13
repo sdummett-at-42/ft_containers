@@ -15,6 +15,9 @@
 
 namespace ft {
 	
+	/* Returns true if the range [first1, last1) is equal to the range
+	** [first2, first2 + (last1 - first1)), and false otherwise.
+	*/
 	template <class InputIterator1, class InputIterator2>
 	bool equal (InputIterator1 first1, InputIterator1 last1,
 		InputIterator2 first2) {
@@ -25,6 +28,9 @@ namespace ft {
 	}
     return true;	}
 
+	/* Returns true if the range [first1, last1) is equal to the range [first2, last2),
+	** and false otherwise
+	*/
 	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
 	bool equal (InputIterator1 first1, InputIterator1 last1,
 		InputIterator2 first2, BinaryPredicate pred) {

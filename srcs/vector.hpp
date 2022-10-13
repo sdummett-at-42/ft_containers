@@ -19,10 +19,17 @@
 #include <iostream>						// Required for std::cout
 #include "random_access_iterator.hpp"	// Required for iterators
 #include "reverse_iterator.hpp"			// Required for iterators
-#include "lexicographical_compare.hpp"	// Required for non-member functions
+#include "lexicographical_compare.hpp"	// Required for ft::lexicographical_compare
 #include "enable_if.hpp"				// Required for ft::enable_if
 #include "is_integral.hpp"				// Required for ft::is_integral
 
+/* std::vector is a sequence container that encapsulates dynamic size arrays.
+
+** The elements are stored contiguously, which means that elements can be
+** accessed not only through iterators, but also using offsets to regular
+** pointers to elements. This means that a pointer to an element of a vector
+** may be passed to any function that expects a pointer to an element of an array. 
+*/
 namespace ft {
 
 	template < class T, class Alloc = std::allocator<T> >

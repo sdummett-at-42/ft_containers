@@ -18,9 +18,9 @@
 namespace ft {
 
 	template<
-		typename Key,
-		typename Compare = std::less<Key>,
-		typename Alloc = std::allocator<Key> >
+	typename Key,
+	typename Compare = std::less<Key>,
+	typename Alloc = std::allocator<Key> >
 	class rbtree_set {
 
 	public:
